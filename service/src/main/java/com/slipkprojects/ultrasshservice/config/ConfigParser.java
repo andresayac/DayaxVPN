@@ -45,7 +45,7 @@ public class ConfigParser
 
 	
 	
-	public static final String FILE_EXTENSAO = "oct";
+	public static final String FILE_EXTENSAO = "dax";
 	private static final String KEY_PASSWORD = "cinbdf665$4";
 
 	private static final String
@@ -54,6 +54,15 @@ public class ConfigParser
 	SETTING_PROTEGER = "file.proteger",
 	SETTING_AUTOR_MSG = "file.msg";
 
+
+	public  static boolean convertRemoteAndSave(String input, Context mContext){
+		Properties mConfigFile = new Properties();
+		Settings settings = new Settings(mContext);
+		SharedPreferences.Editor prefsEdit = settings.getPrefsPrivate().edit();
+
+
+		return false;
+	}
 
 	public static boolean convertInputAndSave(InputStream input, Context mContext)
 	throws IOException {
@@ -66,6 +75,7 @@ public class ConfigParser
 		try {
 
 			InputStream decodedInput = decodeInput(input);
+			Log.d(TAG, "decodedInput" + decodedInput);
 
 			try {
 				mConfigFile.loadFromXML(decodedInput);
@@ -212,8 +222,7 @@ public class ConfigParser
 		}
 	}
 
-	public static void convertDataToFile(OutputStream fileOut, Context mContext,
-										 boolean mIsProteger, boolean mPedirSenha, boolean isBloquearRoot, String mMensagem, long mValidade)
+	public static void convertDataToFile(OutputStream fileOut, Context mContext, boolean mIsProteger, boolean mPedirSenha, boolean isBloquearRoot, String mMensagem, long mValidade)
 	throws IOException {
 
 		Properties mConfigFile = new Properties();
@@ -287,8 +296,7 @@ public class ConfigParser
 		}
 
 		try {
-			InputStream input_encoded = encodeInput(
-				new ByteArrayInputStream(tempOut.toByteArray()));
+			InputStream input_encoded = encodeInput( new ByteArrayInputStream(tempOut.toByteArray()));
 
 			FileUtils.copiarArquivo(input_encoded, fileOut);
 		} catch(Throwable e) {
@@ -298,15 +306,13 @@ public class ConfigParser
 
 	private static Cryptor mCrypto;
 	static {
-		mCrypto = Cryptor.initWithSecurityConfig(
-			new SecurityConfig.Builder( new String(new byte[]{69,100,1,})).build());
+		mCrypto = Cryptor.initWithSecurityConfig( new SecurityConfig.Builder( new String(new byte[]{69,100,1,})).build());
 	}
 
 	private static InputStream encodeInput(InputStream in) throws Throwable {
 		//ByteArrayOutputStream out = new ByteArrayOutputStream();
 
-		String strBase64 = mCrypto.encryptToBase64(getBytesArrayInputStream(in)
-												   .toByteArray());
+		String strBase64 = mCrypto.encryptToBase64(getBytesArrayInputStream(in).toByteArray());
 
 		//Cripto.encrypt(KEY_PASSWORD, in, out);
 

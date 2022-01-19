@@ -18,9 +18,12 @@ public class SkProtect {
 
 	private static final String TAG = SkProtect.class.getSimpleName();
 	
-	private static final String APP_BASE = new String(new byte[]{99,111,109,46,111,99,116,46,105,110,106,101,99,116,111,114});
-	private static final String APP_NAME = new String(new byte[]{111,99,116,32,105,110,106,101,99,116,111,114});
-	
+	//private static final String APP_BASE = new String(new byte[]{99,111,109,46,111,99,116,46,105,110,106,101,99,116,111,114}); // com.oct.injector
+	//private static final String APP_NAME = new String(new byte[]{111,99,116,32,105,110,106,101,99,116,111,114});  //oct injector
+
+	private static final String APP_BASE ="com.afaya.dayax";
+	private static final String APP_NAME ="dayax";
+
 	// Assinatura da Google Play
 	//private static final String APP_SIGNATURE = "XbhYZ4Bz/9F4cWLIDMg0wl/+jl8=\n";
 
@@ -52,8 +55,7 @@ public class SkProtect {
 	}*/
 	
 	public void simpleProtect() {
-		if (!APP_BASE.equals(mContext.getPackageName().toLowerCase()) ||
-				!mContext.getString(R.string.app_name).toLowerCase().equals(APP_NAME)) {
+		if (!APP_BASE.equals(mContext.getPackageName().toLowerCase()) || !mContext.getString(R.string.app_name).toLowerCase().equals(APP_NAME)) {
 			throw new RuntimeException();
 		}
 	}

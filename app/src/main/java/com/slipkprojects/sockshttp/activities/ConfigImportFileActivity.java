@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.util.Log;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.AlertDialog;
@@ -89,8 +90,7 @@ public class ConfigImportFileActivity extends BaseActivity implements ManagerFil
 			if (file_extensao != null && file_extensao.equals(ConfigParser.FILE_EXTENSAO)) {
 
 				try {
-					importarConfigInputFile(getContentResolver()
-											.openInputStream(data));
+					importarConfigInputFile(getContentResolver().openInputStream(data));
 				} catch(FileNotFoundException e) {
 					
 					Light.error(import_lys, getString(R.string.error_file_config_incompatible), Snackbar.LENGTH_LONG).show();
@@ -151,13 +151,9 @@ public class ConfigImportFileActivity extends BaseActivity implements ManagerFil
 			String file_extensao = getExtension(file);
 			if (file_extensao != null && file_extensao.equals(ConfigParser.FILE_EXTENSAO)) {
 				try {
+					Log.d("PRueba", "importRemoteFile" + file);
 					importarConfigInputFile(new FileInputStream(file));
 				} catch (FileNotFoundException e) {
-					
-					
-					
-					
-					
 					Light.error(import_ly, getString(R.string.error_file_not_found), Snackbar.LENGTH_LONG).show();
 				}
 			}
@@ -183,7 +179,7 @@ public class ConfigImportFileActivity extends BaseActivity implements ManagerFil
 			HOME_PATH,
 			HOME_PATH + "/Download",
 			HOME_PATH + "/Telegram",
-			HOME_PATH + "/OCT Injector"
+			HOME_PATH + "/Dayax"
 		};
 
 		for (String dir : listDirs) {

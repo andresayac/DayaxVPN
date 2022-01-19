@@ -21,31 +21,31 @@
 			android:id="@+id/payload_layout">
 
 			<LinearLayout
-				android:orientation="horizontal"
-				android:layout_width="match_parent"
-				android:layout_height="40dp"
-				android:padding="5dp"
-				android:layout_margin="10dp"
-				android:background="@drawable/payload_johnyx"
-				android:gravity="center">
+					android:orientation="horizontal"
+					android:layout_width="match_parent"
+					android:layout_height="45dp"
+					android:padding="5dp"
+					android:background="@drawable/payload_johnyx"
+					android:gravity="center" android:layout_marginTop="10dp" android:layout_marginStart="10dp"
+					android:layout_marginEnd="10dp" android:layout_marginBottom="10dp">
 
 				<com.google.android.material.textfield.TextInputLayout
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content">
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content">
 
 					<com.google.android.material.textfield.TextInputEditText
-						android:paddingRight="5dp"
-						android:paddingLeft="5dp"
-						android:background="#00000000"
-						android:textSize="15sp"
-						android:id="@+id/fragment_custom_sni"
-						android:inputType="textMultiLine|textLongMessage"
-						android:layout_width="fill_parent"
-						android:layout_height="wrap_content"
-						android:ems="10"
-						android:textColor="@color/colorText"
-						android:singleLine="true"/>
-					
+							android:paddingRight="5dp"
+							android:paddingLeft="5dp"
+							android:background="#00000000"
+							android:textSize="15sp"
+							android:id="@+id/fragment_custom_sni"
+							android:inputType="textMultiLine|textLongMessage"
+							android:layout_width="fill_parent"
+							android:layout_height="wrap_content"
+							android:ems="10"
+							android:textColor="@color/colorText"
+							android:singleLine="true"/>
+
 				</com.google.android.material.textfield.TextInputLayout>
 
 			</LinearLayout>
@@ -55,7 +55,7 @@
 				android:typeface="serif"
 				android:layout_height="wrap_content"
 				android:layout_width="wrap_content"
-				android:text="   Hostname - (eg. mahlx.com)   "
+				android:text="@string/sni_description"
 				android:layout_marginTop="3dp"
 				android:background="@color/colorSecondaryBackground"
 				android:layout_marginLeft="25dp"/>

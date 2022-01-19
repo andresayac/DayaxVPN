@@ -24,7 +24,6 @@
 	<uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 	<uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
 	<uses-permission android:name="android.permission.READ_PHONE_STATE" />
-	<uses-permission android:name="android.permission.INTERNET" />
 	<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
 		tools:ignore="ScopedStorage" />
@@ -80,16 +79,16 @@
 				<data android:mimeType="*/*" />
 				<data android:host="*" />
 				<data android:port="*" />
-				<data android:pathPattern=".*.oct"/>
-				<data android:pathPattern=".*..*.oct"/>
-				<data android:pathPattern=".*..*..*.oct"/>
-				<data android:pathPattern=".*..*..*..*.oct"/>
-				<data android:pathPattern=".*..*..*..*..*.oct"/>
-				<data android:pathPattern=".*..*..*..*..*..*.oct"/>
-				<data android:pathPattern=".*..*..*..*..*..*..*.oct"/>
+				<data android:pathPattern=".*.dax"/>
+				<data android:pathPattern=".*..*.dax"/>
+				<data android:pathPattern=".*..*..*.dax"/>
+				<data android:pathPattern=".*..*..*..*.dax"/>
+				<data android:pathPattern=".*..*..*..*..*.dax"/>
+				<data android:pathPattern=".*..*..*..*..*..*.dax"/>
+				<data android:pathPattern=".*..*..*..*..*..*..*.dax"/>
 			</intent-filter>
 		</activity>
-		
+
 		<activity android:name="com.slipkprojects.sockshttp.util.HostChecker" />
 		<activity android:name="com.slipkprojects.sockshttp.util.IpHunter" />
 		
@@ -97,6 +96,10 @@
 		<activity android:name="com.slipkprojects.sockshttp.activities.ConfigExportFileActivity"
 			android:parentActivityName=".SocksHttpMainActivity"
 			android:label="@string/settings_export"/>
+
+		<activity android:name="com.slipkprojects.sockshttp.activities.ConfigImportRemoteFileActivity"
+				  android:parentActivityName=".SocksHttpMainActivity"
+				  android:label="@string/settings_import_remote"/>
 		
 		<activity android:name="com.slipkprojects.sockshttp.activities.AboutActivity"
 			android:parentActivityName=".SocksHttpMainActivity"

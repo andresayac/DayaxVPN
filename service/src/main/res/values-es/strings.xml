@@ -2,8 +2,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools"
   tools:ignore="MissingTranslation">
 
-	<string name="app_name">OCT Injector</string>
-    <string name="app_description">OCT Injector es un cliente SSH TÚNNEL, utilizadl para saltar bloqueos locales y censura de la red.</string>
+	<string name="app_name">Dayax</string>
+    <string name="app_description">Dayax es un cliente SSH TÚNNEL, utilizadl para saltar bloqueos locales y censura de la red.</string>
 	
 	<string name="attention">Atención</string>
     <string name="cancel">Cancelar</string>
@@ -30,11 +30,11 @@
 	
 	
 	<string name="channel_name_background">Connection statistics</string>
-    <string name="channel_description_background">Estadísticas en curso de la conexión OCT Injector establecida</string>
+    <string name="channel_description_background">Estadísticas en curso de la conexión Dayax establecida</string>
     <string name="channel_name_status">Cambio de estado de conexión</string>
-    <string name="channel_description_status">Cambios de estado de la conexión OCT Injector (conectando, autenticando, ...)</string>
+    <string name="channel_description_status">Cambios de estado de la conexión Dayax (conectando, autenticando, ...)</string>
 	<string name="channel_name_userreq">Se requiere interacción del usuario</string>
-    <string name="channel_description_userreq">La conexión OCT Injector requiere una entrada del usuario, por ejemplo, autenticación de dos factores</string>
+    <string name="channel_description_userreq">La conexión Dayax requiere una entrada del usuario, por ejemplo, autenticación de dos factores</string>
 	
 	<string name="state_starting">Iniciando</string>
 	<string name="state_connecting">Conectando</string>

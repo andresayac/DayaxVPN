@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-	<string name="app_name">OCT Injector</string>
-    <string name="app_description">OCT Injector is an SSH TUNNEL client, designed to circumvent local blocking and censorship on the network.</string>
+	<string name="app_name">Dayax</string>
+    <string name="app_description">Dayax is an SSH TUNNEL client, designed to circumvent local blocking and censorship on the network.</string>
 
 	<string name="attention">Attention</string>
     <string name="cancel">Cancel</string>
@@ -32,11 +32,11 @@
 
 
 	<string name="channel_name_background">Connection statistics</string>
-    <string name="channel_description_background">Ongoing statistics of the established OCT Injector connection</string>
+    <string name="channel_description_background">Ongoing statistics of the established Dayax connection</string>
     <string name="channel_name_status">Connection status change</string>
-    <string name="channel_description_status">Status changes of the OCT Injector connection (Connecting, authenticating,…)</string>
+    <string name="channel_description_status">Status changes of the Dayax connection (Connecting, authenticating,…)</string>
 	<string name="channel_name_userreq">User interaction required</string>
-    <string name="channel_description_userreq">OCT Injector connection requires a user input, e.g. two factor authentification</string>
+    <string name="channel_description_userreq">Dayax connection requires a user input, e.g. two factor authentification</string>
 
 	<string name="state_starting">Getting Started</string>
 	<string name="state_connecting">Connecting</string>

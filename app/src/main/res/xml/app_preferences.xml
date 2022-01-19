@@ -7,7 +7,8 @@
 	<androidx.preference.PreferenceCategory
 		android:title="Data Compression">
 		<androidx.preference.CheckBoxPreference android:title="Data Compression"
-			android:key="data_compression" 
+			android:key="data_compression"
+			android:icon="@drawable/ic_compress"
 			android:summary="Compresses and speed up data transfer for files/data that can be compressed. NOT recommended for low memory device" 
 			android:defaultValue="true" />
 	</androidx.preference.PreferenceCategory>
@@ -17,6 +18,7 @@
 
 		<androidx.preference.CheckBoxPreference
 			android:key="auto_ping"
+			android:icon="@drawable/ic_brightness_auto"
 			android:summary="Pinger with url for keep-alive connection, used for stabilizing and prevent your connection from sleep."
 			android:title="Auto Ping" />
 
@@ -24,6 +26,7 @@
             android:dependency="auto_ping"
             android:key="ping_server"
             android:title="Ping Server"
+			android:icon="@drawable/ic_security"
 			android:summary="Set ping server"
 			android:defaultValue="clients3.google.com"
 		    android:dialogLayout="@layout/pref_dialog_edittext_fix" />
@@ -36,12 +39,14 @@
 		
 		<androidx.preference.Preference
             android:key="screenSSHSettings"
+			android:icon="@drawable/ic_servers"
 			app:fragment="com.slipkprojects.sockshttp.preference.SettingsSSHPreference"
             android:title="@string/settings_ssh"/>
 
 
 		<androidx.preference.Preference
             android:key="screenDNSSettings"
+			android:icon="@drawable/ic_dns"
 			app:fragment="com.slipkprojects.sockshttp.preference.SlowDNSPreference"
             android:title="@string/slowdns_configuration"/>
 
@@ -52,6 +57,7 @@
 
 		<androidx.preference.CheckBoxPreference
 			android:key="udpForward"
+			android:icon="@drawable/ic_speaker_phone"
 			android:summary="@string/summary_forward_udp"
 			android:title="@string/title_forward_udp" />
 
@@ -59,6 +65,7 @@
             android:key="udpResolver"
             android:title="@string/title_resolver_udp"
             android:summary="@string/summary_resolver_udp"
+			android:icon="@drawable/ic_lock_black_24dp"
             android:dialogMessage=""
 			android:singleLine="true"
 			android:dialogLayout="@layout/pref_dialog_edittext_fix" />
@@ -80,6 +87,7 @@
             android:key="dnsResolver"
             android:title="@string/title_dns_primary"
             android:summary="@string/summary_dns_primary"
+			android:icon="@drawable/ic_dns_servers"
             android:dialogMessage="@string/dialog_message_dns_primary"
 			android:singleLine="true"
 			android:dialogLayout="@layout/pref_dialog_edittext_fix" />
@@ -87,6 +95,7 @@
 		
 		<androidx.preference.Preference
 			android:title="Custom DNS"
+			android:icon="@drawable/ic_dns_servers"
 			android:key="openDnsCustom"/>
 		
 		

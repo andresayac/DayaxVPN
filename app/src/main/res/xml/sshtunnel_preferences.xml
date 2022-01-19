@@ -8,6 +8,7 @@
 		<com.slipkprojects.sockshttp.view.SummaryEditTextPreference
             android:key="sshServer"
             android:title="@string/ssh_server"
+			android:icon="@drawable/ic_servers"
             android:summary="@string/no_value"
             android:dialogMessage=""
 			android:singleLine="true"
@@ -17,6 +18,7 @@
             android:maxLength="5"
             android:key="sshPort"
             android:title="@string/ssh_port"
+			android:icon="@drawable/ic_port"
 			android:summary="@string/no_value"
 			android:singleLine="true"
 			android:dialogLayout="@layout/pref_dialog_number" />
@@ -30,6 +32,7 @@
 		<com.slipkprojects.sockshttp.view.SummaryEditTextPreference
             android:key="sshUser"
             android:title="@string/auth_username"
+			android:icon="@drawable/ic_account"
             android:summary="@string/no_value"
             android:dialogMessage=""
 			android:singleLine="true"
@@ -38,6 +41,7 @@
 		<com.slipkprojects.sockshttp.view.PasswordEditTextPreference
             android:key="sshPass"
             android:title="@string/password"
+			android:icon="@drawable/ic_key"
             android:summary="@string/no_value"
             android:dialogMessage=""
 			android:singleLine="true"
@@ -53,6 +57,7 @@
             android:maxLength="5"
             android:key="sshPortaLocal"
             android:title="@string/ssh_porta_local"
+			android:icon="@drawable/ic_settings_ethernet"
             android:summary="1080"
             android:defaultValue="1080"
 			android:singleLine="true"

@@ -76,7 +76,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:autoLink="web"
-                                android:text="https://t.me/octinjector"/>
+                                android:text="https://t.me/andresayac"/>
 
                         </LinearLayout>
 
@@ -297,7 +297,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="15.0dip"
                             android:layout_marginTop="5.0dip"
-                            android:text="OCT Injector is a SSH/SSL and TLS protocol for securely exchanging data between two computers over an untrusted network."/>
+                            android:text="Dayax is a SSH/SSL and TLS protocol for securely exchanging data between two computers over an untrusted network."/>
 
                         <TextView
                             android:textSize="12.0sp"
@@ -458,14 +458,14 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="OCT Developers"/>
+            android:text="Afaya Developer"/>
 
             <TextView
             android:textAppearance="@style/TextAppearance.AppCompat.Caption"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
-            android:text="OCT Project"/>
+            android:text="Dayax Project"/>
             </LinearLayout>
 
             </LinearLayout>
@@ -599,7 +599,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="15.0dip"
             android:layout_marginTop="5.0dip"
-            android:text="OCT Injector is a SSH/SSL and TLS protocol for securely exchanging data between two computers over an untrusted network."/>
+            android:text="Dayax is a SSH/SSL and TLS protocol for securely exchanging data between two computers over an untrusted network."/>
 
             <TextView
             android:textSize="12.0sp"

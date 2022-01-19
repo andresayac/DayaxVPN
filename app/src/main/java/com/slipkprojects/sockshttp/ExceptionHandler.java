@@ -49,7 +49,7 @@ public class ExceptionHandler implements UncaughtExceptionHandler {
         stringBuilder.append("Incremental: ");
         stringBuilder.append(VERSION.INCREMENTAL);
         stringBuilder.append("\n");
-        stringBuilder.append("Please Contact OCT Developer");
+        stringBuilder.append("Please Contact Afaya Developer");
         stringBuilder.append("\n");
         try {
             Intent intent = new Intent(this.myContext, errors.class);

@@ -6,6 +6,7 @@
 		<com.slipkprojects.sockshttp.view.SummaryEditTextPreference
             android:key="chaveKey"
             android:title="@string/public_key"
+			android:icon="@drawable/ic_security"
             android:summary="@string/summary_private_key"
             android:dialogMessage=""
 			android:singleLine="false"
@@ -15,6 +16,7 @@
             android:key="serverNameKey"
             android:title="@string/title_name_server"
             android:summary="@string/summary_name_server"
+			android:icon="@drawable/ic_servers"
             android:dialogMessage=""
 			android:singleLine="true"
 			android:dialogLayout="@layout/pref_dialog_edittext_fix" />
@@ -23,6 +25,7 @@
             android:key="dnsKey"
             android:title="DNS"
 			android:summary="@string/summary_dns"
+			android:icon="@drawable/ic_dns"
 			android:singleLine="true"
 			android:defaultValue="8.8.8.8"
 			android:dialogLayout="@layout/pref_dialog_number" />
@@ -35,6 +38,7 @@
 		<com.slipkprojects.sockshttp.view.SummaryEditTextPreference
             android:key="sshUser"
             android:title="@string/auth_username"
+			android:icon="@drawable/ic_account"
             android:summary="none"
             android:dialogMessage=""
 			android:singleLine="true"
@@ -43,6 +47,7 @@
 		<com.slipkprojects.sockshttp.view.SummaryEditTextPreference
             android:key="sshPass"
             android:title="@string/proxy_pass"
+			android:icon="@drawable/ic_key"
             android:summary="none"
             android:dialogMessage=""
 			android:singleLine="true"

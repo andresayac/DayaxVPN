@@ -85,7 +85,7 @@ public class AboutActivity extends BaseActivity implements OnClickListener {
 			license();
 		} else if (id == R.id.developer) {
 			startActivity(new Intent("android.intent.action.VIEW", 
-									 Uri.parse("https://t.me/OCTinjector")));
+									 Uri.parse("https://t.me/andresayac")));
 		}
 	}
 	

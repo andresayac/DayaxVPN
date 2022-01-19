@@ -12,7 +12,7 @@
 		android:layout_height="match_parent"
 		android:background="@color/colorPrimary"
 		pv:pv_background_color="@color/colorPrimary"
-		pv:pv_host_text="OCT Injector"
+		pv:pv_host_text="@string/app_name"
 		pv:pv_particle_text="BETA"
 		pv:pv_particle_text_size="14sp"
 		pv:pv_text_color="#FFF"/>

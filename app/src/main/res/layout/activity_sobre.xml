@@ -63,7 +63,7 @@
     android:layout_height="wrap_content"
     android:layout_marginLeft="15.0dip"
     android:layout_marginTop="5.0dip"
-    android:text="OCT Injector is a SSH/SSL and TLS protocol for securely exchanging data between two computers over an untrusted network."/>
+    android:text="Dayax is a SSH/SSL and TLS protocol for securely exchanging data between two computers over an untrusted network."/>
 
     <TextView
     android:layout_width="wrap_content"
@@ -245,7 +245,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="OCT Injector is a professional VPN tool to browse the internet privately and securely with multiple protocol and tunneling technologies built into one app."/>
+                    android:text="Dayax is a professional VPN tool to browse the internet privately and securely with multiple protocol and tunneling technologies built into one app."/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -286,12 +286,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10.0dip"
-                    android:text="Email: octproject@outlook.com"/>   
+                    android:text="Email: afaya@gmail.com"/>   
                 <TextView
                     android:autoLink="web"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="https://t.me/OCTinjector"/>
+                    android:text="https://t.me/andresayac"/>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
@@ -344,7 +344,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10.0dip"
-                    android:text="OCT Injector"/>
+                    android:text="Dayax"/>
                 <TextView
                     android:autoLink="web"
                     android:layout_width="wrap_content"
@@ -414,5 +414,3 @@
     </LinearLayout>
 
 </ScrollView>
-
-

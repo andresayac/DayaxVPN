@@ -63,7 +63,7 @@
 
 		
 		<!--- Services -->
-		<service android:label="OCT Injector"
+		<service android:label="Dayax"
 			android:name=".tunnel.vpn.TunnelVpnService"
 			android:exported="false"
 			android:enabled="true"
@@ -84,4 +84,3 @@
 
 	
 </manifest>
-

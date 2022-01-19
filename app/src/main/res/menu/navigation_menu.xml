@@ -21,6 +21,11 @@
             android:icon="@drawable/ip_hunter"
             android:title="IP Hunter"/>
 
+		<item
+				android:id="@+id/hwid"
+				android:icon="@drawable/ic_phonelink_lock"
+				android:title="HWID"/>
+
 	</group>
 
 	<item

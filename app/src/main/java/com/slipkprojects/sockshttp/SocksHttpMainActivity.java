@@ -73,11 +73,7 @@ import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.reward.RewardItem;
 import com.google.android.gms.ads.reward.RewardedVideoAd;
 import com.google.android.gms.ads.reward.RewardedVideoAdListener;
-import com.slipkprojects.sockshttp.activities.AboutActivity;
-import com.slipkprojects.sockshttp.activities.BaseActivity;
-import com.slipkprojects.sockshttp.activities.ConfigExportFileActivity;
-import com.slipkprojects.sockshttp.activities.ConfigGeralActivity;
-import com.slipkprojects.sockshttp.activities.ConfigImportFileActivity;
+import com.slipkprojects.sockshttp.activities.*;
 import com.slipkprojects.sockshttp.adapter.LogsAdapter;
 import com.slipkprojects.sockshttp.fragments.ClearConfigDialogFragment;
 import com.slipkprojects.sockshttp.fragments.CustomSniFragment;
@@ -100,6 +96,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
+import java.util.UUID;
+
 import smartdevelop.ir.eram.showcaseviewlib.GuideView;
 import smartdevelop.ir.eram.showcaseviewlib.config.DismissType;
 import smartdevelop.ir.eram.showcaseviewlib.config.Gravity;
@@ -269,10 +267,11 @@ View.OnClickListener, RadioGroup.OnCheckedChangeListener,
         {
             SharedPreferences.Editor pEdit = prefs.edit();
             pEdit.putBoolean("connect_first_time", false);
-            pEdit.apply();
-
+			String HwId = (mConfig.getHwID().isEmpty())? UUID.randomUUID().toString().replace("-",""): mConfig.getHwID();
+			mConfig.setHwID(HwId);
 			Settings.setDefaultConfig(this);
 
+			showBoasVindas();
 			showVersion();
         }
 
@@ -302,7 +301,7 @@ View.OnClickListener, RadioGroup.OnCheckedChangeListener,
 		// set layout
 		doLayout();
 
-		// verifica se existe algum problema
+		//
 		SkProtect.CharlieProtect();
 
 		// recebe local dados
@@ -733,7 +732,15 @@ View.OnClickListener, RadioGroup.OnCheckedChangeListener,
 					 hostcheckerintent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 					 mActivity.startActivity(hostcheckerintent);
 					 break;*/
+				case R.id.hwid:
 
+					String hwid_copy = mConfig.getHwID();
+					ClipboardManager clipboard = (ClipboardManager)getSystemService(Context.CLIPBOARD_SERVICE);
+					ClipData clip = ClipData.newPlainText("Log Entry", hwid_copy);
+					clipboard.setPrimaryClip(clip);
+
+					Light.success(main_ly, getString(R.string.success_hwid_export), Snackbar.LENGTH_LONG).show();
+					break;
 
 				case R.id.miSettings:
 					Intent intent = new Intent(mActivity, ConfigGeralActivity.class);
@@ -807,7 +814,7 @@ View.OnClickListener, RadioGroup.OnCheckedChangeListener,
 
 				case R.id.miAvaliarPlaystore:
 					Intent email1 = new Intent(Intent.ACTION_SEND);  
-					String url = "https://play.google.com/store/apps/details?id=com.oct.injector";
+					String url = "https://play.google.com/store/apps/details?id=com.afaya.dayax";
 					Intent intent3 = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
 					intent3.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 					mActivity.startActivity(Intent.createChooser(intent3, mActivity.getText(R.string.open_with)));
@@ -831,7 +838,7 @@ View.OnClickListener, RadioGroup.OnCheckedChangeListener,
 					break;
 
 				case R.id.miAdmin:
-					String url1 = "https://t.me/OCTinjector";
+					String url1 = "https://t.me/andresayac";
 					Intent intent4 = new Intent(Intent.ACTION_VIEW, Uri.parse(url1));
 					intent4.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 					mActivity.startActivity(Intent.createChooser(intent4, mActivity.getText(R.string.open_with)));
@@ -852,7 +859,7 @@ View.OnClickListener, RadioGroup.OnCheckedChangeListener,
 						email.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
 						email.putExtra(Intent.EXTRA_EMAIL, new String[]{"octproject@outlook.com"});  
-						email.putExtra(Intent.EXTRA_SUBJECT, "OCT Injector - " + mActivity.getString(R.string.feedback));  
+						email.putExtra(Intent.EXTRA_SUBJECT, "Dayax - " + mActivity.getString(R.string.feedback));  
 						email.setType("message/rfc822"); 
 
 						Light.normal(main_ly, "Choose an Email client", Snackbar.LENGTH_LONG).show();
@@ -1002,7 +1009,7 @@ View.OnClickListener, RadioGroup.OnCheckedChangeListener,
 
 		initComponent();
 		setupInterstitial();
-		showBoasVindas();
+
 	}
 
 	private void loadRewardedVideoAd() {
@@ -1849,7 +1856,7 @@ View.OnClickListener, RadioGroup.OnCheckedChangeListener,
 				public void onClick(DialogInterface dialog, int which)
 				{
 
-					String url = "https://t.me/OCTinjector";
+					String url = "https://t.me/andresayac";
 					Intent intent3 = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
 					intent3.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 					startActivity(Intent.createChooser(intent3, getText(R.string.open_with)));
@@ -2054,6 +2061,14 @@ View.OnClickListener, RadioGroup.OnCheckedChangeListener,
 				}
 				Intent intentImport = new Intent(this, ConfigImportFileActivity.class);
 				startActivity(intentImport);
+				break;
+
+			case R.id.miSettingImportarRemote:
+				if (mRewardedVideoAd.isLoaded()) {
+					mRewardedVideoAd.show();
+				}
+				Intent intentImportRemote = new Intent(this, ConfigImportRemoteFileActivity.class);
+				startActivity(intentImportRemote);
 				break;
 
 			case R.id.miSettingExportar:

@@ -80,6 +80,16 @@ public class Settings implements SettingsConstants
 		editor.commit();
 	}
 
+	public void setHwID(String str){
+		SharedPreferences.Editor editor = mPrefs.edit();
+		editor.putString(CONFIG_HWID_KEY, str);
+		editor.commit();
+	}
+
+	public String getHwID(){
+		return mPrefs.getString(CONFIG_HWID_KEY, "");
+	}
+
 	public String getModoNoturno() {
 	 return mPrefs.getString(MODO_NOTURNO_KEY, "off");
 	 }

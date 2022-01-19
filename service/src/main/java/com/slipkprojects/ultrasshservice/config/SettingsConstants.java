@@ -32,7 +32,8 @@ public interface SettingsConstants
 	CONFIG_MENSAGEM_KEY = "mensagemConfig",
 	CONFIG_VALIDADE_KEY = "validadeConfig",
 	CONFIG_MENSAGEM_EXPORTAR_KEY = "mensagemConfigExport",
-	CONFIG_INPUT_PASSWORD_KEY = "inputPassword"
+	CONFIG_INPUT_PASSWORD_KEY = "inputPassword",
+	CONFIG_HWID_KEY = "HWID"
 	;
 
 	// Vpn
@@ -57,6 +58,7 @@ public interface SettingsConstants
 	DNS_KEY = "dnsKey",
 	AUTO_PINGER = "auto_ping",
 	PINGER_KEY = "pingerSSH";
+
 
 	public static final String
 	PAYLOAD_DEFAULT = "CONNECT [host_port] [protocol][crlf][crlf]",

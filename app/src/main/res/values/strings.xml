@@ -12,7 +12,7 @@
 	<string name="disconnected">Disconnected</string>
 	<string name="nonetwork">Nonetwork</string>
 	<string name="connecting">Connecting</string>
-    <string name="app_name">OCT Injector</string>
+    <string name="app_name">Dayax</string>
 
 	<string name="about">About</string>
 	<string name="config">Configuration</string>
@@ -24,6 +24,7 @@
 	<string name="feedback">Feedback</string>
 	<string name="first_start_msg">This application was owned by Kalyfex.</string>
 	<string name="title_login_main">Login Details</string>
+	<string name="sni_description"> Hostname - (eg. mahlx.com)   </string>
 
 	<!-- Preference -->
 	<string name="category_forward_udp">UDP Forwarding</string>
@@ -120,12 +121,13 @@
 	<string name="settings_ImportExport">Import/Export</string>
 	<string name="settings_import">Import Configuration</string>
 	<string name="settings_export">Export Configuration</string>
+	<string name="settings_import_remote">Import Remote</string>
 	<string name="actived">Ativate</string>
 	<string name="disabled">Deactivate</string>
 
 	<!--Welcome Wizard strings (DJH)-->
-	<string name="wizard_details">Some details of OCT Injector</string>
-	<string name="wizard_details_msg">OCT Injector is a VPN client that works through an SSH server. The application itself is useless without a configuration, so it is only for use by advanced users.</string>
+	<string name="wizard_details">Some details of Dayax</string>
+	<string name="wizard_details_msg">Dayax is a VPN client that works through an SSH server. The application itself is useless without a configuration, so it is only for use by advanced users.</string>
 	<string name="payload_details">Keywords</string>
 	<string name="payload_details_msg">The following keywords are currently supported in the connection text: [method] [host_port] [ssh] [host] [port] [protocol] [crlf] [cr] [lf] [lfcr] [ua] [random=*;] [rotate=*;] [split] [delay_split]</string>
 	<string name="project_home">Developer Home:</string>
@@ -148,6 +150,8 @@
 	<string name="success_clear_settings">Settings were restored</string>
 	<string name="success_import_settings">Imported file</string>
 	<string name="success_export_settings">Exported configuration</string>
+	<string name="success_hwid_export">HWID Copied</string>
+
 
 	<!-- Ainda Falta Traduzir -->
 	<string name="title_agradecimento_especial">Special thanks to</string>

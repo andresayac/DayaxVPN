@@ -2,7 +2,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools"
   tools:ignore="MissingTranslation">
 	
-    <string name="app_name">OCT Injector</string>
+    <string name="app_name">Dayax</string>
 	
 	<string name="about">Sobre</string>
 	<string name="config">Configuración</string>
@@ -111,8 +111,8 @@
 	<string name="disabled">Desativado</string>
 	
 	<!--Welcome Wizard strings (DJH)-->
-	<string name="wizard_details">Algunos detalles do OCT Injector</string>
-	<string name="wizard_details_msg">OCT Injector es un cliente VPN que funciona através de un servidor SSH. La aplicación en si es inútil sin una configuración, siendo asi apenas es para uso de usuarios avanzados.</string>
+	<string name="wizard_details">Algunos detalles do Dayax</string>
+	<string name="wizard_details_msg">Dayax es un cliente VPN que funciona através de un servidor SSH. La aplicación en si es inútil sin una configuración, siendo asi apenas es para uso de usuarios avanzados.</string>
 	<string name="payload_details">Palabras claves</string>
 	<string name="payload_details_msg">Actualmente son soportadas las siguientes palabras claves en texto de conexión: [method] [host_port] [ssh] [host] [port] [protocol] [crlf] [cr] [lf] [lfcr] [ua] [random=*;] [rotate=*;] [split] [delay_split]</string>
 	<string name="project_home">Página Principal de Desarrollador:</string>
@@ -143,5 +143,29 @@
 	<string name="summary_disable_delay_ssh">Se ativo não haverá delays entre requisições, o quê pode melhorar o ping ou até mesmo a velocidade da conexão.</string>
 	<string name="title_tethering_subnet">Tethering Subnet (beta)</string>
 	<string name="summary_tethering_subnet">Habilite se estiver tendo problemas para compartilhar a internet do seu dispositivo.</string>
-	
+    <string name="default_dns_tittle">DNS por defecto</string>
+	<string name="google_dns_tittle">DNS de Google</string>
+	<string name="custom_dns_tittle">DNS personalizado</string>
+	<string name="default_dns">Utilizar DNS proporcionados por la red</string>
+	<string name="google_dns">Utilizar DNS proporcionados por Google</string>
+	<string name="connected">Conectado</string>
+	<string name="servicestop">Detener</string>
+	<string name="authenticating">Autenticando</string>
+	<string name="authfailed">Autenticacion fallida</string>
+	<string name="disconnected">Desconectado</string>
+	<string name="nonetwork">Sin red</string>
+	<string name="connecting">Conectando</string>
+	<string name="sni_description">Hostname - (Ejem: facebook.com)</string>
+	<string name="ad_done">Gracias por su apoyo 💙💙</string>
+	<string name="logs_cleared">¡Registros borrados!</string>
+	<string name="direct">Direct</string>
+	<string name="http">HTTP Proxy</string>
+	<string name="ssl">SSL/TLS</string>
+	<string name="tls">SSL/Payload</string>
+	<string name="slowdns">SlowDNS</string>
+	<string name="custom_payload1">"ㅤ➔ㅤ(Custom Payload) "</string>
+	<string name="tun_type">Tipo de Tunel</string>
+    <string name="settings_import_remote">Importación remota</string>
+    <string name="success_hwid_export">" HWID Copiado"</string>
+
 </resources>

@@ -1,6 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent">
+<androidx.core.widget.NestedScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/nested_scroll_view_export_ssh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none"
+        android:backgroundTint="@color/colorPrimary"
+        android:scrollingCache="true">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:orientation="horizontal"
+                android:id="@+id/export_ssh_header">
+
+            <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="left"
+                    android:text="@string/title_ssh"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
+
+
+            <ImageButton
+                    android:id="@+id/bt_toggle_lock_status_ssh"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:visibility="invisible"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    app:srcCompat="@drawable/ic_lock_check"/>
+            <TextView
+                    android:id="@+id/txt_lock_status_text_ssh"
+                    android:layout_height="match_parent"
+                    android:layout_width="wrap_content"
+                    android:text="(1)"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:layout_marginRight="7dp"
+                    android:visibility="invisible"/>
+            <ImageButton
+                    android:id="@+id/bt_toggle_input_export_ssh"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:tint="?colorPrimary"
+                    app:srcCompat="@drawable/arrow_down"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+                android:id="@+id/lyt_expand_input_ssh_export"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+
+            <CheckBox
+                    android:id="@+id/activity_config_export_ssh_host_port"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:textColor="@color/colorText"
+                    android:hint="@string/check_block_host_port"/>
+
+
+            <CheckBox
+                    android:id="@+id/activity_config_export_ssh_username_password"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:textColor="@color/colorText"
+                    android:hint="@string/check_block_user_pass"/>
+
+
+
+
+
+
+        </LinearLayout>
+
+
+
+    </LinearLayout>
+
+</androidx.core.widget.NestedScrollView>

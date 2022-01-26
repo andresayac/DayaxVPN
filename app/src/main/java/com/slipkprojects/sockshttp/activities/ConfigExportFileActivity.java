@@ -1,37 +1,25 @@
 package com.slipkprojects.sockshttp.activities;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 
+import android.widget.*;
+import androidx.core.widget.NestedScrollView;
+import com.alespero.expandablecardview.ViewAnimation;
 import com.anggrayudi.storage.SimpleStorage;
-import com.anggrayudi.storage.callback.StorageAccessCallback;
-import com.anggrayudi.storage.file.StorageType;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.ContextCompat;
-import androidx.documentfile.provider.DocumentFile;
 
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.DatePicker;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.slipkprojects.sockshttp.R;
@@ -54,11 +42,6 @@ import com.google.android.material.snackbar.Snackbar;
 import io.github.tonnyl.light.Light;
 
 
-
-import android.provider.Settings.Secure;
-
-
-
 public class ConfigExportFileActivity
         extends BaseActivity
         implements CompoundButton.OnCheckedChangeListener, View.OnClickListener {
@@ -77,6 +60,22 @@ public class ConfigExportFileActivity
     private SimpleStorage storage;
 
     private String android_id;
+
+
+
+    // SSH
+    private View lyt_expand_input_ssh;
+    private NestedScrollView nested_scroll_view_ssh;
+    private ImageButton bt_toggle_input_ssh;
+    private LinearLayout ly_hide_input_ssh;
+    private ImageButton bt_toggle_lock_status_ssh;
+
+    // extra
+    private View lyt_expand_input_extra;
+    private NestedScrollView nested_scroll_view_extra;
+    private ImageButton bt_toggle_input_extra;
+    private LinearLayout ly_hide_input_extra;
+    private ImageButton bt_toggle_lock_status_extra;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,6 +120,8 @@ public class ConfigExportFileActivity
      * Main Views
      */
 
+    private TextView CountSSHCheckText;
+    private TextView CountExtraCheckText;
     private TextView validadeText;
     private EditText nomeEdit;
     private EditText mensagemEdit;
@@ -128,9 +129,13 @@ public class ConfigExportFileActivity
 
     private boolean mConfigPass = false;
     private boolean mIsProteger = false;
-    private String mMensagem = "";
-    private boolean mPedirSenha = false;
-    private boolean mBloquearRoot = false;
+    private String mMessage = "";
+    private boolean mRequestPassword = false;
+    private boolean mblockRoot = false;
+
+
+    private int countSSH =0;
+    private int countExtra =0;
 
     @SuppressLint("HardwareIds")
     private void doLayout() {
@@ -153,8 +158,65 @@ public class ConfigExportFileActivity
         CheckBox showLoginCheck = (CheckBox) findViewById(R.id.activity_config_exportShowLoginScreenCheck);
         CheckBox blockRootCheck = (CheckBox) findViewById(R.id.activity_config_exportBlockRootCheck);
         configPass = (CheckBox) findViewById(R.id.config_pass);
+
+
+        // Count SSH block
+        bt_toggle_lock_status_ssh = (ImageButton) findViewById(R.id.bt_toggle_lock_status_ssh);
+        CountSSHCheckText = (TextView) findViewById(R.id.txt_lock_status_text_ssh);
+
+
+        // Count Extra block
+        bt_toggle_lock_status_extra = (ImageButton) findViewById(R.id.bt_toggle_lock_status_extra);
+        CountExtraCheckText = (TextView) findViewById(R.id.txt_lock_status_text_extra);
+
+
+
         showSegurancaLayout(false);
         mensagemEdit.setText(mConfig.getMensagemConfigExportar());
+
+        nested_scroll_view_extra = (NestedScrollView) findViewById(R.id.nested_scroll_view_export);
+        bt_toggle_input_extra = (ImageButton) findViewById(R.id.bt_toggle_input_export_extra);
+        ly_hide_input_extra = (LinearLayout) findViewById(R.id.export_extra_header);
+        lyt_expand_input_extra = (View) findViewById(R.id.lyt_expand_input_extra_export);
+        lyt_expand_input_extra.setVisibility(View.GONE);
+
+
+
+        bt_toggle_input_extra.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                toggleSectionInputExtra(bt_toggle_input_extra);
+            }
+        });
+
+        ly_hide_input_extra.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                toggleSectionInputExtra(bt_toggle_input_extra);
+            }
+        });
+
+
+        nested_scroll_view_ssh = (NestedScrollView) findViewById(R.id.nested_scroll_view_export_ssh);
+        bt_toggle_input_ssh = (ImageButton) findViewById(R.id.bt_toggle_input_export_ssh);
+        ly_hide_input_ssh = (LinearLayout) findViewById(R.id.export_ssh_header);
+        lyt_expand_input_ssh = (View) findViewById(R.id.lyt_expand_input_ssh_export);
+        lyt_expand_input_ssh.setVisibility(View.GONE);
+
+
+        bt_toggle_input_ssh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                toggleSectionInputSSH(bt_toggle_input_ssh);
+            }
+        });
+
+        ly_hide_input_ssh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                toggleSectionInputSSH(bt_toggle_input_ssh);
+            }
+        });
 
         validadeCheck.setOnCheckedChangeListener(this);
         protegerCheck.setOnCheckedChangeListener(this);
@@ -174,7 +236,7 @@ public class ConfigExportFileActivity
             private void exportconfig() {
 
                 String nomeConfig = nomeEdit.getText().toString();
-                mMensagem = mIsProteger ? mensagemEdit.getText().toString() : "";
+                mMessage = mIsProteger ? mensagemEdit.getText().toString() : "";
 
                 if (nomeConfig.isEmpty()) {
 
@@ -182,8 +244,8 @@ public class ConfigExportFileActivity
                     return;
                 }
 
-                if (mIsProteger == false || mValidade < 0) {
-                    mValidade = 0;
+                if (mIsProteger == false || mValidation < 0) {
+                    mValidation = 0;
                 }
 
                 try {
@@ -224,6 +286,44 @@ public class ConfigExportFileActivity
         }
     }
 
+    public boolean toggleArrow(View view) {
+        if (view.getRotation() == 0) {
+            view.animate().setDuration(200).rotation(180);
+            return true;
+        } else {
+            view.animate().setDuration(200).rotation(0);
+            return false;
+        }
+    }
+
+    private void toggleSectionInputSSH(View view) {
+        boolean show = toggleArrow(view);
+        if (show) {
+            ViewAnimation.expand(lyt_expand_input_ssh, new ViewAnimation.AnimListener() {
+                @Override
+                public void onFinish() {
+                    ViewAnimation.nestedScrollTo(nested_scroll_view_ssh, lyt_expand_input_ssh);
+                }
+            });
+        } else {
+            ViewAnimation.collapse(lyt_expand_input_ssh);
+        }
+    }
+
+    private void toggleSectionInputExtra(View view) {
+        boolean show = toggleArrow(view);
+        if (show) {
+            ViewAnimation.expand(lyt_expand_input_extra, new ViewAnimation.AnimListener() {
+                @Override
+                public void onFinish() {
+                    ViewAnimation.nestedScrollTo(nested_scroll_view_extra, lyt_expand_input_extra);
+                }
+            });
+        } else {
+            ViewAnimation.collapse(lyt_expand_input_extra);
+        }
+    }
+
 
     private void exportConfiguracao(String nome)
             throws IOException {
@@ -237,7 +337,7 @@ public class ConfigExportFileActivity
             fileDir.mkdir();
         }
 
-        File fileExport = new File(fileDir, String.format("%s.%s", nome, ConfigParser.FILE_EXTENSAO));
+        File fileExport = new File(fileDir, String.format("%s.%s", nome, ConfigParser.FILE_EXTENSIONS));
         if (!fileExport.exists()) {
             try {
                 if (fileExport.canWrite())
@@ -251,11 +351,11 @@ public class ConfigExportFileActivity
 
         // salva mensagem para ser reutilizada
         if (mIsProteger) {
-            mConfig.setMensagemConfigExportar(mMensagem);
+            mConfig.setMensagemConfigExportar(mMessage);
         }
 
         try {
-            ConfigParser.convertDataToFile(new FileOutputStream(fileExport), this, mIsProteger, mPedirSenha, mBloquearRoot, mMensagem, mValidade);
+            ConfigParser.convertDataToFile(new FileOutputStream(fileExport), this, mIsProteger, mRequestPassword, mblockRoot, mMessage, mValidation);
         } catch (IOException e) {
             fileExport.delete();
             throw e;
@@ -267,7 +367,7 @@ public class ConfigExportFileActivity
      * Validade
      */
 
-    private long mValidade = 0;
+    private long mValidation = 0;
 
     private void setValidadeDate() {
 
@@ -281,7 +381,7 @@ public class ConfigExportFileActivity
         int mMonth = c.get(Calendar.MONTH);
         int mDay = c.get(Calendar.DAY_OF_MONTH);
 
-        mValidade = c.getTimeInMillis();
+        mValidation = c.getTimeInMillis();
 
         final DatePickerDialog dialog = new DatePickerDialog(this,
                 new DatePickerDialog.OnDateSetListener() {
@@ -290,7 +390,7 @@ public class ConfigExportFileActivity
                         Calendar c = Calendar.getInstance();
                         c.set(year, monthOfYear, dayOfMonth);
 
-                        mValidade = c.getTimeInMillis();
+                        mValidation = c.getTimeInMillis();
                     }
                 },
                 mYear, mMonth, mDay);
@@ -305,10 +405,10 @@ public class ConfigExportFileActivity
                         Calendar c = Calendar.getInstance();
                         c.set(date.getYear(), date.getMonth(), date.getDayOfMonth());
 
-                        mValidade = c.getTimeInMillis();
+                        mValidation = c.getTimeInMillis();
 
-                        if (mValidade < time_hoje) {
-                            mValidade = 0;
+                        if (mValidation < time_hoje) {
+                            mValidation = 0;
 
 
                             Light.error(export_ly, getString(R.string.error_date_selected_invalid), Snackbar.LENGTH_LONG).show();
@@ -316,11 +416,11 @@ public class ConfigExportFileActivity
                             if (validadeCheck != null)
                                 validadeCheck.setChecked(false);
                         } else {
-                            long dias = ((mValidade - time_hoje) / 1000 / 60 / 60 / 24);
+                            long dias = ((mValidation - time_hoje) / 1000 / 60 / 60 / 24);
 
                             if (validadeText != null) {
                                 validadeText.setVisibility(View.VISIBLE);
-                                validadeText.setText(String.format("%s (%s)", dias, df.format(mValidade)));
+                                validadeText.setText(String.format("%s (%s)", dias, df.format(mValidation)));
                             }
                         }
                     }
@@ -331,7 +431,7 @@ public class ConfigExportFileActivity
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        mValidade = 0;
+                        mValidation = 0;
 
                         if (validadeCheck != null) {
                             validadeCheck.setChecked(false);
@@ -343,7 +443,7 @@ public class ConfigExportFileActivity
         dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
             @Override
             public void onCancel(DialogInterface v1) {
-                mValidade = 0;
+                mValidation = 0;
                 if (validadeCheck != null) {
                     validadeCheck.setChecked(false);
                 }
@@ -370,7 +470,12 @@ public class ConfigExportFileActivity
             R.id.activity_config_exportMensagemEdit,
             R.id.activity_config_exportLayoutMensagemEdit,
             R.id.activity_config_exportBlockRootCheck,
-            R.id.activity_config_exportShowLoginScreenCheck
+            R.id.activity_config_exportShowLoginScreenCheck,
+            R.id.activity_config_exportBlockHWID,
+            R.id.activity_config_exportTerminal,
+            R.id.activity_config_exportTorrent,
+            R.id.activity_config_export_ssh_host_port,
+            R.id.activity_config_export_ssh_username_password
     };
 
     private int[] idsProtegerChecksView = {
@@ -378,17 +483,25 @@ public class ConfigExportFileActivity
             R.id.config_pass,
             R.id.activity_config_exportValidadeCheck,
             R.id.activity_config_exportBlockRootCheck,
-            R.id.activity_config_exportShowLoginScreenCheck
+            R.id.activity_config_exportShowLoginScreenCheck,
+            R.id.activity_config_exportBlockHWID,
+            R.id.activity_config_exportTerminal,
+            R.id.activity_config_exportTorrent,
+            R.id.activity_config_export_ssh_host_port,
+            R.id.activity_config_export_ssh_username_password
     };
 
     private void showSegurancaLayout(boolean is) {
         if (is) {
-
             Light.error(export_ly, getString(R.string.alert_block_settings), Snackbar.LENGTH_LONG).show();
+            ((CheckBox) findViewById(R.id.mobile_data)).setChecked(true);
+            ((CheckBox) findViewById(R.id.activity_config_export_ssh_host_port)).setChecked(true);
+            ((CheckBox) findViewById(R.id.activity_config_export_ssh_username_password)).setChecked(true);
         } else {
             for (int id : idsProtegerChecksView) {
                 ((CheckBox) findViewById(id)).setChecked(false);
             }
+
         }
 
         for (int id : idsProtegerViews) {
@@ -396,15 +509,28 @@ public class ConfigExportFileActivity
         }
     }
 
+    private void setCountExtra(boolean type){
+         countExtra  = (type)? countExtra++: countExtra--;
+         if(countExtra>=1) {
+             CountExtraCheckText.setVisibility(View.VISIBLE);
+             bt_toggle_lock_status_extra.setVisibility(View.VISIBLE);
+             CountExtraCheckText.setText(String.format("%s ", countExtra));
+         }else{
+             CountExtraCheckText.setVisibility(View.GONE);
+             bt_toggle_lock_status_extra.setVisibility(View.GONE);
+         }
+    }
 
     @Override
     public void onCheckedChanged(CompoundButton p1, boolean is) {
+
         switch (p1.getId()) {
             case R.id.activity_config_exportValidadeCheck:
+                setCountExtra(is);
                 if (is) {
                     setValidadeDate();
                 } else {
-                    mValidade = 0;
+                    mValidation = 0;
                     if (validadeText != null) {
                         validadeText.setVisibility(View.INVISIBLE);
                         validadeText.setText("");
@@ -413,6 +539,7 @@ public class ConfigExportFileActivity
                 break;
 
             case R.id.config_pass:
+                setCountExtra(is);
                 if (configPass.isChecked()) {
                     pass_confirm();
                 } else {
@@ -425,15 +552,18 @@ public class ConfigExportFileActivity
 
             case R.id.activity_config_exportProtegerCheck:
                 mIsProteger = is;
+                setCountExtra(is);
                 showSegurancaLayout(is);
                 break;
 
             case R.id.activity_config_exportShowLoginScreenCheck:
-                mPedirSenha = is;
+                setCountExtra(is);
+                mRequestPassword = is;
                 break;
 
             case R.id.activity_config_exportBlockRootCheck:
-                mBloquearRoot = is;
+                mblockRoot = is;
+                setCountExtra(is);
                 break;
         }
     }
@@ -466,7 +596,7 @@ public class ConfigExportFileActivity
                     public void onClick(DialogInterface dialog, int which) {
                         // minimiza app
                         dialog.dismiss();
-                        if (mConfig.getPrivString(Settings.USUARIO_KEY).isEmpty() || (mConfig.getPrivString(Settings.SENHA_KEY).isEmpty())) {
+                        if (mConfig.getPrivString(Settings.USUARIO_KEY).isEmpty() || (mConfig.getPrivString(Settings.PASS_KEY).isEmpty())) {
                             configPass.setChecked(true);
                         } else if (configPass != null) {
                             configPass.setChecked(false);
@@ -483,7 +613,7 @@ public class ConfigExportFileActivity
         switch (p1.getId()) {
             case R.id.activity_config_exportButton:
                 String nomeConfig = nomeEdit.getText().toString();
-                mMensagem = mIsProteger ? mensagemEdit.getText().toString() : "";
+                mMessage = mIsProteger ? mensagemEdit.getText().toString() : "";
 
                 if (nomeConfig.isEmpty()) {
 
@@ -491,8 +621,8 @@ public class ConfigExportFileActivity
                     return;
                 }
 
-                if (mIsProteger == false || mValidade < 0) {
-                    mValidade = 0;
+                if (mIsProteger == false || mValidation < 0) {
+                    mValidation = 0;
                 }
 
                 try {

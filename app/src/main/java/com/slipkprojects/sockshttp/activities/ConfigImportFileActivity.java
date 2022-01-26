@@ -33,6 +33,8 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import daxlib.Daxlib;
 import io.github.tonnyl.light.Light;
 import android.widget.LinearLayout;
 import com.google.android.material.snackbar.Snackbar;
@@ -87,7 +89,7 @@ public class ConfigImportFileActivity extends BaseActivity implements ManagerFil
 			File file = new File(data.getPath());
 			import_lys = (FrameLayout) findViewById(R.id.launchvpnFrameLayout);
 			String file_extensao = getExtension(file);
-			if (file_extensao != null && file_extensao.equals(ConfigParser.FILE_EXTENSAO)) {
+			if (file_extensao != null && file_extensao.equals(ConfigParser.FILE_EXTENSIONS)) {
 
 				try {
 					importarConfigInputFile(getContentResolver().openInputStream(data));
@@ -149,7 +151,7 @@ public class ConfigImportFileActivity extends BaseActivity implements ManagerFil
 		} else {
 			// Tratamento para arquivos
 			String file_extensao = getExtension(file);
-			if (file_extensao != null && file_extensao.equals(ConfigParser.FILE_EXTENSAO)) {
+			if (file_extensao != null && file_extensao.equals(ConfigParser.FILE_EXTENSIONS)) {
 				try {
 					Log.d("PRueba", "importRemoteFile" + file);
 					importarConfigInputFile(new FileInputStream(file));
@@ -178,8 +180,8 @@ public class ConfigImportFileActivity extends BaseActivity implements ManagerFil
 		String[] listDirs = {
 			HOME_PATH,
 			HOME_PATH + "/Download",
-			HOME_PATH + "/Telegram",
-			HOME_PATH + "/Dayax"
+			HOME_PATH + Daxlib.getAA("axi"),
+			HOME_PATH + Daxlib.getAA("xca")
 		};
 
 		for (String dir : listDirs) {
@@ -232,7 +234,7 @@ public class ConfigImportFileActivity extends BaseActivity implements ManagerFil
 					folderList.add(new ManagerFilesAdapter.ManagerItem(file.getName(), file.getPath(), getString(R.string.dir_name)));
 				} else {
 					String file_extensao = getExtension(file);
-					if (file_extensao != null && file_extensao.equals(ConfigParser.FILE_EXTENSAO)) {
+					if (file_extensao != null && file_extensao.equals(ConfigParser.FILE_EXTENSIONS)) {
 						String dateLastModified = String.format("%s %s",
 																android.text.format.DateFormat.getDateFormat(this).format(file.lastModified()),
 																android.text.format.DateFormat.getTimeFormat(this).format(file.lastModified()));
@@ -288,6 +290,7 @@ public class ConfigImportFileActivity extends BaseActivity implements ManagerFil
 	// Método chamado assim que o usuário concede ou nega uma permissão
 	@Override
 	public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+		super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 		switch (requestCode) {
 			case PERMISSION_REQUEST_CODE:
 				if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {

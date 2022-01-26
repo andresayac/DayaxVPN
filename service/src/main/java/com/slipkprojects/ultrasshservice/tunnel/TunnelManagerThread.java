@@ -257,15 +257,15 @@ ServerHostKeyVerifier, DebugLogger
 		mStopping = false;
 		mRunning = true;
 
-		String servidor = mConfig.getPrivString(Settings.SERVIDOR_KEY);
-		int porta = Integer.parseInt(mConfig.getPrivString(Settings.SERVIDOR_PORTA_KEY));
+		String servidor = mConfig.getPrivString(Settings.SERVER_KEY);
+		int porta = Integer.parseInt(mConfig.getPrivString(Settings.SERVERS_PORT_KEY));
 		String usuario = mConfig.getPrivString(Settings.USUARIO_KEY);
 
-		String _senha = mConfig.getPrivString(Settings.SENHA_KEY);
+		String _senha = mConfig.getPrivString(Settings.PASS_KEY);
 		String senha = _senha.isEmpty() ? PasswordCache.getAuthPassword(null, false) : _senha;
 
 		String keyPath = mConfig.getSSHKeypath();
-		int portaLocal = Integer.parseInt(mConfig.getPrivString(Settings.PORTA_LOCAL_KEY));
+		int portaLocal = Integer.parseInt(mConfig.getPrivString(Settings.PORT_LOCAL_KEY));
 
 		try {
 
@@ -483,7 +483,7 @@ ServerHostKeyVerifier, DebugLogger
 		for (int i = 0; i < numPrompts; i++) {
 			// request response from user for each prompt
 			if (prompt[i].toLowerCase().contains("password"))
-				responses[i] = mConfig.getPrivString(Settings.SENHA_KEY);
+				responses[i] = mConfig.getPrivString(Settings.PASS_KEY);
 		}
 		return responses;
 	}
@@ -526,7 +526,7 @@ ServerHostKeyVerifier, DebugLogger
 				case Settings.bTUNNEL_TYPE_SSH_DIRECT:
 					if (mCustomPayload != null) {
 						try {
-							ProxyData proxyData = new HttpProxyCustom(mConfig.getPrivString(Settings.SERVIDOR_KEY), Integer.parseInt(mConfig.getPrivString(Settings.SERVIDOR_PORTA_KEY)),
+							ProxyData proxyData = new HttpProxyCustom(mConfig.getPrivString(Settings.SERVER_KEY), Integer.parseInt(mConfig.getPrivString(Settings.SERVERS_PORT_KEY)),
 																	  null, null, mCustomPayload, true, mContext);
 
 							conn.setProxyData(proxyData);
@@ -577,8 +577,8 @@ ServerHostKeyVerifier, DebugLogger
 						customPayload = null;
 					}
 
-					String sshServer = mConfig.getPrivString(Settings.SERVIDOR_KEY);
-					int sshPort = Integer.parseInt(mConfig.getPrivString(Settings.SERVIDOR_PORTA_KEY));
+					String sshServer = mConfig.getPrivString(Settings.SERVER_KEY);
+					int sshPort = Integer.parseInt(mConfig.getPrivString(Settings.SERVERS_PORT_KEY));
 
 					try{
 						if (customSNI != null && !customSNI.isEmpty() && !isProteger)
@@ -602,8 +602,8 @@ ServerHostKeyVerifier, DebugLogger
 						customPayload2= null;
 					}
 
-					String sshServer2 = mConfig.getPrivString(Settings.SERVIDOR_KEY);
-					int sshPort2 = Integer.parseInt(mConfig.getPrivString(Settings.SERVIDOR_PORTA_KEY));
+					String sshServer2 = mConfig.getPrivString(Settings.SERVER_KEY);
+					int sshPort2 = Integer.parseInt(mConfig.getPrivString(Settings.SERVERS_PORT_KEY));
 					try{
 						if (customSNI2 != null && !customSNI2.isEmpty() && !isProteger)
 							SkStatus.logInfo("SNI/TLS: " + customSNI2);
@@ -907,11 +907,11 @@ ServerHostKeyVerifier, DebugLogger
 		LocalBroadcastManager.getInstance(mContext)
 			.registerReceiver(m_vpnTunnelBroadcastReceiver, broadcastFilter);
 
-		String m_socksServerAddress = String.format("127.0.0.1:%s", mConfig.getPrivString(Settings.PORTA_LOCAL_KEY));
+		String m_socksServerAddress = String.format("127.0.0.1:%s", mConfig.getPrivString(Settings.PORT_LOCAL_KEY));
 		boolean m_dnsForward = mConfig.getVpnDnsForward();
 		String m_udpResolver = mConfig.getVpnUdpForward() ? mConfig.getVpnUdpResolver() : null;
 
-		String servidorIP = mConfig.getPrivString(Settings.SERVIDOR_KEY);
+		String servidorIP = mConfig.getPrivString(Settings.SERVER_KEY);
 
 		if (prefs.getInt(Settings.TUNNELTYPE_KEY, Settings.bTUNNEL_TYPE_SSH_DIRECT) == Settings.bTUNNEL_TYPE_SSH_PROXY) {
 			try {

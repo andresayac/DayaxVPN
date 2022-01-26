@@ -1,19 +1,16 @@
 package com.slipkprojects.sockshttp.activities;
 
-import androidx.appcompat.app.AppCompatActivity;
+import android.content.Intent;
 import android.os.Bundle;
 import androidx.appcompat.widget.Toolbar;
-
+import androidx.fragment.app.Fragment;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceFragmentCompat;
 import com.slipkprojects.sockshttp.R;
 import com.slipkprojects.sockshttp.preference.SettingsPreference;
-import com.slipkprojects.ultrasshservice.util.SkProtect;
-import androidx.preference.PreferenceScreen;
-import androidx.preference.PreferenceFragmentCompat;
-import androidx.preference.Preference;
-import androidx.fragment.app.Fragment;
-import android.content.Intent;
 import com.slipkprojects.sockshttp.preference.SettingsSSHPreference;
 import com.slipkprojects.sockshttp.preference.SlowDNSPreference;
+import com.slipkprojects.sockshttp.util.DaxAppTools;
 
 public class ConfigGeralActivity extends BaseActivity
 	implements PreferenceFragmentCompat.OnPreferenceStartFragmentCallback
@@ -50,7 +47,7 @@ public class ConfigGeralActivity extends BaseActivity
 		setSupportActionBar(mToolbar);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		
-		SkProtect.CharlieProtect();
+		DaxAppTools.checkApp();
 	}
 	
 	@Override

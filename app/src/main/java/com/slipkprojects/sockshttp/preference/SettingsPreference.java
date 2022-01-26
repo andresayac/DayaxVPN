@@ -1,33 +1,22 @@
 package com.slipkprojects.sockshttp.preference;
 
-import androidx.preference.PreferenceFragmentCompat;
-import android.os.Bundle;
-
-import androidx.preference.Preference;
-import androidx.preference.EditTextPreference;
-
-import android.content.SharedPreferences;
-import androidx.preference.PreferenceManager;
-import androidx.preference.CheckBoxPreference;
+import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
-
+import android.content.SharedPreferences;
+import android.os.Build;
+import android.os.Bundle;
+import android.os.Handler;
+import androidx.preference.*;
+import com.slipkprojects.sockshttp.LauncherActivity;
 import com.slipkprojects.sockshttp.R;
 import com.slipkprojects.sockshttp.SocksHttpApp;
-import androidx.preference.ListPreference;
-import android.content.Context;
-import androidx.appcompat.app.AppCompatDelegate;
-import com.slipkprojects.ultrasshservice.logger.SkStatus;
-import com.slipkprojects.ultrasshservice.config.SettingsConstants;
 import com.slipkprojects.ultrasshservice.config.Settings;
-import androidx.preference.PreferenceScreen;
+import com.slipkprojects.ultrasshservice.config.SettingsConstants;
 import com.slipkprojects.ultrasshservice.logger.ConnectionStatus;
-import android.os.Handler;
-import android.app.Activity;
-import com.slipkprojects.sockshttp.LauncherActivity;
-import android.app.PendingIntent;
-import android.app.AlarmManager;
-import android.os.Build;
-import androidx.appcompat.app.AlertDialog;
+import com.slipkprojects.ultrasshservice.logger.SkStatus;
 
 public class SettingsPreference extends PreferenceFragmentCompat
 implements Preference.OnPreferenceChangeListener, SettingsConstants,

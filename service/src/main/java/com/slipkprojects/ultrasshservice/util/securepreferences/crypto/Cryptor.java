@@ -19,6 +19,7 @@ package com.slipkprojects.ultrasshservice.util.securepreferences.crypto;
 import android.util.Base64;
 
 import java.security.SecureRandom;
+
 import com.slipkprojects.ultrasshservice.util.securepreferences.model.SecurityConfig;
 import org.spongycastle.crypto.generators.PKCS5S2ParametersGenerator;
 import org.spongycastle.crypto.PBEParametersGenerator;
@@ -30,7 +31,7 @@ import org.spongycastle.crypto.params.KeyParameter;
 /**
  * @author Hussain Al-Derry <hussain.derry@gmail.com>
  * @version 1.0
- * */
+ */
 public final class Cryptor {
 
     /* Variables used for parsing the stored Base64 */
@@ -47,13 +48,14 @@ public final class Cryptor {
 
     /**
      * Initializes the Cryptor with the provided {@link SecurityConfig}
+     *
      * @param config The security configurations to use
-     * */
-    public static Cryptor initWithSecurityConfig(SecurityConfig config){
+     */
+    public static Cryptor initWithSecurityConfig(SecurityConfig config) {
         return new Cryptor(config);
     }
 
-    private Cryptor(SecurityConfig securityConfig){
+    private Cryptor(SecurityConfig securityConfig) {
         this.mSecurityConfig = securityConfig;
         this.mCipherService = CipherServiceImpl.getInstance(mSecurityConfig.getAlgorithm());
 
@@ -70,8 +72,8 @@ public final class Cryptor {
      *
      * @param data The data to be encrypted.
      * @return Base64 String to be stored.
-     * */
-    public String encryptToBase64(byte[] data){
+     */
+    public String encryptToBase64(byte[] data) {
         // Generating Random IV
         SecureRandom mRandom = new SecureRandom();
         byte[] iv = new byte[mCipherService.getIVSize()];
@@ -86,10 +88,10 @@ public final class Cryptor {
      *
      * @param encryptedBase64 The Base64 string to be decrypted.
      * @return The data decrypted as byte array.
-     * */
-    public byte[] decryptFromBase64(String encryptedBase64){
+     */
+    public byte[] decryptFromBase64(String encryptedBase64) {
         String[] parts = encryptedBase64.split(SPLITTER);
-        if(parts.length != 3){
+        if (parts.length != 3) {
             throw new IllegalArgumentException("Malformed data string");
         }
 
@@ -105,28 +107,28 @@ public final class Cryptor {
      *
      * @param salt The salt to use.
      * @return The password hash as byte array
-     * */
-    private byte[] pbkdf2(byte[] salt){
+     */
+    private byte[] pbkdf2(byte[] salt) {
         byte[] passwordBytes = PBEParametersGenerator.PKCS5PasswordToUTF8Bytes(mSecurityConfig.getPassword());
         PKCS5S2ParametersGenerator mGenerator;
-        switch (mSecurityConfig.getDigestType()){
+        switch (mSecurityConfig.getDigestType()) {
 
-            case SHA1:{
+            case SHA1: {
                 mGenerator = new PKCS5S2ParametersGenerator(new SHA1Digest());
                 break;
             }
 
-            case SHA256:{
+            case SHA256: {
                 mGenerator = new PKCS5S2ParametersGenerator(new SHA256Digest());
                 break;
             }
 
-            case SHA512:{
+            case SHA512: {
                 mGenerator = new PKCS5S2ParametersGenerator(new SHA512Digest());
                 break;
             }
 
-            default:{
+            default: {
                 throw new IllegalStateException("Unknown Digest!");
             }
 
@@ -136,11 +138,11 @@ public final class Cryptor {
         return ((KeyParameter) mGenerator.generateDerivedParameters(mSecurityConfig.getKeySize())).getKey();
     }
 
-    private String toBase64(byte[] data){
+    private String toBase64(byte[] data) {
         return Base64.encodeToString(data, Base64.NO_WRAP);
     }
 
-    private byte[] fromBase64(String base64){
+    private byte[] fromBase64(String base64) {
         return Base64.decode(base64, Base64.NO_WRAP);
     }
 

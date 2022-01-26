@@ -3,6 +3,7 @@ package com.slipkprojects.ultrasshservice.tunnel;
 import com.trilead.ssh2.crypto.Base64;
 import com.trilead.ssh2.sftp.Packet;
 import com.trilead.ssh2.transport.ClientServerHello;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -10,19 +11,28 @@ import java.io.UnsupportedEncodingException;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
+
 import com.trilead.ssh2.ProxyData;
 import com.trilead.ssh2.HTTPProxyException;
+
 import java.util.Map;
+
 import android.util.ArrayMap;
+
 import java.util.Iterator;
+
 import com.trilead.ssh2.HTTPProxyData;
 import com.slipkprojects.ultrasshservice.logger.SkStatus;
 import android.text.Html;
 import com.trilead.ssh2.transport.TransportManager;
+
 import java.util.regex.Pattern;
+
 import com.slipkprojects.ultrasshservice.tunnel.TunnelUtils;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+
 import android.net.NetworkInfo;
 import android.net.ConnectivityManager;
 import android.os.Build;
@@ -32,21 +42,19 @@ import com.slipkprojects.ultrasshservice.R;
 /**
  * By Skank3r
  */
-public class HttpProxyCustom
-implements ProxyData
-{
+public class HttpProxyCustom implements ProxyData {
 
-	private final String proxyHost;
+    private final String proxyHost;
     private final String proxyPass;
     private final int proxyPort;
     private final String proxyUser;
     private final String requestPayload;
-	private boolean modoDropbear = false;
+    private boolean modoDropbear = false;
 
-	private Socket sock;
-	private Context mContext;
+    private Socket sock;
+    private Context mContext;
 
-	public HttpProxyCustom(String proxyHost, int proxyPort, Context context) {
+    public HttpProxyCustom(String proxyHost, int proxyPort, Context context) {
         this(proxyHost, proxyPort, null, null, context);
     }
 
@@ -65,66 +73,64 @@ implements ProxyData
             this.proxyUser = proxyUser;
             this.proxyPass = proxyPass;
             this.requestPayload = requestPayload;
-			this.modoDropbear = modoDropbear;
-			this.mContext = context;
+            this.modoDropbear = modoDropbear;
+            this.mContext = context;
         }
     }
 
-	@Override
+    @Override
     public Socket openConnection(String hostname, int port, int connectTimeout, int readTimeout) throws IOException {
-		sock = new Socket();
-		
-		InetAddress addr = TransportManager.createInetAddress(this.proxyHost);
-		sock.connect(new InetSocketAddress(addr, this.proxyPort), connectTimeout);
+        sock = new Socket();
+
+        InetAddress addr = TransportManager.createInetAddress(this.proxyHost);
+        sock.connect(new InetSocketAddress(addr, this.proxyPort), connectTimeout);
         sock.setSoTimeout(readTimeout);
-		
-		SkStatus.logInfo(R.string.state_proxy_running);
 
-		String requestPayload = getRequestPayload(hostname, port);
-		
-		// anti vpn sniffer
-		if (TunnelUtils.isActiveVpn(mContext)) {
-			SkStatus.logInfo("<strong>" + mContext.getString(R.string.error_vpn_sniffer_detected) + "</strong>");
+        SkStatus.logInfo(R.string.state_proxy_running);
 
-			throw new IOException("error detected");
-		}
+        String requestPayload = getRequestPayload(hostname, port);
 
-		SkStatus.logInfo(R.string.state_proxy_inject);
-		
-		OutputStream out = sock.getOutputStream();
-		
-		// suporte a [split] na payload
-		if (!TunnelUtils.injectSplitPayload(requestPayload, out)) {
-			try {
-				out.write(requestPayload.getBytes("ISO-8859-1"));
-			} catch (UnsupportedEncodingException e2) {
-				out.write(requestPayload.getBytes());
-			}
-			out.flush();
-		}
+        // anti vpn sniffer
+        if (TunnelUtils.isActiveVpn(mContext)) {
+            SkStatus.logInfo("<strong>" + mContext.getString(R.string.error_vpn_sniffer_detected) + "</strong>");
 
-		// suporta Dropbear (SSH + PAYLOAD)
-		if (modoDropbear) {
-			return sock;
-		}
-		
-		
-		
+            throw new IOException("error detected");
+        }
+
+        SkStatus.logInfo(R.string.state_proxy_inject);
+
+        OutputStream out = sock.getOutputStream();
+
+        // suporte a [split] na payload
+        if (!TunnelUtils.injectSplitPayload(requestPayload, out)) {
+            try {
+                out.write(requestPayload.getBytes("ISO-8859-1"));
+            } catch (UnsupportedEncodingException e2) {
+                out.write(requestPayload.getBytes());
+            }
+            out.flush();
+        }
+
+        // suporta Dropbear (SSH + PAYLOAD)
+        if (modoDropbear) {
+            return sock;
+        }
+
 
         byte[] buffer = new byte[1024];
         InputStream in = sock.getInputStream();
 
-		// lê primeira linha
-		int len = ClientServerHello.readLineRN(in, buffer);
+        // lê primeira linha
+        int len = ClientServerHello.readLineRN(in, buffer);
 
-		String httpReponseFirstLine = "";
-		try {
+        String httpReponseFirstLine = "";
+        try {
             httpReponseFirstLine = new String(buffer, 0, len, "ISO-8859-1");
-		} catch (UnsupportedEncodingException e3) {
+        } catch (UnsupportedEncodingException e3) {
             httpReponseFirstLine = new String(buffer, 0, len);
         }
 
-		//SkStatus.logInfo("<strong>" + httpReponseFirstLine + "</strong>");
+        //SkStatus.logInfo("<strong>" + httpReponseFirstLine + "</strong>");
 
 
         StringBuilder sb = new StringBuilder();
@@ -147,24 +153,28 @@ implements ProxyData
             return sock;
         }
 
-		// lê o restante
-		String httpReponseAll = httpReponseFirstLine;
-		while ((len = ClientServerHello.readLineRN(in, buffer)) != 0) {
-			httpReponseAll += "\n";
-			try {
-				httpReponseAll += new String(buffer, 0, len, "ISO-8859-1");
-			} catch (UnsupportedEncodingException e3) {
-				httpReponseAll += new String(buffer, 0, len);
-			}
-		}
+        // lê o restante
+        String httpReponseAll = httpReponseFirstLine;
+        while ((len = ClientServerHello.readLineRN(in, buffer)) != 0) {
+            httpReponseAll += "\n";
+            try {
+                httpReponseAll += new String(buffer, 0, len, "ISO-8859-1");
+            } catch (UnsupportedEncodingException e3) {
+                httpReponseAll += new String(buffer, 0, len);
+            }
+        }
 
-		if (!httpReponseAll.isEmpty())
-			SkStatus.logDebug(httpReponseAll);
+        if (!httpReponseAll.isEmpty())
+            SkStatus.logDebug(httpReponseAll);
 
-		if (httpReponseFirstLine.startsWith("HTTP/") == false) throw new IOException("The proxy did not send back a valid HTTP response.");
-        if (httpReponseFirstLine.length() < 14) throw new IOException("The proxy did not send back a valid HTTP response.");
-        if (httpReponseFirstLine.charAt(8) != ' ') throw new IOException("The proxy did not send back a valid HTTP response.");
-        if (httpReponseFirstLine.charAt(12) != ' ') throw new IOException("The proxy did not send back a valid HTTP response.");
+        if (httpReponseFirstLine.startsWith("HTTP/") == false)
+            throw new IOException("The proxy did not send back a valid HTTP response.");
+        if (httpReponseFirstLine.length() < 14)
+            throw new IOException("The proxy did not send back a valid HTTP response.");
+        if (httpReponseFirstLine.charAt(8) != ' ')
+            throw new IOException("The proxy did not send back a valid HTTP response.");
+        if (httpReponseFirstLine.charAt(12) != ' ')
+            throw new IOException("The proxy did not send back a valid HTTP response.");
         if (len < 0 || len > 999) {
             throw new IOException("The proxy did not send back a valid HTTP response.");
         } else if (len != 200) {
@@ -179,58 +189,53 @@ implements ProxyData
     }
 
 
-    private void sendForwardSuccess(Socket socket) throws IOException
-	{
+    private void sendForwardSuccess(Socket socket) throws IOException {
         String respond = "HTTP/1.1 200 OK\r\n\r\n";
         socket.getOutputStream().write(respond.getBytes());
         socket.getOutputStream().flush();
     }
-	
-	
-	
 
-	private String getRequestPayload(String hostname, int port) {
-		String payload = this.requestPayload;
 
-		if (payload != null) {
-			payload = TunnelUtils.formatCustomPayload(hostname, port, payload);
+    private String getRequestPayload(String hostname, int port) {
+        String payload = this.requestPayload;
+
+        if (payload != null) {
+            payload = TunnelUtils.formatCustomPayload(hostname, port, payload);
+        } else {
+            StringBuffer sb = new StringBuffer();
+
+            sb.append("CONNECT ");
+            sb.append(hostname);
+            sb.append(':');
+            sb.append(port);
+            sb.append(" HTTP/1.0\r\n");
+            if (!(this.proxyUser == null || this.proxyPass == null)) {
+                char[] encoded;
+                String credentials = this.proxyUser + ":" + this.proxyPass;
+                try {
+                    encoded = Base64.encode(credentials.getBytes("ISO-8859-1"));
+                } catch (UnsupportedEncodingException e) {
+                    encoded = Base64.encode(credentials.getBytes());
+                }
+                sb.append("Proxy-Authorization: Basic ");
+                sb.append(encoded);
+                sb.append("\r\n");
+            }
+            sb.append("\r\n");
+
+            payload = sb.toString();
         }
-		else {
-			StringBuffer sb = new StringBuffer();
 
-			sb.append("CONNECT ");
-			sb.append(hostname);
-			sb.append(':');
-			sb.append(port);
-			sb.append(" HTTP/1.0\r\n");
-			if (!(this.proxyUser == null || this.proxyPass == null)) {
-				char[] encoded;
-				String credentials = this.proxyUser + ":" + this.proxyPass;
-				try {
-					encoded = Base64.encode(credentials.getBytes("ISO-8859-1"));
-				} catch (UnsupportedEncodingException e) {
-					encoded = Base64.encode(credentials.getBytes());
-				}
-				sb.append("Proxy-Authorization: Basic ");
-				sb.append(encoded);
-				sb.append("\r\n");
-			}
-			sb.append("\r\n");
+        return payload;
+    }
 
-			payload = sb.toString();
-		}
+    @Override
+    public void close() {
+        if (sock == null) return;
 
-		return payload;
-	}
-
-	@Override
-	public void close()
-	{
-		if (sock == null) return;
-
-		try {
-			sock.close();
-		} catch (IOException e) { /* failed */ }
-	}
+        try {
+            sock.close();
+        } catch (IOException e) { /* failed */ }
+    }
 
 }

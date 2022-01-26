@@ -3,7 +3,8 @@ package com.slipkprojects.sockshttp;
 import android.app.Application;
 import androidx.appcompat.app.AppCompatDelegate;
 
-import com.slipkprojects.ultrasshservice.util.SkProtect;
+
+import com.slipkprojects.sockshttp.util.DaxAppTools;
 
 import android.content.Context;
 
@@ -52,7 +53,7 @@ public class SocksHttpApp extends Application
 		SocksHttpCore.init(this);
 
 		// protege o app
-		SkProtect.init(this);
+		DaxAppTools.init(this);
 
 		// Initialize the Mobile Ads SDK.
         MobileAds.initialize(this);

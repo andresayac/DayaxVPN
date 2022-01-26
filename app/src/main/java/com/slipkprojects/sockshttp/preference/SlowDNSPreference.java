@@ -1,24 +1,18 @@
 package com.slipkprojects.sockshttp.preference;
 
-import androidx.preference.PreferenceFragmentCompat;
-import android.os.Bundle;
-
-import androidx.preference.Preference;
-import androidx.preference.EditTextPreference;
-
-import android.content.SharedPreferences;
-import androidx.preference.PreferenceManager;
-import androidx.preference.CheckBoxPreference;
 import android.content.Intent;
-
-import com.slipkprojects.sockshttp.R;
-import com.slipkprojects.ultrasshservice.logger.ConnectionStatus;
+import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
-
-import com.slipkprojects.ultrasshservice.logger.SkStatus;
-import com.slipkprojects.ultrasshservice.config.SettingsConstants;
+import androidx.preference.EditTextPreference;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceFragmentCompat;
+import com.slipkprojects.sockshttp.R;
 import com.slipkprojects.ultrasshservice.config.Settings;
+import com.slipkprojects.ultrasshservice.config.SettingsConstants;
+import com.slipkprojects.ultrasshservice.logger.ConnectionStatus;
+import com.slipkprojects.ultrasshservice.logger.SkStatus;
 
 public class SlowDNSPreference extends PreferenceFragmentCompat
 implements SettingsConstants, SkStatus.StateListener {
@@ -41,11 +35,11 @@ implements SettingsConstants, SkStatus.StateListener {
 	private SharedPreferences mInsecurePrefs;
 
 	protected String[] listEdit_keysProteger = {
-		CHAVE_KEY,
+		CODE_KEY,
 		NAMESERVER_KEY,
 		DNS_KEY,
 		USUARIO_KEY,
-		SENHA_KEY
+		PASS_KEY
 	};
 
 	@Override
@@ -94,7 +88,7 @@ implements SettingsConstants, SkStatus.StateListener {
 			}
 
 			if (mSecurePrefs.getBoolean(Settings.CONFIG_PROTEGER_KEY, false)) {
-				if ((key.equals(USUARIO_KEY) || key.equals(SENHA_KEY)) &&
+				if ((key.equals(USUARIO_KEY) || key.equals(PASS_KEY)) &&
 					mSecurePrefs.getBoolean(Settings.CONFIG_INPUT_PASSWORD_KEY, false)) {
 					continue;
 				}

@@ -1,23 +1,18 @@
 package com.slipkprojects.sockshttp.preference;
 
-import androidx.preference.PreferenceFragmentCompat;
-import android.os.Bundle;
-
-import androidx.preference.Preference;
-import androidx.preference.EditTextPreference;
-
-import android.content.SharedPreferences;
-import androidx.preference.PreferenceManager;
-import androidx.preference.CheckBoxPreference;
 import android.content.Intent;
-
-import com.slipkprojects.sockshttp.R;
-import com.slipkprojects.ultrasshservice.logger.SkStatus;
-import com.slipkprojects.ultrasshservice.config.SettingsConstants;
-import com.slipkprojects.ultrasshservice.config.Settings;
-import com.slipkprojects.ultrasshservice.logger.ConnectionStatus;
+import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import androidx.preference.EditTextPreference;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceFragmentCompat;
+import com.slipkprojects.sockshttp.R;
+import com.slipkprojects.ultrasshservice.config.Settings;
+import com.slipkprojects.ultrasshservice.config.SettingsConstants;
+import com.slipkprojects.ultrasshservice.logger.ConnectionStatus;
+import com.slipkprojects.ultrasshservice.logger.SkStatus;
 
 public class SettingsSSHPreference extends PreferenceFragmentCompat
 	implements SettingsConstants, SkStatus.StateListener
@@ -30,10 +25,10 @@ public class SettingsSSHPreference extends PreferenceFragmentCompat
 	private SharedPreferences mInsecurePrefs;
 	
 	protected String[] listEdit_keysProteger = {
-		SERVIDOR_KEY,
-		SERVIDOR_PORTA_KEY,
+		SERVER_KEY,
+		SERVERS_PORT_KEY,
 		USUARIO_KEY,
-		SENHA_KEY
+		PASS_KEY
 	};
 	
 	@Override
@@ -97,7 +92,7 @@ public class SettingsSSHPreference extends PreferenceFragmentCompat
 			}
 			
 			if (mSecurePrefs.getBoolean(Settings.CONFIG_PROTEGER_KEY, false)) {
-				if ((key.equals(USUARIO_KEY) || key.equals(SENHA_KEY)) &&
+				if ((key.equals(USUARIO_KEY) || key.equals(PASS_KEY)) &&
 					mSecurePrefs.getBoolean(Settings.CONFIG_INPUT_PASSWORD_KEY, false)) {
 					continue;
 				}
@@ -109,7 +104,7 @@ public class SettingsSSHPreference extends PreferenceFragmentCompat
 			}
 		}
 		
-		String key = Settings.PORTA_LOCAL_KEY;
+		String key = Settings.PORT_LOCAL_KEY;
 		if (mSecurePrefs.contains(key)) {
 			((EditTextPreference)findPreference(key))
 				.setText(mSecurePrefs.getString(key, null));
@@ -134,7 +129,7 @@ public class SettingsSSHPreference extends PreferenceFragmentCompat
 			}
 		}
 		
-        String key = Settings.PORTA_LOCAL_KEY;
+        String key = Settings.PORT_LOCAL_KEY;
         if (mInsecurePrefs.contains(key)) {
             Log.d(TAG, "match found for " + key + " adding encrypted copy to secure prefs");
             secureEditor.putString(key, mInsecurePrefs.getString(key, null));

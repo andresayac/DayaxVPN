@@ -1,13 +1,15 @@
 package com.slipkprojects.sockshttp;
 
-import android.app.*;
-import android.content.*;
-import android.os.*;
-import android.os.Build.*;
-import java.io.*;
-import java.lang.Thread.*;
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Build;
+import android.os.Build.VERSION;
 import android.os.Process;
-import com.slipkprojects.sockshttp.errors;
+
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.io.Writer;
+import java.lang.Thread.UncaughtExceptionHandler;
 
 public class ExceptionHandler implements UncaughtExceptionHandler {
     private final String LINE_SEPARATOR = "\n";

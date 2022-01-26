@@ -3,15 +3,12 @@ package com.slipkprojects.ultrasshservice.config;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
-
 import android.util.Log;
-import android.view.View;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.Arrays;
 
 
 public class ConfigRemote extends AsyncTask<String, String, String> {
@@ -45,7 +42,7 @@ public class ConfigRemote extends AsyncTask<String, String, String> {
         try {
             Log.d("doInBackground", this.urlRemote);
             StringBuilder sb = new StringBuilder();
-            URL url = new URL("https://afaya.com.co/Apps/dax.dax");
+            URL url = new URL(this.urlRemote);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             conn.connect();
@@ -68,8 +65,8 @@ public class ConfigRemote extends AsyncTask<String, String, String> {
         super.onPreExecute();
         if (!isOnCreate) {
             progressDialog = new ProgressDialog(context);
-            progressDialog.setMessage("Por favor espere enquanto carrega");
-            progressDialog.setTitle("Verificando atualização");
+            progressDialog.setMessage("Please wait while loading");
+            progressDialog.setTitle("Verification actualization");
             progressDialog.setCancelable(false);
             progressDialog.show();
         }

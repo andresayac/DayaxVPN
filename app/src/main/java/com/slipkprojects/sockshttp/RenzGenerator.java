@@ -1,14 +1,15 @@
 package com.slipkprojects.sockshttp;
 
-import android.content.*;
-import android.preference.*;
-import android.view.*;
-import android.view.View.*;
-import android.widget.*;
-import android.widget.AdapterView.*;
-import java.net.*;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.view.View.OnClickListener;
-import com.slipkprojects.sockshttp.RenzGenerator.*;
+import android.widget.*;
+import android.widget.AdapterView.OnItemSelectedListener;
+
+import java.net.URL;
 
 public class RenzGenerator extends RelativeLayout implements OnClickListener, OnItemSelectedListener, RadioGroup.OnCheckedChangeListener, CompoundButton.OnCheckedChangeListener
 {

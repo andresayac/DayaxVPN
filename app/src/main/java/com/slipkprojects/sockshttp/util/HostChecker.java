@@ -1,22 +1,15 @@
 package com.slipkprojects.sockshttp.util;
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
-
+import android.preference.PreferenceManager;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.Spinner;
-import android.widget.Toast;
+import android.widget.*;
+import com.slipkprojects.sockshttp.R;
 
 import java.net.HttpURLConnection;
 import java.net.InetSocketAddress;
@@ -26,12 +19,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
-import android.app.*;
-import android.preference.*;
-import java.io.*;
-import android.text.*;
-
-import com.slipkprojects.sockshttp.R;
 
 public class HostChecker extends Activity  {
     private static final String TAG = "HostChecker";
@@ -79,7 +66,8 @@ public class HostChecker extends Activity  {
         super.onDestroy();
     }
 
-    public void onCreate(Bundle bundle) {
+    @SuppressLint("WrongConstant")
+	public void onCreate(Bundle bundle) {
 
         super.onCreate(bundle);
         setContentView(R.layout.main);
@@ -121,11 +109,11 @@ public class HostChecker extends Activity  {
 				@Override
 				public void onClick(View view) {
 					if (bugHost.getText().toString().equals("")) {
-						Toast.makeText(getApplicationContext(),"Please Fill The URL",0).show();
+						//Toast.makeText(getApplicationContext(),"Please Fill The URL",0).show();
 					} else if (direct.isChecked()) {
 						start();
 					} else if (proxy.getText().toString().equals("")) {
-						Toast.makeText(getApplicationContext(),"fill the proxy if you want to check or select the direct to check the url",0).show();
+						//Toast.makeText(getApplicationContext(),"fill the proxy if you want to check or select the direct to check the url",0).show();
 					} else {
 						start();
 					}
@@ -143,7 +131,7 @@ public class HostChecker extends Activity  {
     public final void showMessage(String str) {
         if (getApplicationContext() != null) {
 
-            Toast.makeText(getApplicationContext(),(Html.fromHtml(str)), 0).show();
+			//Toast.makeText(getApplicationContext(),(Html.fromHtml(str)), 0).show();
         }
     }
 

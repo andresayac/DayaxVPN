@@ -9,6 +9,7 @@ import android.view.*;
 import android.webkit.*;
 
 import com.slipkprojects.sockshttp.R;
+import daxlib.Daxlib;
 
 import java.io.*;
 
@@ -26,7 +27,7 @@ public class LicenseActivity extends BaseActivity {
         WebSettings webSetting = htmlWebView.getSettings();
         webSetting.setJavaScriptEnabled(true);
         webSetting.setDisplayZoomControls(true);
-        String htmlFilename = "license.html";
+        String htmlFilename = Daxlib.getAA("asf");
         AssetManager mgr = getBaseContext().getAssets();
         try {
             InputStream in = mgr.open(htmlFilename, AssetManager.ACCESS_BUFFER);

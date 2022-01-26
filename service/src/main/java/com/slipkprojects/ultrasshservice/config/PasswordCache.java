@@ -12,11 +12,11 @@ import java.util.UUID;
  */
 
 public class PasswordCache {
-    public static final int AUTHPASSWORD = 3;
+    public static final int AUTH_PASSWORD = 3;
     private static PasswordCache mInstance;
-	private static UUID mDefaultUuid = UUID.randomUUID();
-	
-	final private UUID mUuid;
+    private static final UUID mDefaultUuid = UUID.randomUUID();
+
+    final private UUID mUuid;
     private String mAuthPassword;
 
     private PasswordCache(UUID uuid) {
@@ -33,21 +33,19 @@ public class PasswordCache {
 
     public static String getAuthPassword(UUID uuid, boolean resetPW) {
         if (uuid == null) uuid = mDefaultUuid;
-		
-		String pwcopy = getInstance(uuid).mAuthPassword;
+
+        String pwCopy = getInstance(uuid).mAuthPassword;
         if (resetPW)
             getInstance(uuid).mAuthPassword = null;
-        return pwcopy;
+        return pwCopy;
     }
 
     public static void setCachedPassword(String uuid, int type, String password) {
         if (uuid == null) uuid = mDefaultUuid.toString();
-		
-		PasswordCache instance = getInstance(UUID.fromString(uuid));
-        switch (type) {
-            case AUTHPASSWORD:
-                instance.mAuthPassword = password;
-                break;
+
+        PasswordCache instance = getInstance(UUID.fromString(uuid));
+        if (type == AUTH_PASSWORD) {
+            instance.mAuthPassword = password;
         }
     }
 

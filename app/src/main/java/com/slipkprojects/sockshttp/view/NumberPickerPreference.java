@@ -1,9 +1,6 @@
 package com.slipkprojects.sockshttp.view;
 
 import android.widget.NumberPicker;
-
-import androidx.preference.DialogPreference;
-import androidx.preference.PreferenceViewHolder;
 import androidx.preference.PreferenceDialogFragmentCompat;
 
 public class NumberPickerPreference extends PreferenceDialogFragmentCompat {

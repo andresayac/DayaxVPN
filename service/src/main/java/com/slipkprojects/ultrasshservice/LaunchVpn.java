@@ -96,7 +96,7 @@ public class LaunchVpn extends AppCompatActivity
 			.inflate(R.layout.userpass, null, false);
 
         ((EditText) userpwlayout.findViewById(R.id.username)).setText(mConfig.getPrivString(Settings.USUARIO_KEY));
-        ((EditText) userpwlayout.findViewById(R.id.password)).setText(mConfig.getPrivString(Settings.SENHA_KEY));
+        ((EditText) userpwlayout.findViewById(R.id.password)).setText(mConfig.getPrivString(Settings.PASS_KEY));
         ((CheckBox) userpwlayout.findViewById(R.id.save_password)).setChecked(true);
         ((ImageButton) userpwlayout.findViewById(R.id.show_password)).setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -129,9 +129,9 @@ public class LaunchVpn extends AppCompatActivity
 						
 						String pw = ((EditText) userpwlayout.findViewById(R.id.password)).getText().toString();
 						if (((CheckBox) userpwlayout.findViewById(R.id.save_password)).isChecked()) {
-							edit.putString(Settings.SENHA_KEY, pw);
+							edit.putString(Settings.PASS_KEY, pw);
 						} else {
-							edit.remove(Settings.SENHA_KEY);
+							edit.remove(Settings.PASS_KEY);
 							mTransientAuthPW = pw;
 						}
 						
@@ -139,7 +139,7 @@ public class LaunchVpn extends AppCompatActivity
 					}
 					
 					if (mTransientAuthPW != null)
-						PasswordCache.setCachedPassword(null, PasswordCache.AUTHPASSWORD, mTransientAuthPW);
+						PasswordCache.setCachedPassword(null, PasswordCache.AUTH_PASSWORD, mTransientAuthPW);
 					onActivityResult(START_VPN_PROFILE, Activity.RESULT_OK, null);
 				}
 
@@ -149,7 +149,7 @@ public class LaunchVpn extends AppCompatActivity
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					SkStatus.updateStateString("USER_VPN_PASSWORD_CANCELLED", "", R.string.state_user_vpn_password_cancelled,
-						ConnectionStatus.LEVEL_NOTCONNECTED);
+						ConnectionStatus.LEVEL_NOT_CONNECTED);
 					finish();
 				}
 			});
@@ -161,7 +161,7 @@ public class LaunchVpn extends AppCompatActivity
 	public void onCancel(DialogInterface p1)
 	{
 		SkStatus.updateStateString("USER_VPN_PASSWORD_CANCELLED", "", R.string.state_user_vpn_password_cancelled,
-			ConnectionStatus.LEVEL_NOTCONNECTED);
+			ConnectionStatus.LEVEL_NOT_CONNECTED);
 		finish();
 	}
 	
@@ -181,7 +181,7 @@ public class LaunchVpn extends AppCompatActivity
 				
 				if (!TunnelUtils.isNetworkOnline(this)) {
 					SkStatus.updateStateString("USER_VPN_PASSWORD_CANCELLED", "", R.string.state_user_vpn_password_cancelled,
-						ConnectionStatus.LEVEL_NOTCONNECTED);
+						ConnectionStatus.LEVEL_NOT_CONNECTED);
 
 					toastutil.showConfusingToast(getString(R.string.error_internet_off));
 						
@@ -190,7 +190,7 @@ public class LaunchVpn extends AppCompatActivity
 				else if (prefs.getInt(Settings.TUNNELTYPE_KEY, Settings.bTUNNEL_TYPE_SSH_DIRECT) == Settings.bTUNNEL_TYPE_SSH_PROXY &&
 						(mConfig.getPrivString(Settings.PROXY_IP_KEY).isEmpty() || mConfig.getPrivString(Settings.PROXY_PORTA_KEY).isEmpty())) {
 					SkStatus.updateStateString("USER_VPN_PASSWORD_CANCELLED", "", R.string.state_user_vpn_password_cancelled,
-						ConnectionStatus.LEVEL_NOTCONNECTED);
+						ConnectionStatus.LEVEL_NOT_CONNECTED);
 
 					
 				   toastutil.showErrorToast(getString(R.string.error_proxy_invalid));
@@ -199,16 +199,16 @@ public class LaunchVpn extends AppCompatActivity
 				}
 				else if (!prefs.getBoolean(Settings.PROXY_USAR_DEFAULT_PAYLOAD, true) && mConfig.getPrivString(Settings.CUSTOM_PAYLOAD_KEY).isEmpty()) {
 					SkStatus.updateStateString("USER_VPN_PASSWORD_CANCELLED", "", R.string.state_user_vpn_password_cancelled,
-						ConnectionStatus.LEVEL_NOTCONNECTED);
+						ConnectionStatus.LEVEL_NOT_CONNECTED);
 					
 					toastutil.showErrorToast(getString(R.string.error_empty_payload));
 
 					finish();
 				}
-				else if (mConfig.getPrivString(Settings.SERVIDOR_KEY).isEmpty() || mConfig.getPrivString(Settings.SERVIDOR_PORTA_KEY).isEmpty()) {
+				else if (mConfig.getPrivString(Settings.SERVER_KEY).isEmpty() || mConfig.getPrivString(Settings.SERVERS_PORT_KEY).isEmpty()) {
 
 					SkStatus.updateStateString("USER_VPN_PASSWORD_CANCELLED", "", R.string.state_user_vpn_password_cancelled,
-											   ConnectionStatus.LEVEL_NOTCONNECTED);
+											   ConnectionStatus.LEVEL_NOT_CONNECTED);
 
 					Toast.makeText(this, R.string.error_empty_settings,
 								   Toast.LENGTH_SHORT).show();
@@ -220,7 +220,7 @@ public class LaunchVpn extends AppCompatActivity
 					startActivity(startLW);
 					finish();
 				}
-            	else if (mConfig.getPrivString(Settings.USUARIO_KEY).isEmpty() || (mConfig.getPrivString(Settings.SENHA_KEY).isEmpty() &&
+            	else if (mConfig.getPrivString(Settings.USUARIO_KEY).isEmpty() || (mConfig.getPrivString(Settings.PASS_KEY).isEmpty() &&
 						(mTransientAuthPW == null || mTransientAuthPW.isEmpty()))) {
                     SkStatus.updateStateString("USER_VPN_PASSWORD", "", R.string.state_user_vpn_password,
 						ConnectionStatus.LEVEL_WAITING_FOR_USER_INPUT);
@@ -240,7 +240,7 @@ public class LaunchVpn extends AppCompatActivity
             } else if (resultCode == Activity.RESULT_CANCELED) {
                 // User does not want us to start, so we just vanish
                 SkStatus.updateStateString("USER_VPN_PERMISSION_CANCELLED", "", R.string.state_user_vpn_permission_cancelled,
-					ConnectionStatus.LEVEL_NOTCONNECTED);
+					ConnectionStatus.LEVEL_NOT_CONNECTED);
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
                     SkStatus.logError(R.string.nought_alwayson_warning);

@@ -1,24 +1,20 @@
 package com.slipkprojects.sockshttp.fragments;
 
 
-import androidx.fragment.app.DialogFragment;
 import android.app.Dialog;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import com.slipkprojects.sockshttp.*;
 import android.view.View;
-import androidx.appcompat.app.AlertDialog;
-
-import android.widget.EditText;
-import com.slipkprojects.sockshttp.SocksHttpMainActivity;
-import com.slipkprojects.sockshttp.R;
 import android.view.ViewGroup;
 import android.widget.Button;
-import com.slipkprojects.ultrasshservice.config.Settings;
-
-import androidx.appcompat.widget.AppCompatCheckBox;
-import android.content.SharedPreferences;
+import android.widget.EditText;
 import android.widget.TextView;
+import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.DialogFragment;
+import com.slipkprojects.sockshttp.R;
+import com.slipkprojects.sockshttp.SocksHttpMainActivity;
+import com.slipkprojects.ultrasshservice.config.Settings;
 
 public class CustomSniFragment extends DialogFragment
 implements View.OnClickListener {

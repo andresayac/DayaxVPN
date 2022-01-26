@@ -5,9 +5,7 @@ import android.content.SharedPreferences;
 import android.os.CountDownTimer;
 import android.os.SystemClock;
 import android.util.Log;
-import android.widget.Toast;
 import com.google.android.gms.ads.AdListener;
-import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
 import com.slipkprojects.ultrasshservice.util.ToastUtil;
 

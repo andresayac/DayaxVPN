@@ -5,6 +5,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.Socket;
 import java.util.Random;
+
 import com.trilead.ssh2.*;
 import com.slipkprojects.ultrasshservice.logger.*;
 
@@ -30,10 +31,10 @@ public class Pinger extends Thread {
     }
 
     public void run() {
-		SkStatus.logInfo("Ping server: " + this.b);
+        SkStatus.logInfo("Ping server: " + this.b);
         try {
-			SkStatus.logInfo("pinger started");
-			this.c = this.a.createLocalPortForwarder(9395, this.b, 80);
+            SkStatus.logInfo("pinger started");
+            this.c = this.a.createLocalPortForwarder(9395, this.b, 80);
             this.d = true;
             while (this.d) {
                 try {
@@ -45,27 +46,27 @@ public class Pinger extends Thread {
                     BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(this.f.getInputStream()));
                     String readLine = bufferedReader.readLine();
                     if (readLine != null) {
-						SkStatus.logInfo("Pinger response code: " + readLine);
+                        SkStatus.logInfo("Pinger response code: " + readLine);
                     } else {
-						SkStatus.logInfo("Pinger: No Data");
+                        SkStatus.logInfo("Pinger: No Data");
                     }
                     bufferedReader.close();
                     outputStream.close();
                     this.f.close();
                 } catch (Exception e) {
-					SkStatus.logInfo("Ping Failed: " + e.toString());
+                    SkStatus.logInfo("Ping Failed: " + e.toString());
                 }
                 try {
                     sleep((long) b());
                 } catch (Exception e2) {
-					SkStatus.logInfo("pinger stopped");
-					this.c.close(); // fixed (address already in use) bug
-					this.c = null; // This is required
+                    SkStatus.logInfo("pinger stopped");
+                    this.c.close(); // fixed (address already in use) bug
+                    this.c = null; // This is required
                     return;
                 }
             }
         } catch (Exception e3) {
-			SkStatus.logInfo("Pinger: " + e3.toString());
-		}
+            SkStatus.logInfo("Pinger: " + e3.toString());
+        }
     }
 }

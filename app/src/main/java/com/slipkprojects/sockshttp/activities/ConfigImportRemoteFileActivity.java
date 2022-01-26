@@ -3,7 +3,6 @@ package com.slipkprojects.sockshttp.activities;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -105,10 +104,10 @@ implements CompoundButton.OnCheckedChangeListener, OnClickListener
 
 	private boolean mConfigPass = false;
 	private boolean mIsProteger = false;
-	private String mMensagem = "";
+	private String mMessage = "";
 	private String file_remote;
-	private boolean mPedirSenha = false;
-	private boolean mBloquearRoot = false;
+	private boolean mRequestPassword = false;
+	private boolean mblockRoot = false;
 
 	private void doLayout() {
 		setContentView(R.layout.import_remote);
@@ -196,12 +195,10 @@ implements CompoundButton.OnCheckedChangeListener, OnClickListener
 				throw new IOException(getString(R.string.error_save_settings));
 			}
 
-			long mValidade = new Settings(this)
-					.getPrefsPrivate().getLong(Settings.CONFIG_VALIDADE_KEY, 0);
+			long mValidation = new Settings(this).getPrefsPrivate().getLong(Settings.CONFIG_VALIDADE_KEY, 0);
 
-			if (mValidade > 0) {
-				SkStatus.logInfo(R.string.log_settings_valid,
-						android.text.format.DateFormat.getDateFormat(this).format(mValidade));
+			if (mValidation > 0) {
+				SkStatus.logInfo(R.string.log_settings_valid, android.text.format.DateFormat.getDateFormat(this).format(mValidation));
 			}
 
 
@@ -234,7 +231,7 @@ implements CompoundButton.OnCheckedChangeListener, OnClickListener
 			fileDir.mkdir();
 		}
 
-		File fileExport = new File(fileDir, String.format("%s.%s", nome, ConfigParser.FILE_EXTENSAO));
+		File fileExport = new File(fileDir, String.format("%s.%s", nome, ConfigParser.FILE_EXTENSIONS));
 		if (!fileExport.exists()) {
 			try {
 				if(fileExport.canWrite())
@@ -248,12 +245,12 @@ implements CompoundButton.OnCheckedChangeListener, OnClickListener
 
 		// salva mensagem para ser reutilizada
 		if (mIsProteger) {
-			mConfig.setMensagemConfigExportar(mMensagem);
+			mConfig.setMensagemConfigExportar(mMessage);
 		}
 
 		try {
 			ConfigParser.convertDataToFile(new FileOutputStream(fileExport), this,
-										   mIsProteger, mPedirSenha, mBloquearRoot, mMensagem, mValidade);
+										   mIsProteger, mRequestPassword, mblockRoot, mMessage, mValidation);
 		} catch(IOException e) {
 			fileExport.delete();
 			throw e;
@@ -265,7 +262,7 @@ implements CompoundButton.OnCheckedChangeListener, OnClickListener
 	 * Validade
 	 */
 
-	private long mValidade = 0;
+	private long mValidation = 0;
 
 	private void setValidadeDate() {
 
@@ -279,7 +276,7 @@ implements CompoundButton.OnCheckedChangeListener, OnClickListener
 		int mMonth = c.get(Calendar.MONTH);
 		int mDay = c.get(Calendar.DAY_OF_MONTH);
 
-		mValidade = c.getTimeInMillis();
+		mValidation = c.getTimeInMillis();
 
 		final DatePickerDialog dialog = new DatePickerDialog(this,
 			new DatePickerDialog.OnDateSetListener() {
@@ -288,7 +285,7 @@ implements CompoundButton.OnCheckedChangeListener, OnClickListener
 					Calendar c = Calendar.getInstance();
 					c.set(year, monthOfYear, dayOfMonth);
 
-					mValidade = c.getTimeInMillis();
+					mValidation = c.getTimeInMillis();
 				}
 			},
 			mYear, mMonth, mDay);
@@ -303,10 +300,10 @@ implements CompoundButton.OnCheckedChangeListener, OnClickListener
 					Calendar c = Calendar.getInstance();
 					c.set(date.getYear(), date.getMonth(), date.getDayOfMonth());
 
-					mValidade = c.getTimeInMillis();
+					mValidation = c.getTimeInMillis();
 
-					if (mValidade < time_hoje) {
-						mValidade = 0;
+					if (mValidation < time_hoje) {
+						mValidation = 0;
 
 
 						Light.error(export_ly, getString(R.string.error_date_selected_invalid), Snackbar.LENGTH_LONG).show();
@@ -315,11 +312,11 @@ implements CompoundButton.OnCheckedChangeListener, OnClickListener
 							validadeCheck.setChecked(false);
 					}
 					else {
-						long dias = ((mValidade-time_hoje)/1000/60/60/24);
+						long dias = ((mValidation-time_hoje)/1000/60/60/24);
 
 						if (validadeText != null) {
 							validadeText.setVisibility(View.VISIBLE);
-							validadeText.setText(String.format("%s (%s)", dias, df.format(mValidade)));
+							validadeText.setText(String.format("%s (%s)", dias, df.format(mValidation)));
 						}
 					}
 				}
@@ -330,7 +327,7 @@ implements CompoundButton.OnCheckedChangeListener, OnClickListener
 			new DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
-					mValidade = 0;
+					mValidation = 0;
 
 					if (validadeCheck != null) {
 						validadeCheck.setChecked(false);
@@ -342,7 +339,7 @@ implements CompoundButton.OnCheckedChangeListener, OnClickListener
 		dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
 				@Override
 				public void onCancel(DialogInterface v1) {
-					mValidade = 0;
+					mValidation = 0;
 					if (validadeCheck != null) {
 						validadeCheck.setChecked(false);
 					}
@@ -406,7 +403,7 @@ implements CompoundButton.OnCheckedChangeListener, OnClickListener
 					setValidadeDate();
 				}
 				else {
-					mValidade = 0;
+					mValidation = 0;
 					if (validadeText != null) {
 						validadeText.setVisibility(View.INVISIBLE);
 						validadeText.setText("");
@@ -431,11 +428,11 @@ implements CompoundButton.OnCheckedChangeListener, OnClickListener
 				break;
 
 			case R.id.activity_config_exportShowLoginScreenCheck:
-				mPedirSenha = is;
+				mRequestPassword = is;
 				break;
 
 			case R.id.activity_config_exportBlockRootCheck:
-				mBloquearRoot = is;
+				mblockRoot = is;
 				break;
 		}
 
@@ -471,7 +468,7 @@ implements CompoundButton.OnCheckedChangeListener, OnClickListener
 				public void onClick(DialogInterface dialog, int which) {
 					// minimiza app
 					dialog.dismiss();
-					if (mConfig.getPrivString(Settings.USUARIO_KEY).isEmpty() || (mConfig.getPrivString(Settings.SENHA_KEY).isEmpty())) {
+					if (mConfig.getPrivString(Settings.USUARIO_KEY).isEmpty() || (mConfig.getPrivString(Settings.PASS_KEY).isEmpty())) {
 						configPass.setChecked(true);
 						}
 						else 

@@ -19,7 +19,7 @@ public class CustomNativeLoader {
 
     private final static String TAG = "CNL";
 
-    private static boolean loadFromZip(Context context, String libname, File destLocalFile, String arch) {
+    private static boolean loadFromZip(Context context, String libName, File destLocalFile, String arch) {
 
 
         ZipFile zipFile = null;
@@ -27,11 +27,11 @@ public class CustomNativeLoader {
 
         try {
             zipFile = new ZipFile(context.getApplicationInfo().sourceDir);
-            ZipEntry entry = zipFile.getEntry("lib/" + arch + "/" + libname + ".so");
+            ZipEntry entry = zipFile.getEntry("lib/" + arch + "/" + libName + ".so");
             if (entry == null) {
-                entry = zipFile.getEntry("jni/" + arch + "/" + libname + ".so");
+                entry = zipFile.getEntry("jni/" + arch + "/" + libName + ".so");
                 if (entry == null)
-                    throw new Exception("Unable to find file in apk:" + "lib/" + arch + "/" + libname);
+                    throw new Exception("Unable to find file in apk:" + "lib/" + arch + "/" + libName);
             }
 
             //how we wrap this in another stream because the native .so is zipped itself
@@ -72,12 +72,12 @@ public class CustomNativeLoader {
         return false;
     }
 
-    public static File loadNativeBinary(Context context, String libname, File destLocalFile) {
+    public static File loadNativeBinary(Context context, String libName, File destLocalFile) {
 
         try {
 
 
-            File fileNativeBin = new File(getNativeLibraryDir(context), libname + ".so");
+            File fileNativeBin = new File(getNativeLibraryDir(context), libName + ".so");
 			
 			if (fileNativeBin.exists())
             {
@@ -133,7 +133,7 @@ public class CustomNativeLoader {
 					folder = "x86";
 				}
 
-				if (loadFromZip(context, libname, destLocalFile, folder)) {
+				if (loadFromZip(context, libName, destLocalFile, folder)) {
 					return destLocalFile;
 				}
 			}

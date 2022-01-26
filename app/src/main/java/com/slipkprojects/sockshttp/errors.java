@@ -1,17 +1,19 @@
 package com.slipkprojects.sockshttp;
 
-import android.os.*;
-import androidx.appcompat.app.*;
-import androidx.appcompat.widget.*;
-import android.text.*;
-import android.widget.*;
-import android.widget.LinearLayout.*;
-
+import android.annotation.SuppressLint;
+import android.os.Bundle;
+import android.text.Html;
+import android.widget.LinearLayout;
+import android.widget.LinearLayout.LayoutParams;
+import android.widget.ScrollView;
+import android.widget.TextView;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 public class errors extends AppCompatActivity {
     TextView error;
     private Toolbar toolbar;
+    @SuppressLint("WrongConstant")
     @Override
     protected void onCreate(Bundle bundle) {
         super.onCreate(bundle);

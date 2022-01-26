@@ -20,9 +20,10 @@ import java.util.Arrays;
 
 /**
  * Used to configure encryption parameters.
+ *
  * @author Hussain Al-Derry <hussain.derry@gmail.com>
  * @version 1.0
- * */
+ */
 public class SecurityConfig {
 
     private final char[] mPassword;
@@ -33,13 +34,13 @@ public class SecurityConfig {
     private final int keySize;
 
     /**
-     * @param password The base password to use
-     * @param keySize The size of the AES key
+     * @param password          The base password to use
+     * @param keySize           The size of the AES key
      * @param iPBKDF2Iterations Number of iterations for PBKDF2
-     * @param saltSize The size of the salt for PBKDF2
-     * @param digestType The digest type to use with PBKDF2
-     * @param algorithm The encryption algorithm to use
-     * */
+     * @param saltSize          The size of the salt for PBKDF2
+     * @param digestType        The digest type to use with PBKDF2
+     * @param algorithm         The encryption algorithm to use
+     */
     public SecurityConfig(char[] password, int keySize, int iPBKDF2Iterations, int saltSize, DigestType digestType, EncryptionAlgorithm algorithm) {
         this.mPassword = Arrays.copyOf(password, password.length);
         this.iPBKDF2_Iterations = iPBKDF2Iterations;
@@ -48,16 +49,16 @@ public class SecurityConfig {
         this.mAlgorithm = algorithm;
 
         boolean keySizeCheck = false;
-        for(int size : algorithm.getKeySizes()){
-            if(keySize == size){
+        for (int size : algorithm.getKeySizes()) {
+            if (keySize == size) {
                 keySizeCheck = true;
                 break;
             }
         }
 
-        if(keySizeCheck){
+        if (keySizeCheck) {
             this.keySize = keySize;
-        }else{
+        } else {
             throw new IllegalArgumentException("Key size is invalid for the selected algorithm");
         }
     }
@@ -78,7 +79,7 @@ public class SecurityConfig {
         return iSaltSize;
     }
 
-    public int getKeySize(){
+    public int getKeySize() {
         return keySize;
     }
 
@@ -86,7 +87,7 @@ public class SecurityConfig {
         return mAlgorithm;
     }
 
-    public static class Builder{
+    public static class Builder {
 
         private static final int DEFAULT_ITERATIONS = 1000;
         private static final int DEFAULT_SALT_SIZE = 32;
@@ -101,8 +102,8 @@ public class SecurityConfig {
         private int aesKeySize = -1;
         private EncryptionAlgorithm algorithm;
 
-        public Builder(String password){
-            if(password == null){
+        public Builder(String password) {
+            if (password == null) {
                 throw new IllegalArgumentException("Password cannot be null!");
             }
             this.password = password.toCharArray();
@@ -110,10 +111,11 @@ public class SecurityConfig {
 
         /**
          * Set the PBKDF2 iterations
+         *
          * @param iterations The number of iterations
-         * */
-        public Builder setPbkdf2Iterations(int iterations){
-            if(iterations < 0){
+         */
+        public Builder setPbkdf2Iterations(int iterations) {
+            if (iterations < 0) {
                 throw new IllegalArgumentException("Iterations cannot be less than zero!");
             }
             this.iterations = iterations;
@@ -122,10 +124,11 @@ public class SecurityConfig {
 
         /**
          * Set the PBKDF2 salt size in bytes
+         *
          * @param saltSize The salt size (in bytes)
-         * */
-        public Builder setPbkdf2SaltSize(int saltSize){
-            if(saltSize < 8 || (saltSize % 8) != 0){
+         */
+        public Builder setPbkdf2SaltSize(int saltSize) {
+            if (saltSize < 8 || (saltSize % 8) != 0) {
                 throw new IllegalArgumentException("Illegal salt size!");
             }
 
@@ -133,30 +136,32 @@ public class SecurityConfig {
             return this;
         }
 
-        public Builder setDigestType(DigestType digestType){
+        public Builder setDigestType(DigestType digestType) {
             this.digest = digestType;
             return this;
         }
 
         /**
          * Set the key size in bits
+         *
          * @param keySize The key size (in bits)
-         * */
-        public Builder setKeySize(int keySize){
+         */
+        public Builder setKeySize(int keySize) {
             this.aesKeySize = keySize;
             return this;
         }
 
         /**
          * Set the encryption algorithm
+         *
          * @param algorithm the encryption algorithm to use
-         * */
-        public Builder setEncryptionAlgorithm(EncryptionAlgorithm algorithm){
+         */
+        public Builder setEncryptionAlgorithm(EncryptionAlgorithm algorithm) {
             this.algorithm = algorithm;
             return this;
         }
 
-        public SecurityConfig build(){
+        public SecurityConfig build() {
             int finalIterations = iterations != -1 ? iterations : DEFAULT_ITERATIONS;
             int finalSaltSize = saltSize != -1 ? saltSize : DEFAULT_SALT_SIZE;
             DigestType finalDigest = digest != null ? digest : DEFAULT_DIGEST;

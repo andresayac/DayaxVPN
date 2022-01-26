@@ -231,7 +231,7 @@ public class LogsAdapter extends RecyclerView.Adapter<LogsAdapter.logViewHolder>
 	{
 		if (time != TIME_FORMAT_NONE)
 		{
-			Date d = new Date(le.getLogtime());
+			Date d = new Date(le.getLogTime());
 			java.text.DateFormat timeformat;
 			if (time == TIME_FORMAT_ISO)
 				timeformat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());

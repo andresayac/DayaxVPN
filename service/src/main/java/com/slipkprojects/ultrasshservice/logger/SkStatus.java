@@ -4,48 +4,43 @@ import java.io.StringWriter;
 import java.io.PrintWriter;
 import java.util.LinkedList;
 import java.util.Vector;
+
 import android.os.Build;
 import com.slipkprojects.ultrasshservice.R;
 import android.content.Intent;
 import android.content.Context;
-import android.os.Message;
-import java.io.File;
-import android.os.HandlerThread;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import java.util.Iterator;
+
 import java.util.Locale;
 
-public class SkStatus
-{
-	private static final LinkedList<LogItem> logbuffer;
-	
-	private static Vector<LogListener> logListener;
+public class SkStatus {
+    private static final LinkedList<LogItem> log_buffer;
+
+    private static Vector<LogListener> logListener;
     private static Vector<StateListener> stateListener;
-	
-	private static ConnectionStatus mLastLevel = ConnectionStatus.LEVEL_NOTCONNECTED;
-	
-	private static String mLaststatemsg = "";
-    private static String mLaststate = "NOPROCESS";
-    private static int mLastStateresid = R.string.state_noprocess;
+
+    private static ConnectionStatus mLastLevel = ConnectionStatus.LEVEL_NOT_CONNECTED;
+
+    private static String mLastStateMsg = "";
+    private static String mLastState = "NO_PROCESS";
+    private static int mLastStateResId = R.string.state_noprocess;
     private static Intent mLastIntent = null;
-	
-	
-	static final int MAXLOGENTRIES = 1000;
+
+
+    static final int MAX_LOGIN_TRIES = 1000;
 
     public static boolean isTunnelActive() {
-        return mLastLevel != ConnectionStatus.LEVEL_AUTH_FAILED && !(mLastLevel == ConnectionStatus.LEVEL_NOTCONNECTED);
+        return mLastLevel != ConnectionStatus.LEVEL_AUTH_FAILED && !(mLastLevel == ConnectionStatus.LEVEL_NOT_CONNECTED);
     }
-	
-	public static String getLastState() {
-		return mLaststate;
-	}
-	
-	public static String getLastCleanLogMessage(Context c) {
-        String message = mLaststatemsg;
+
+    public static String getLastState() {
+        return mLastState;
+    }
+
+    public static String getLastCleanLogMessage(Context c) {
+        String message = mLastStateMsg;
         switch (mLastLevel) {
             case LEVEL_CONNECTED:
-                String[] parts = mLaststatemsg.split(",");
+                String[] parts = mLastStateMsg.split(",");
                 /*
 				 (a) the integer unix date/time,
 				 (b) the state name,
@@ -68,16 +63,16 @@ public class SkStatus
         while (message.endsWith(","))
             message = message.substring(0, message.length() - 1);
 
-        String status = mLaststate;
-        if (status.equals("NOPROCESS"))
+        String status = mLastState;
+        if (status.equals("NO_PROCESS"))
             return message;
 
-        if (mLastStateresid == R.string.state_waitconnectretry) {
-            return c.getString(R.string.state_waitconnectretry, mLaststatemsg);
+        if (mLastStateResId == R.string.state_waitconnectretry) {
+            return c.getString(R.string.state_waitconnectretry, mLastStateMsg);
         }
 
-        String prefix = c.getString(mLastStateresid);
-        if (mLastStateresid == R.string.unknown_state)
+        String prefix = c.getString(mLastStateResId);
+        if (mLastStateResId == R.string.unknown_state)
             message = status + message;
         if (message.length() > 0)
             prefix += ": ";
@@ -85,10 +80,10 @@ public class SkStatus
         return prefix + message;
 
     }
-	
-	
-	public static enum LogLevel {
-		
+
+
+    public static enum LogLevel {
+
         INFO(2),
         ERROR(-2),
         WARNING(1),
@@ -123,106 +118,107 @@ public class SkStatus
             }
         }
     }
-	
-	// keytool -printcert -jarfile de.blinkt.openvpn_85.apk
-	// tudo ok, certificado da Playstore
-	static final byte[] oficialkey = {93, -72, 88, 103, -128, 115, -1, -47, 120, 113, 98, -56, 12, -56, 52, -62, 95, -2, -114, 95};
+
+    // keytool -printcert -jarfile de.blinkt.openvpn_85.apk
+    // tudo ok, certificado da Playstore
+    static final byte[] oficialkey = {93, -72, 88, 103, -128, 115, -1, -47, 120, 113, 98, -56, 12, -56, 52, -62, 95, -2, -114, 95};
     // já atualizado, slipk certificado
-	static final byte[] oficialdebugkey = {-41, 73, 58, 102, -81, -27, -120, 45, -56, -3, 53, -49, 119, -97, -20, -80, 65, 68, -72, -22};
-	
-	static {
-        logbuffer = new LinkedList<>();
+    static final byte[] oficialdebugkey = {-41, 73, 58, 102, -81, -27, -120, 45, -56, -3, 53, -49, 119, -97, -20, -80, 65, 68, -72, -22};
+
+    static {
+        log_buffer = new LinkedList<>();
         logListener = new Vector<>();
         stateListener = new Vector<>();
-		
-		logInformation();
+
+        logInformation();
     }
-	
+
     public synchronized static String CopyLogs() {
-        return logbuffer.toString();
+        return log_buffer.toString();
     }
-	
+
     public synchronized static void clearLog() {
-        logbuffer.clear();
-		logInformation();
-		SkStatus.logInfo("<font color='red'><strong>" + "Logs Cleared!" + "</font></strong>");
-		
-		for (LogListener li : logListener) {
-			li.onClear();
-		}
+        log_buffer.clear();
+        logInformation();
+        SkStatus.logInfo("<font color='red'><strong>" + "Logs Cleared!" + "</font></strong>");
+
+        for (LogListener li : logListener) {
+            li.onClear();
+        }
     }
-	
-	public synchronized static LogItem[] getlogbuffer() {
+
+    public synchronized static LogItem[] getlogbuffer() {
 
         // The stoned way of java to return an array from a vector
         // brought to you by eclipse auto complete
-        return logbuffer.toArray(new LogItem[logbuffer.size()]);
+        return log_buffer.toArray(new LogItem[log_buffer.size()]);
     }
-	
-	private static void logInformation() {
-		logInfo(R.string.mobile_info, Build.MODEL, Build.BOARD, Build.BRAND, Build.VERSION.SDK_INT,
-        	Build.VERSION.RELEASE);
-		logInfo(R.string.app_mobile_info, "", "");
-	}
 
-	
-	/**
-	* Listeners
-	*/
-	
-	public interface LogListener {
+    private static void logInformation() {
+        logInfo(R.string.mobile_info, Build.MODEL, Build.BOARD, Build.BRAND, Build.VERSION.SDK_INT,
+                Build.VERSION.RELEASE);
+        logInfo(R.string.app_mobile_info, "", "");
+    }
+
+
+    /**
+     * Listeners
+     */
+
+    public interface LogListener {
         void newLog(LogItem logItem);
-		void onClear();
+
+        void onClear();
     }
 
     public interface StateListener {
         void updateState(String state, String logMessage, int localizedResId, ConnectionStatus level, Intent intent);
     }
-	
+
     public synchronized static void addLogListener(LogListener ll) {
         if (!logListener.contains(ll)) {
-			logListener.add(ll);
-		}
+            logListener.add(ll);
+        }
     }
 
     public synchronized static void removeLogListener(LogListener ll) {
         if (logListener.contains(ll)) {
-			logListener.remove(ll);
-		}
+            logListener.remove(ll);
+        }
     }
 
     public synchronized static void addStateListener(StateListener sl) {
         if (!stateListener.contains(sl)) {
             stateListener.add(sl);
-            if (mLaststate != null)
-                sl.updateState(mLaststate, mLaststatemsg, mLastStateresid, mLastLevel, mLastIntent);
+            if (mLastState != null)
+                sl.updateState(mLastState, mLastStateMsg, mLastStateResId, mLastLevel, mLastIntent);
         }
     }
-	
-	public synchronized static void removeStateListener(StateListener sl) {
+
+    public synchronized static void removeStateListener(StateListener sl) {
         if (stateListener.contains(sl)) {
-			stateListener.remove(sl);
-		}
+            stateListener.remove(sl);
+        }
     }
 
-	
-	/**
-	* State
-	*/
-	
-	public static final String
-		SSH_CONECTANDO = "CONECTANDO",
-		SSH_AGUARDANDO_REDE = "AGUARDANDO",
-		SSH_AUTENTICANDO = "AUTENTICANDO",
-		SSH_CONECTADO = "CONECTADO",
-		SSH_DESCONECTADO = "DESCONECTADO",
-		SSH_RECONECTANDO = "RECONECTANDO",
-		SSH_INICIANDO = "INICIANDO",
-		SSH_PARANDO = "PARANDO";
-	
-	public static int getLocalizedState(String state) {
+
+    /**
+     * State
+     */
+
+    public static final String
+            SSH_CONECTANDO = "CONECTANDO",
+            SSH_AGUARDANDO_REDE = "AGUARDANDO",
+            SSH_AUTENTICANDO = "AUTENTICANDO",
+            SSH_CONECTADO = "CONECTADO",
+            SSH_DESCONECTADO = "DESCONECTADO",
+            SSH_RECONECTANDO = "RECONECTANDO",
+            SSH_INICIANDO = "INICIANDO",
+            SSH_PARANDO = "PARANDO";
+
+    public static int getLocalizedState(String state) {
         switch (state) {
-			case SSH_CONECTANDO:
+            case SSH_CONECTANDO:
                 return R.string.state_connecting;
             case SSH_AGUARDANDO_REDE:
                 return R.string.state_nonetwork;
@@ -240,8 +236,8 @@ public class SkStatus
                 return R.string.state_disconnected;
             case SSH_RECONECTANDO:
                 return R.string.state_reconnecting;
-			case SSH_INICIANDO:
-				return R.string.state_starting;
+            case SSH_INICIANDO:
+                return R.string.state_starting;
             case SSH_PARANDO:
                 return R.string.state_stopping;
             case "RESOLVE":
@@ -256,7 +252,7 @@ public class SkStatus
 
     }
 
-	private static ConnectionStatus getLevel(String state) {
+    private static ConnectionStatus getLevel(String state) {
         String[] noreplyet = {SSH_INICIANDO, SSH_CONECTANDO, SSH_AGUARDANDO_REDE, SSH_RECONECTANDO, "RESOLVE", "TCP_CONNECT"};
         String[] reply = {SSH_AUTENTICANDO, "GET_CONFIG", "ASSIGN_IP", "ADD_ROUTES", "AUTH_PENDING"};
         String[] connected = {SSH_CONECTADO};
@@ -276,19 +272,18 @@ public class SkStatus
 
         for (String x : notconnected)
             if (state.equals(x))
-                return ConnectionStatus.LEVEL_NOTCONNECTED;
+                return ConnectionStatus.LEVEL_NOT_CONNECTED;
 
         return ConnectionStatus.UNKNOWN_LEVEL;
     }
-	
+
     public static void updateStateString(String state, String msg) {
         int rid = getLocalizedState(state);
         ConnectionStatus level = getLevel(state);
         updateStateString(state, msg, rid, level);
     }
 
-    public synchronized static void updateStateString(String state, String msg, int resid, ConnectionStatus level)
-    {
+    public synchronized static void updateStateString(String state, String msg, int resid, ConnectionStatus level) {
         updateStateString(state, msg, resid, level, null);
     }
 
@@ -296,14 +291,14 @@ public class SkStatus
         // Workound for OpenVPN doing AUTH and wait and being connected
         // Simply ignore these state
         if (mLastLevel == ConnectionStatus.LEVEL_CONNECTED &&
-				(state.equals(SSH_AUTENTICANDO))) {
+                (state.equals(SSH_AUTENTICANDO))) {
             newLogItem(new LogItem((LogLevel.DEBUG), String.format("Ignoring SocksHttp Status in CONNECTED state (%s->%s): %s", state, level.toString(), msg)));
             return;
         }
 
-        mLaststate = state;
-        mLaststatemsg = msg;
-        mLastStateresid = resid;
+        mLastState = state;
+        mLastStateMsg = msg;
+        mLastStateResId = resid;
         mLastLevel = level;
         mLastIntent = intent;
 
@@ -311,29 +306,29 @@ public class SkStatus
         for (StateListener sl : stateListener) {
             sl.updateState(state, msg, resid, level, intent);
         }
-		
+
         //newLogItem(new LogItem((LogLevel.DEBUG), String.format("SocksHttp Novo Status (%s->%s): %s",state,level.toString(),msg)));
     }
 
-    
-	/**
-	* NewLog
-	*/
-	
+
+    /**
+     * NewLog
+     */
+
     static void newLogItem(LogItem logItem) {
         newLogItem(logItem, false);
     }
 
     synchronized static void newLogItem(LogItem logItem, boolean cachedLine) {
         if (cachedLine) {
-            logbuffer.addFirst(logItem);
+            log_buffer.addFirst(logItem);
         } else {
-            logbuffer.addLast(logItem);
+            log_buffer.addLast(logItem);
         }
 
-        if (logbuffer.size() > MAXLOGENTRIES + MAXLOGENTRIES / 2) {
-            while (logbuffer.size() > MAXLOGENTRIES)
-                logbuffer.removeFirst();
+        if (log_buffer.size() > MAX_LOGIN_TRIES + MAX_LOGIN_TRIES / 2) {
+            while (log_buffer.size() > MAX_LOGIN_TRIES)
+                log_buffer.removeFirst();
         }
 
         for (LogListener ll : logListener) {
@@ -341,34 +336,34 @@ public class SkStatus
         }
     }
 
-	
-	/**
-	* Logger static methods
-	*/
-	
-	public static void logException(String context, Exception e) {
+
+    /**
+     * Logger static methods
+     */
+
+    public static void logException(String context, Exception e) {
         logException(LogLevel.ERROR, context, e);
     }
-	
-	public static void logException(LogLevel ll, String context, Exception e) {
+
+    public static void logException(LogLevel ll, String context, Exception e) {
         StringWriter sw = new StringWriter();
         e.printStackTrace(new PrintWriter(sw));
 
-		LogItem li;
-		
-		if (context != null)
-			li = new LogItem(ll, String.format("%s: %s, %s", context, e.getMessage(), sw.toString()));
-		else
-			li = new LogItem(ll, String.format("Erro: %s, %s", e.getMessage(), sw.toString()));
+        LogItem li;
+
+        if (context != null)
+            li = new LogItem(ll, String.format("%s: %s, %s", context, e.getMessage(), sw.toString()));
+        else
+            li = new LogItem(ll, String.format("Erro: %s, %s", e.getMessage(), sw.toString()));
 
         newLogItem(li);
     }
 
-	public static void logException(Exception e) {
+    public static void logException(Exception e) {
         logException(LogLevel.ERROR, null, e);
     }
-	
-	public static void logInfo(String message) {
+
+    public static void logInfo(String message) {
         newLogItem(new LogItem(LogLevel.INFO, message));
     }
 

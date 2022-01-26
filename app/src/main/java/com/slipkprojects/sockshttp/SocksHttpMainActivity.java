@@ -90,8 +90,9 @@ import com.slipkprojects.ultrasshservice.logger.ConnectionStatus;
 import com.slipkprojects.ultrasshservice.logger.SkStatus;
 import com.slipkprojects.ultrasshservice.tunnel.TunnelManagerHelper;
 import com.slipkprojects.ultrasshservice.tunnel.TunnelUtils;
-import com.slipkprojects.ultrasshservice.util.SkProtect;
 import com.slipkprojects.ultrasshservice.util.ToastUtil;
+import com.slipkprojects.sockshttp.util.DaxAppTools;
+
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
@@ -108,299 +109,293 @@ import android.widget.ScrollView;
 import android.graphics.Color;
 import android.content.ClipboardManager;
 import android.content.ClipData;
+import go.*;
+import daxlib.Daxlib;
 
 /**
  * Activity Principal
+ *
  * @author SlipkHunter
  */
 
-public class SocksHttpMainActivity extends BaseActivity
-implements DrawerLayout.DrawerListener, RewardedVideoAdListener,
-View.OnClickListener, RadioGroup.OnCheckedChangeListener,
- SkStatus.StateListener, RenzGenerator.OnDismissListener
-{
+public class SocksHttpMainActivity extends BaseActivity implements DrawerLayout.DrawerListener, RewardedVideoAdListener, View.OnClickListener, RadioGroup.OnCheckedChangeListener, SkStatus.StateListener, RenzGenerator.OnDismissListener {
 
-	private RewardedVideoAd mRewardedVideoAd;
+    private RewardedVideoAd mRewardedVideoAd;
 
-	private CardView connectionCardview;
+    private CardView connectionCardview;
 
-	private MenuItem settingsSSH;
+    private MenuItem settingsSSH;
 
-	private ImageView cArrow1;
+    private ImageView cArrow1;
 
-	private LinearLayout cLinearLayout;
+    private LinearLayout cLinearLayout;
 
-	private LinearLayout cLinearLayoutHeader;
+    private LinearLayout cLinearLayoutHeader;
 
-	private ImageView mArrow1;
+    private ImageView mArrow1;
 
-	private LinearLayout mLinearLayout;
+    private LinearLayout mLinearLayout;
 
-	private LinearLayout mLinearLayoutHeader;
+    private LinearLayout mLinearLayoutHeader;
 
-	private AdView adsBannerView;
+    private AdView adsBannerView;
 
-	private ImageButton bt_toggle_input;
+    private ImageButton bt_toggle_input;
 
-	private NestedScrollView nested_scroll_view;
+    private NestedScrollView nested_scroll_view;
 
-	private Button bt_save_input;
+    private Button bt_save_input;
 
-	private Button bt_hide_input;
+    private Button bt_hide_input;
 
-	private View lyt_expand_input;
+    private View lyt_expand_input;
 
-	private LinearLayout ly_hide_input;
+    private LinearLayout ly_hide_input;
 
-	private ScrollView main_ly;
+    private ScrollView main_ly;
 
-	private String version_nome;
+    private String version_nome;
 
 
-	private CardView tunnelLayout;
+    private CardView tunnelLayout;
 
-	private ProgressDialog pDialog;
+    private ProgressDialog pDialog;
 
 
-	private static final String TAG = SocksHttpMainActivity.class.getSimpleName();
-	private static final String UPDATE_VIEWS = "MainUpdate";
-	public static final String OPEN_LOGS = "com.slipkprojects.sockshttp:openLogs";
-	private LinearLayout sslLayout;
+    private static final String TAG = SocksHttpMainActivity.class.getSimpleName();
+    private static final String UPDATE_VIEWS = "MainUpdate";
+    public static final String OPEN_LOGS = "com.slipkprojects.sockshttp:openLogs";
+    private LinearLayout sslLayout;
 
-	private TextView sslText;
-	private LinearLayout testinglayout;
+    private TextView sslText;
+    private LinearLayout testinglayout;
 
-	private DrawerPanelMain mDrawerPanel;
+    private DrawerPanelMain mDrawerPanel;
 
-	private Settings mConfig;
-	private Toolbar toolbar_main;
-	private Handler mHandler;
+    private Settings mConfig;
+    private Toolbar toolbar_main;
+    private Handler mHandler;
 
-	private LinearLayout mainLayout;
-	private LinearLayout loginLayout;
-	private LinearLayout proxyLayout;
-	private TextView proxyText;
-	private RadioGroup metodoConexaoRadio;
-	//private RadioGroup tunnelmode_layout;
-	private TextView tunnelInfo;
-	private LinearLayout payloadLayout;
-	private TextInputEditText payloadEdit;
-	private AppCompatCheckBox customPayloadSwitch;
-	private Button starterButton;
-	private NavigationView drawerNavigationView;
-	private ImageButton inputPwShowPass;
-	private TextInputEditText inputPwUser;
-	private TextInputEditText inputPwPass;
+    private LinearLayout mainLayout;
+    private LinearLayout loginLayout;
+    private LinearLayout proxyLayout;
+    private TextView proxyText;
+    private RadioGroup metodoConexaoRadio;
+    //private RadioGroup tunnelmode_layout;
+    private TextView tunnelInfo;
+    private LinearLayout payloadLayout;
+    private TextInputEditText payloadEdit;
+    private AppCompatCheckBox customPayloadSwitch;
+    private Button starterButton;
+    private NavigationView drawerNavigationView;
+    private ImageButton inputPwShowPass;
+    private TextInputEditText inputPwUser;
+    private TextInputEditText inputPwPass;
 
-	private CardView configMsgLayout;
-	private TextView configMsgText;
+    private CardView configMsgLayout;
+    private TextView configMsgText;
 
-	private CardView Viewgone;
-	private CardView ViewGone;
-	private CardView tunneltype;
-	private TextView tunnelselected;
+    private CardView Viewgone;
+    private CardView ViewGone;
+    private CardView tunneltype;
+    private TextView tunnelselected;
 
-	private TextView mTextViewCountDown;
-	private Button mButtonSet;
-	private CheckBox mButtonStartPause;
-	private Button mButtonReset;
-	private CountDownTimer mCountDownTimer;
-	private boolean mTimerRunning;
-	private long mStartTimeInMillis;
-	private long mTimeLeftInMillis;
-	private long mEndTime;
-	private EditText mEditTextInput;
+    private TextView mTextViewCountDown;
+    private Button mButtonSet;
+    private CheckBox mButtonStartPause;
+    private Button mButtonReset;
+    private CountDownTimer mCountDownTimer;
+    private boolean mTimerRunning;
+    private long mStartTimeInMillis;
+    private long mTimeLeftInMillis;
+    private long mEndTime;
+    private EditText mEditTextInput;
 
     private ToastUtil toastutil;
 
-	private static final String AD_UNIT_ID = "ca-app-pub-9912895734802521~8721410234";
-	private InterstitialAd interstitialAd;
-	private InterstitialAd mInterstitialAd;
+    private static final String AD_UNIT_ID = "ca-app-pub-9912895734802521~8721410234";
+    private InterstitialAd interstitialAd;
+    private InterstitialAd mInterstitialAd;
 
-	private static final String[] tabTitle = {"Home","Log","Help"};
-	private LogsAdapter mLogAdapter;
-	private RecyclerView logList;
-	private TabLayout tabs;
-	private ViewPager vp;
-	private FloatingActionButton deleteLogs;
+    private static final String[] tabTitle = {"Home", "Log", "Help"};
+    private LogsAdapter mLogAdapter;
+    private RecyclerView logList;
+    private TabLayout tabs;
+    private ViewPager vp;
+    private FloatingActionButton deleteLogs;
 
-	private TextView status;
-	private LinearLayout tunnel_dialog_layout;
+    private TextView status;
+    private LinearLayout tunnel_dialog_layout;
 
-	View view1;
+    View view1;
     View view2;
     View view3;
     View view4;
-	View view20;
-	View view21;
-	View view22;
+    View view20;
+    View view21;
+    View view22;
     View view5;
     View view6;
-	View view7;
-	View view8;
+    View view7;
+    View view8;
     private GuideView mGuideView;
-	private AlertDialog dialog;
+    private AlertDialog dialog;
 
-	private TextView tunneltypeselected;
-	private TextView onoff;
+    private TextView tunneltypeselected;
+    private TextView onoff;
 
 
-	String APP = new String(new byte[]{84,104,105,115,32,97,112,112,108,105,99,97,116,105,111,110,32,105,115,32,111,119,110,101,100,32,98,121,32,78,117,116,114,111,32,87,111,114,108,100});
+    String APP = new String(new byte[]{84, 104, 105, 115, 32, 97, 112, 112, 108, 105, 99, 97, 116, 105, 111, 110, 32, 105, 115, 32, 111, 119, 110, 101, 100, 32, 98, 121, 32, 78, 117, 116, 114, 111, 32, 87, 111, 114, 108, 100});
 
-	@Override
-    protected void onCreate(@Nullable Bundle savedInstanceState)
-    {
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-		mHandler = new Handler();
-		mConfig = new Settings(this);
-		toastutil = new ToastUtil(this);
-		mDrawerPanel = new DrawerPanelMain(this);
-		Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
-		SharedPreferences prefs = getSharedPreferences(SocksHttpApp.PREFS_GERAL, Context.MODE_PRIVATE);
+        mHandler = new Handler();
+        mConfig = new Settings(this);
+        toastutil = new ToastUtil(this);
+        mDrawerPanel = new DrawerPanelMain(this);
+        Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
+        SharedPreferences prefs = getSharedPreferences(SocksHttpApp.PREFS_GERAL, Context.MODE_PRIVATE);
 
-		boolean showFirstTime = prefs.getBoolean("connect_first_time", true);
-		int lastVersion = prefs.getInt("last_version", 0);
+        boolean showFirstTime = prefs.getBoolean("connect_first_time", true);
+        int lastVersion = prefs.getInt("last_version", 0);
 
-		// se primeira vez
-		if (showFirstTime)
-        {
+
+        Log.d("showFirstTime", "Es " + showFirstTime);
+
+        // se primeira vez
+        if (showFirstTime) {
             SharedPreferences.Editor pEdit = prefs.edit();
             pEdit.putBoolean("connect_first_time", false);
-			String HwId = (mConfig.getHwID().isEmpty())? UUID.randomUUID().toString().replace("-",""): mConfig.getHwID();
-			mConfig.setHwID(HwId);
-			Settings.setDefaultConfig(this);
+            String HwId = (mConfig.getHwID().isEmpty()) ? UUID.randomUUID().toString().replace("-", "") : mConfig.getHwID();
+            mConfig.setHwID(HwId);
+            Settings.setDefaultConfig(this);
 
-			showBoasVindas();
-			showVersion();
+            showBoasVindas();
+            showVersion();
         }
 
-		try {
-			int idAtual = ConfigParser.getBuildId(this);
+        try {
+            int idAtual = ConfigParser.getBuildId(this);
 
-			if (lastVersion < idAtual) {
-				SharedPreferences.Editor pEdit = prefs.edit();
-				pEdit.putInt("last_version", idAtual);
-				pEdit.apply();
+            if (lastVersion < idAtual) {
+                SharedPreferences.Editor pEdit = prefs.edit();
+                pEdit.putInt("last_version", idAtual);
+                pEdit.apply();
 
-				// se estiver atualizando
-				if (!showFirstTime) {
-					if (lastVersion <= 12) {
-						Settings.setDefaultConfig(this);
-						Settings.clearSettings(this);
+                // se estiver atualizando
+                if (!showFirstTime) {
+                    if (lastVersion <= 12) {
+                        Settings.setDefaultConfig(this);
+                        Settings.clearSettings(this);
 
-						Toast.makeText(this, "As configurações foram limpas para evitar bugs",
-									   Toast.LENGTH_LONG).show();
-					}
-				}
+                        Toast.makeText(this, "As configurações foram limpas para evitar bugs", Toast.LENGTH_LONG).show();
+                    }
+                }
 
-			}
-		} catch(IOException e) {}
-
-
-		// set layout
-		doLayout();
-
-		//
-		SkProtect.CharlieProtect();
-
-		// recebe local dados
-		IntentFilter filter = new IntentFilter();
-		filter.addAction(UPDATE_VIEWS);
-		filter.addAction(OPEN_LOGS);
-
-		LocalBroadcastManager.getInstance(this)
-			.registerReceiver(mActivityReceiver, filter);
-
-		doUpdateLayout();
-		doTabs();
-		alllayout();
-		AdsManager.newInstance(getApplicationContext()).loadAdsInterstitial();
-	}
-
-	
-
-	public void alllayout()
-	{
-		CardView iphunter_layout = (CardView)findViewById(R.id.iphunter_layout);
-		iphunter_layout.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View p1) {
-					Intent iphunterintent = new Intent(SocksHttpMainActivity.this, IpHunter.class);
-					iphunterintent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-					startActivity(iphunterintent);
-
-				}});
-
-		CardView hostchecker_layout = (CardView)findViewById(R.id.hostchecker_layout);
-		hostchecker_layout.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View p1) {
-					Intent hostintent = new Intent(SocksHttpMainActivity.this, HostChecker.class);
-					startActivity(hostintent);
-				}});
-	}
-
-	private void tunnel_options(){
-		LayoutInflater inflater = LayoutInflater.from(this);
-		final View v = inflater.inflate(R.layout.dialog_tunnelmode, null);
-		final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setView(v);
-		RadioGroup metodoConexaoRadio = (RadioGroup) v.findViewById(R.id.activity_mainMetodoConexaoRadio);
-		metodoConexaoRadio.setOnCheckedChangeListener(this);
-		final TextView selected_tunnel_options = (TextView)v.findViewById(R.id.activitymainTextView1);
-		final TextView tunneltype_selected_layout = (TextView)v.findViewById(R.id.tunnelmode_selected_layout);
-		//final SwitchCompat payload_enable = (SwitchCompat)v.findViewById(R.id.activity_mainCustomPayloadSwitch);
-		// customPayloadSwitch = (CheckBox) findViewById(R.id.activity_mainCustomPayloadSwitch);
-		final RadioButton btn_direct = (RadioButton) v.findViewById(R.id.activity_mainSSHDirectRadioButton);
-		final RadioButton btn_ssh = (RadioButton) v.findViewById(R.id.activity_mainSSHProxyRadioButton);
-		final RadioButton btn_ssl = (RadioButton) v.findViewById(R.id.activity_mainSSLProxyRadioButton);
-		//savez = (Button) v.findViewById(R.id.savez);
-		//dialog.getWindow().setBackgroundDrawable(new ColorDrawable(R.color.colorPrimary));
-		metodoConexaoRadio.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
-			{
-				@Override
-				public void onCheckedChanged(RadioGroup group, int checkedId) {
-
-					// save id into your SharedPreferences
-
-					if(btn_direct.isChecked())
-					{
-						((AppCompatRadioButton) findViewById(R.id.activity_mainSSHDirectRadioButton)).setChecked(true);
-						//tunnel_type_txt.setText("Direct SSH");
-						tunneltype_selected_layout.setText("Direct SSH");
-						//selected_tunnel_options.setText("Direct SSH");
-						SkStatus.logInfo("<font color='green'>Direct SSH Mode</font>");
-
-					}
-					if(btn_ssh.isChecked())
-					{
-						((AppCompatRadioButton) findViewById(R.id.activity_mainSSHProxyRadioButton)).setChecked(true);
-						tunneltype_selected_layout.setText("HTTP Proxy ➔ SSH");
-						//selected_tunnel_options.setText("HTTP Proxy ➔ SSH");
-						SkStatus.logInfo("<font color='green'>SSH + PROXY Mode</font>");
-						payloadEdit.setHint(R.string.payload);
-					}
-					else if(btn_ssl.isChecked())
-					{
-						((RadioButton) findViewById(R.id.activity_mainSSLProxyRadioButton)).setChecked(true);
-						tunneltype_selected_layout.setText("SSL/TLS ➝ SSH");
-						//selected_tunnel_options.setText("SSL/TLS ➝ SSH");
-						SkStatus.logInfo("<font color='green'>SSH + SSL/TLS Mode</font>");
-						payloadLayout.setVisibility(View.VISIBLE);
-					}
-				}
-			});
+            }
+        } catch (IOException e) {
+        }
 
 
-		builder.setPositiveButton("SAVE", new DialogInterface.OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int i) {
+        // set layout
+        doLayout();
 
-					dialog.dismiss();
+        // security
+        DaxAppTools.checkApp();
 
-				}
-			});
+        // recebe local dados
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(UPDATE_VIEWS);
+        filter.addAction(OPEN_LOGS);
+
+        LocalBroadcastManager.getInstance(this).registerReceiver(mActivityReceiver, filter);
+
+        doUpdateLayout();
+        doTabs();
+        alllayout();
+        AdsManager.newInstance(getApplicationContext()).loadAdsInterstitial();
+    }
+
+
+    public void alllayout() {
+        CardView iphunter_layout = (CardView) findViewById(R.id.iphunter_layout);
+        iphunter_layout.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View p1) {
+                Intent iphunterintent = new Intent(SocksHttpMainActivity.this, IpHunter.class);
+                iphunterintent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(iphunterintent);
+
+            }
+        });
+
+        CardView hostchecker_layout = (CardView) findViewById(R.id.hostchecker_layout);
+        hostchecker_layout.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View p1) {
+                Intent hostintent = new Intent(SocksHttpMainActivity.this, HostChecker.class);
+                startActivity(hostintent);
+            }
+        });
+    }
+
+    private void tunnel_options() {
+        LayoutInflater inflater = LayoutInflater.from(this);
+        final View v = inflater.inflate(R.layout.dialog_tunnelmode, null);
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setView(v);
+        RadioGroup metodoConexaoRadio = (RadioGroup) v.findViewById(R.id.activity_mainMetodoConexaoRadio);
+        metodoConexaoRadio.setOnCheckedChangeListener(this);
+        final TextView selected_tunnel_options = (TextView) v.findViewById(R.id.activitymainTextView1);
+        final TextView tunneltype_selected_layout = (TextView) v.findViewById(R.id.tunnelmode_selected_layout);
+        //final SwitchCompat payload_enable = (SwitchCompat)v.findViewById(R.id.activity_mainCustomPayloadSwitch);
+        // customPayloadSwitch = (CheckBox) findViewById(R.id.activity_mainCustomPayloadSwitch);
+        final RadioButton btn_direct = (RadioButton) v.findViewById(R.id.activity_mainSSHDirectRadioButton);
+        final RadioButton btn_ssh = (RadioButton) v.findViewById(R.id.activity_mainSSHProxyRadioButton);
+        final RadioButton btn_ssl = (RadioButton) v.findViewById(R.id.activity_mainSSLProxyRadioButton);
+        //savez = (Button) v.findViewById(R.id.savez);
+        //dialog.getWindow().setBackgroundDrawable(new ColorDrawable(R.color.colorPrimary));
+        metodoConexaoRadio.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+
+                // save id into your SharedPreferences
+
+                if (btn_direct.isChecked()) {
+                    ((AppCompatRadioButton) findViewById(R.id.activity_mainSSHDirectRadioButton)).setChecked(true);
+                    //tunnel_type_txt.setText("Direct SSH");
+                    tunneltype_selected_layout.setText("Direct SSH");
+                    //selected_tunnel_options.setText("Direct SSH");
+                    SkStatus.logInfo("<font color='green'>Direct SSH Mode</font>");
+
+                }
+                if (btn_ssh.isChecked()) {
+                    ((AppCompatRadioButton) findViewById(R.id.activity_mainSSHProxyRadioButton)).setChecked(true);
+                    tunneltype_selected_layout.setText("HTTP Proxy ➔ SSH");
+                    //selected_tunnel_options.setText("HTTP Proxy ➔ SSH");
+                    SkStatus.logInfo("<font color='green'>SSH + PROXY Mode</font>");
+                    payloadEdit.setHint(R.string.payload);
+                } else if (btn_ssl.isChecked()) {
+                    ((RadioButton) findViewById(R.id.activity_mainSSLProxyRadioButton)).setChecked(true);
+                    tunneltype_selected_layout.setText("SSL/TLS ➝ SSH");
+                    //selected_tunnel_options.setText("SSL/TLS ➝ SSH");
+                    SkStatus.logInfo("<font color='green'>SSH + SSL/TLS Mode</font>");
+                    payloadLayout.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
+
+        builder.setPositiveButton("SAVE", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int i) {
+
+                dialog.dismiss();
+
+            }
+        });
 		/*btn_saveR.setOnClickListener(new View.OnClickListener() {
 		 @Override
 		 public void onClick(View v) {
@@ -409,72 +404,65 @@ View.OnClickListener, RadioGroup.OnCheckedChangeListener,
 		 }
 		 });*/
 
-		builder.show();
-	}
+        builder.show();
+    }
 
-	public void tunnel_options_layout(View v)
-	{
-		tunnel_options();
-	}
+    public void tunnel_options_layout(View v) {
+        tunnel_options();
+    }
 
-	public void OpenAppListing (View v)
-	{
-		mLogAdapter.clearLog();
-	}
-	public void doTabs() {
-        vp = (ViewPager)findViewById(R.id.viewpager);
-        tabs = (TabLayout)findViewById(R.id.tablayout);
+    public void OpenAppListing(View v) {
+        mLogAdapter.clearLog();
+    }
+
+    public void doTabs() {
+        vp = (ViewPager) findViewById(R.id.viewpager);
+        tabs = (TabLayout) findViewById(R.id.tablayout);
         vp.setAdapter(new MyAdapter(Arrays.asList(tabTitle)));
         vp.setOffscreenPageLimit(3);
         tabs.setTabMode(TabLayout.MODE_FIXED);
         tabs.setTabGravity(TabLayout.GRAVITY_FILL);
         tabs.setupWithViewPager(vp);
 
-		vp.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener()
-            {
-                @Override
-                public void onPageSelected(int position)
-                {
-                    if (position == 0) {
-                        toolbar_main.getMenu().clear();
-						getMenuInflater().inflate(R.menu.main_menu, toolbar_main.getMenu());
-                    } else if (position == 1) {
-                        toolbar_main.getMenu().clear();
-						getMenuInflater().inflate(R.menu.logs_menu, toolbar_main.getMenu());
-					} else if (position == 2) {
-                        toolbar_main.getMenu().clear();
-						getMenuInflater().inflate(R.menu.vp_menu, toolbar_main.getMenu());
-						
-						}
+        vp.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+            @Override
+            public void onPageSelected(int position) {
+                if (position == 0) {
+                    toolbar_main.getMenu().clear();
+                    getMenuInflater().inflate(R.menu.main_menu, toolbar_main.getMenu());
+                } else if (position == 1) {
+                    toolbar_main.getMenu().clear();
+                    getMenuInflater().inflate(R.menu.logs_menu, toolbar_main.getMenu());
+                } else if (position == 2) {
+                    toolbar_main.getMenu().clear();
+                    getMenuInflater().inflate(R.menu.vp_menu, toolbar_main.getMenu());
+
                 }
-			});
-	}
+            }
+        });
+    }
 
-	@Override
-	public void onCheckedChanged(RadioGroup group, int checkedId) {
+    @Override
+    public void onCheckedChanged(RadioGroup group, int checkedId) {
 
-	}
+    }
 
-	public class MyAdapter extends PagerAdapter
-    {
+    public class MyAdapter extends PagerAdapter {
 
         @Override
-        public int getCount()
-        {
+        public int getCount() {
             // TODO: Implement this method
             return 3;
         }
 
         @Override
-        public boolean isViewFromObject(View p1, Object p2)
-        {
+        public boolean isViewFromObject(View p1, Object p2) {
             // TODO: Implement this method
             return p1 == p2;
         }
 
         @Override
-        public Object instantiateItem(ViewGroup container, int position)
-        {
+        public Object instantiateItem(ViewGroup container, int position) {
             int[] ids = new int[]{R.id.tab1, R.id.tab2, R.id.tab3};
             int id = 0;
             id = ids[position];
@@ -483,366 +471,311 @@ View.OnClickListener, RadioGroup.OnCheckedChangeListener,
         }
 
         @Override
-        public CharSequence getPageTitle(int position)
-        {
+        public CharSequence getPageTitle(int position) {
             // TODO: Implement this method
             return titles.get(position);
         }
 
         private List<String> titles;
-        public MyAdapter(List<String> str)
-        {
+
+        public MyAdapter(List<String> str) {
             titles = str;
         }
-	}
-	public void guides()
-	{
-		new GuideView.Builder(SocksHttpMainActivity.this)
-			.setTitle(getString(R.string.tun_type))
-			.setContentText("Here you can change the tunnel type of your choice")
-			.setGravity(Gravity.center)
-			.setTargetView(view1)
-			.setDismissType(DismissType.outside) //optional - default dismissible by TargetView
-			.setGuideListener(new GuideListener() {
-				@Override
-				public void onDismiss(View view) {
-					//TODO ...
-					new GuideView.Builder(SocksHttpMainActivity.this)
-						.setTitle("Config Login")
-						.setContentText("In This Config Login you need to enter password provides by creator if null")
-						.setGravity(Gravity.center)
-						.setTargetView(view2)
-						.setDismissType(DismissType.outside) //optional - default dismissible by TargetView
-						.setGuideListener(new GuideListener() {
+    }
 
-//ari nimu e solod ang bag o
-							@Override
-							public void onDismiss(View view) {
-								//TODO ...
-								new GuideView.Builder(SocksHttpMainActivity.this)
-									.setTitle("Import/Export")
-									.setContentText("Here is where you import/export config")
-									.setGravity(Gravity.center)
-									.setTargetView(view3)
-									.setDismissType(DismissType.outside) //optional - default dismissible by TargetView
-									.setGuideListener(new GuideListener() {
-										@Override
-										public void onDismiss(View view) {
-											//TODO ...
-											new GuideView.Builder(SocksHttpMainActivity.this)
-												.setTitle("Menu")
-												.setContentText("Click here for more options")
-												.setGravity(Gravity.center)
-												.setTargetView(view4)
-												.setDismissType(DismissType.outside) //optional - default dismissible by TargetView
-												.setGuideListener(new GuideListener() {
+    public void guides() {
+        new GuideView.Builder(SocksHttpMainActivity.this).setTitle(getString(R.string.tun_type)).setContentText("Here you can change the tunnel type of your choice").setGravity(Gravity.center).setTargetView(view1).setDismissType(DismissType.outside) //optional - default dismissible by TargetView
+                .setGuideListener(new GuideListener() {
+                    @Override
+                    public void onDismiss(View view) {
+                        //TODO ...
+                        new GuideView.Builder(SocksHttpMainActivity.this).setTitle("Config Login").setContentText("In This Config Login you need to enter password provides by creator if null").setGravity(Gravity.center).setTargetView(view2).setDismissType(DismissType.outside) //optional - default dismissible by TargetView
+                                .setGuideListener(new GuideListener() {
 
-													@Override
-													public void onDismiss(View view) {
-														//TODO ...
-														new GuideView.Builder(SocksHttpMainActivity.this)
-															.setTitle("Clear Log")
-															.setContentText("Click here to refresh logs")
-															.setGravity(Gravity.center)
-															.setTargetView(view20)
-															.setDismissType(DismissType.outside) //optional - default dismissible by TargetView
-															.setGuideListener(new GuideListener() {
+                                    //ari nimu e solod ang bag o
+                                    @Override
+                                    public void onDismiss(View view) {
+                                        //TODO ...
+                                        new GuideView.Builder(SocksHttpMainActivity.this).setTitle("Import/Export").setContentText("Here is where you import/export config").setGravity(Gravity.center).setTargetView(view3).setDismissType(DismissType.outside) //optional - default dismissible by TargetView
+                                                .setGuideListener(new GuideListener() {
+                                                    @Override
+                                                    public void onDismiss(View view) {
+                                                        //TODO ...
+                                                        new GuideView.Builder(SocksHttpMainActivity.this).setTitle("Menu").setContentText("Click here for more options").setGravity(Gravity.center).setTargetView(view4).setDismissType(DismissType.outside) //optional - default dismissible by TargetView
+                                                                .setGuideListener(new GuideListener() {
 
-																@Override
-																public void onDismiss(View view) {
-																	//TODO ...
-																	new GuideView.Builder(SocksHttpMainActivity.this)
-																		.setTitle("Connect/Disconnect")
-																		.setContentText("Click This Button To :\n\nConnect = Start connection between the server...\n\nDisconnect = Stop the connection")
-																		.setGravity(Gravity.center)
-																		.setTargetView(view21)
-																		.setDismissType(DismissType.outside) //optional - default dismissible by TargetView
-																		.setGuideListener(new GuideListener() {
+                                                                    @Override
+                                                                    public void onDismiss(View view) {
+                                                                        //TODO ...
+                                                                        new GuideView.Builder(SocksHttpMainActivity.this).setTitle("Clear Log").setContentText("Click here to refresh logs").setGravity(Gravity.center).setTargetView(view20).setDismissType(DismissType.outside) //optional - default dismissible by TargetView
+                                                                                .setGuideListener(new GuideListener() {
 
-//ari nimu e solod ang bag o
-																			@Override
-																			public void onDismiss(View view) {
-																				//TODO ...
+                                                                                    @Override
+                                                                                    public void onDismiss(View view) {
+                                                                                        //TODO ...
+                                                                                        new GuideView.Builder(SocksHttpMainActivity.this).setTitle("Connect/Disconnect").setContentText("Click This Button To :\n\nConnect = Start connection between the server...\n\nDisconnect = Stop the connection").setGravity(Gravity.center).setTargetView(view21).setDismissType(DismissType.outside) //optional - default dismissible by TargetView
+                                                                                                .setGuideListener(new GuideListener() {
 
-																			}
+                                                                                                    //ari nimu e solod ang bag o
+                                                                                                    @Override
+                                                                                                    public void onDismiss(View view) {
+                                                                                                        //TODO ...
 
-																		})
-																		.build()
-																		.show();
-																}
-															})
-															.build()
-															.show();
-													}
+                                                                                                    }
 
-												})
-												.build()
-												.show();
-										}
-									})
-									.build()
-									.show();
-							}
-						})
-						.build()
-						.show();
-				}
-			})
-			.build()
-			.show();
+                                                                                                }).build().show();
+                                                                                    }
+                                                                                }).build().show();
+                                                                    }
 
-		updatingForDynamicLocationViews();
-	}
-	private void updatingForDynamicLocationViews() {
+                                                                }).build().show();
+                                                    }
+                                                }).build().show();
+                                    }
+                                }).build().show();
+                    }
+                }).build().show();
+
+        updatingForDynamicLocationViews();
+    }
+
+    private void updatingForDynamicLocationViews() {
         view4.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-				@Override
-				public void onFocusChange(View view, boolean b) {
-					mGuideView.updateGuideViewLocation();
-				}
-			});}
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                mGuideView.updateGuideViewLocation();
+            }
+        });
+    }
 
-	public class DrawerPanelMain
-	implements NavigationView.OnNavigationItemSelectedListener
-	{
-		private AppCompatActivity mActivity;
-
+    public class DrawerPanelMain implements NavigationView.OnNavigationItemSelectedListener {
+        private AppCompatActivity mActivity;
 
 
-		public DrawerPanelMain(AppCompatActivity activity) {
-			mActivity = activity;
-		}
+        public DrawerPanelMain(AppCompatActivity activity) {
+            mActivity = activity;
+        }
 
 
-		private DrawerLayout drawerLayout;
-		private ActionBarDrawerToggle toggle;
+        private DrawerLayout drawerLayout;
+        private ActionBarDrawerToggle toggle;
 
-		public void setDrawer(Toolbar toolbar) {
-			drawerNavigationView = (NavigationView) mActivity.findViewById(R.id.drawerNavigationView);
-			drawerLayout = (DrawerLayout) mActivity.findViewById(R.id.drawerLayoutMain);
+        public void setDrawer(Toolbar toolbar) {
+            drawerNavigationView = (NavigationView) mActivity.findViewById(R.id.drawerNavigationView);
+            drawerLayout = (DrawerLayout) mActivity.findViewById(R.id.drawerLayoutMain);
 
-			// set drawer
-			toggle = new ActionBarDrawerToggle(mActivity,
-											   drawerLayout, toolbar, R.string.open, R.string.cancel);
+            // set drawer
+            toggle = new ActionBarDrawerToggle(mActivity, drawerLayout, toolbar, R.string.open, R.string.cancel);
 
-			drawerLayout.setDrawerListener(toggle);
+            drawerLayout.setDrawerListener(toggle);
 
-			toggle.syncState();
+            toggle.syncState();
 
-			// set app info
-			PackageInfo pinfo = Utils.getAppInfo(mActivity);
-			if (pinfo != null) {
-				String version_nome = pinfo.versionName;
-				int version_code = pinfo.versionCode;
-				String header_text = String.format("v. %s (%d)", version_nome, version_code);
+            // set app info
+            PackageInfo pinfo = Utils.getAppInfo(mActivity);
+            if (pinfo != null) {
+                String version_nome = pinfo.versionName;
+                int version_code = pinfo.versionCode;
+                String header_text = String.format("v. %s (%d)", version_nome, version_code);
 
-				View view = drawerNavigationView.getHeaderView(0);
+                View view = drawerNavigationView.getHeaderView(0);
 
-				TextView app_info_text = view.findViewById(R.id.nav_headerAppVersion);
-				app_info_text.setText(header_text);
-			}
+                TextView app_info_text = view.findViewById(R.id.nav_headerAppVersion);
+                app_info_text.setText(header_text);
+            }
 
-			// set navigation view
-			drawerNavigationView.setNavigationItemSelectedListener(this);
-		}
+            // set navigation view
+            drawerNavigationView.setNavigationItemSelectedListener(this);
+        }
 
-		public ActionBarDrawerToggle getToogle() {
-			return toggle;
-		}
+        public ActionBarDrawerToggle getToogle() {
+            return toggle;
+        }
 
-		public DrawerLayout getDrawerLayout() {
-			return drawerLayout;
-		}
+        public DrawerLayout getDrawerLayout() {
+            return drawerLayout;
+        }
 
-		@Override
-		public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-			int id = item.getItemId();
+        @Override
+        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            int id = item.getItemId();
 
-			switch(id)
-			{
-				case R.id.miPhoneConfg:
-					PackageInfo app_info = Utils.getAppInfo(mActivity);
-					if (app_info != null) {
-						String aparelho_marca = Build.BRAND.toUpperCase();
+            switch (id) {
+                case R.id.miPhoneConfg:
+                    PackageInfo app_info = Utils.getAppInfo(mActivity);
+                    if (app_info != null) {
+                        String aparelho_marca = Build.BRAND.toUpperCase();
 
-						if (aparelho_marca.equals("") || aparelho_marca.equals("")) {
-							Light.error(main_ly, getString(R.string.error_no_supported), Snackbar.LENGTH_LONG).show();
-						}
-						else {
-							try {
-								Intent in = new Intent(Intent.ACTION_MAIN);
-								in.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-								in.setClassName("com.android.settings", "com.android.settings.RadioInfo");
-								mActivity.startActivity(in);
-							} catch(Exception e) {
-								Light.error(main_ly, getString(R.string.error_no_supported), Snackbar.LENGTH_LONG).show();
-							}
-						}
-					}
-					break;
-				case R.id.miGen:
-					SharedPreferences prefs = mConfig.getPrefsPrivate();
-					boolean protect = prefs.getBoolean(Settings.CONFIG_PROTEGER_KEY, false);
-					if (protect) {
-						Light.warning(main_ly, "Config is locked!!!", Snackbar.LENGTH_LONG).show();
-						} else {
-					
-					if(customPayloadSwitch.isChecked())
-					{
-						showGenerator();
+                        if (aparelho_marca.equals("") || aparelho_marca.equals("")) {
+                            Light.error(main_ly, getString(R.string.error_no_supported), Snackbar.LENGTH_LONG).show();
+                        } else {
+                            try {
+                                Intent in = new Intent(Intent.ACTION_MAIN);
+                                in.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                in.setClassName("com.android.settings", "com.android.settings.RadioInfo");
+                                mActivity.startActivity(in);
+                            } catch (Exception e) {
+                                Light.error(main_ly, getString(R.string.error_no_supported), Snackbar.LENGTH_LONG).show();
+                            }
+                        }
+                    }
+                    break;
+                case R.id.miGen:
+                    SharedPreferences prefs = mConfig.getPrefsPrivate();
+                    boolean protect = prefs.getBoolean(Settings.CONFIG_PROTEGER_KEY, false);
+                    if (protect) {
+                        Light.warning(main_ly, "Config is locked!!!", Snackbar.LENGTH_LONG).show();
+                    } else {
 
-					} else {
-						Light.info(main_ly, "Please enable the Custom Payload Switch..", Snackbar.LENGTH_LONG).show();
-						
-                       }
-					}
-					break;
+                        if (customPayloadSwitch.isChecked()) {
+                            showGenerator();
 
-				case R.id.iphunter2:
-					Intent iphunterintent = new Intent(mActivity, IpHunter.class);
-					iphunterintent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-					mActivity.startActivity(iphunterintent);
-					if (adsBannerView != null && TunnelUtils.isNetworkOnline(SocksHttpMainActivity.this)) {
-						adsBannerView.setAdListener(new AdListener() {
-								@Override
-								public void onAdLoaded() {
-									if (adsBannerView != null && !isFinishing()) {
-										adsBannerView.setVisibility(View.VISIBLE);
-									}
-								}
-							});
-						adsBannerView.postDelayed(new Runnable() {
-								@Override
-								public void run() {
-									// carrega ads interestitial
+                        } else {
+                            Light.info(main_ly, "Please enable the Custom Payload Switch..", Snackbar.LENGTH_LONG).show();
+
+                        }
+                    }
+                    break;
+
+                case R.id.iphunter2:
+                    Intent iphunterintent = new Intent(mActivity, IpHunter.class);
+                    iphunterintent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    mActivity.startActivity(iphunterintent);
+                    if (adsBannerView != null && TunnelUtils.isNetworkOnline(SocksHttpMainActivity.this)) {
+                        adsBannerView.setAdListener(new AdListener() {
+                            @Override
+                            public void onAdLoaded() {
+                                if (adsBannerView != null && !isFinishing()) {
+                                    adsBannerView.setVisibility(View.VISIBLE);
+                                }
+                            }
+                        });
+                        adsBannerView.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                // carrega ads interestitial
 //									AdsManager.newInstance(getApplicationContext())
 //										.loadAdsInterstitial();
-									// ads banner
-									if (adsBannerView != null && !isFinishing()) {
+                                // ads banner
+                                if (adsBannerView != null && !isFinishing()) {
 //										adsBannerView.loadAd(new AdRequest.Builder()
 //															 .build());
-									}
-								}
-							}, 5000);
-					}
+                                }
+                            }
+                        }, 5000);
+                    }
 
-					break;
+                    break;
 
-					/*case R.id.hostchecker2:
-					 Intent hostcheckerintent = new Intent(mActivity, HostChecker.class);
-					 hostcheckerintent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-					 mActivity.startActivity(hostcheckerintent);
-					 break;*/
-				case R.id.hwid:
+                case R.id.hostchecker2:
+                    Intent hostcheckerintent = new Intent(mActivity, HostChecker.class);
+                    hostcheckerintent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    mActivity.startActivity(hostcheckerintent);
+                    break;
+                case R.id.hwid:
+                    String hwid_copy = mConfig.getHwID();
+                    ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                    ClipData clip = ClipData.newPlainText("Log Entry", hwid_copy);
+                    clipboard.setPrimaryClip(clip);
 
-					String hwid_copy = mConfig.getHwID();
-					ClipboardManager clipboard = (ClipboardManager)getSystemService(Context.CLIPBOARD_SERVICE);
-					ClipData clip = ClipData.newPlainText("Log Entry", hwid_copy);
-					clipboard.setPrimaryClip(clip);
+                    Light.success(main_ly, getString(R.string.success_hwid_export), Snackbar.LENGTH_LONG).show();
+                    break;
 
-					Light.success(main_ly, getString(R.string.success_hwid_export), Snackbar.LENGTH_LONG).show();
-					break;
-
-				case R.id.miSettings:
-					Intent intent = new Intent(mActivity, ConfigGeralActivity.class);
-					intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-					mActivity.startActivity(intent);
-					if (adsBannerView != null && TunnelUtils.isNetworkOnline(SocksHttpMainActivity.this)) {
-						adsBannerView.setAdListener(new AdListener() {
-								@Override
-								public void onAdLoaded() {
-									if (adsBannerView != null && !isFinishing()) {
-										adsBannerView.setVisibility(View.VISIBLE);
-									}
-								}
-							});
-						adsBannerView.postDelayed(new Runnable() {
-								@Override
-								public void run() {
-									// carrega ads interestitial
+                case R.id.miSettings:
+                    Intent intent = new Intent(mActivity, ConfigGeralActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    mActivity.startActivity(intent);
+                    if (TunnelUtils.isNetworkOnline(SocksHttpMainActivity.this) && adsBannerView != null) {
+                        adsBannerView.setAdListener(new AdListener() {
+                            @Override
+                            public void onAdLoaded() {
+                                if (adsBannerView != null && !isFinishing()) {
+                                    adsBannerView.setVisibility(View.VISIBLE);
+                                }
+                            }
+                        });
+                        adsBannerView.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                // carrega ads interestitial
 //									AdsManager.newInstance(getApplicationContext())
 //										.loadAdsInterstitial();
-									// ads banner
-									if (adsBannerView != null && !isFinishing()) {
+                                // ads banner
+                                if (adsBannerView != null && !isFinishing()) {
 //										adsBannerView.loadAd(new AdRequest.Builder()
 //															 .build());
-									}
-								}
-							}, 5000);
-					}
-					break;
+                                }
+                            }
+                        }, 5000);
+                    }
+                    break;
 
-				case R.id.miSettingsSSH:
-					SharedPreferences mPrefs = mConfig.getPrefsPrivate();
-					int tunnelType = mPrefs.getInt(Settings.TUNNELTYPE_KEY, Settings.bTUNNEL_TYPE_SSH_DIRECT);
+                case R.id.miSettingsSSH:
+                    SharedPreferences mPrefs = mConfig.getPrefsPrivate();
+                    int tunnelType = mPrefs.getInt(Settings.TUNNELTYPE_KEY, Settings.bTUNNEL_TYPE_SSH_DIRECT);
 
-					if (tunnelType == Settings.bTUNNEL_TYPE_SLOWDNS) {
-						Intent intent2 = new Intent(SocksHttpMainActivity.this, ConfigGeralActivity.class);
-						intent2.setAction(ConfigGeralActivity.OPEN_SETTINGS_DNS);
-						intent2.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-						startActivity(intent2);
-					} else {
-						Intent intent2 = new Intent(SocksHttpMainActivity.this, ConfigGeralActivity.class);
-						intent2.setAction(ConfigGeralActivity.OPEN_SETTINGS_SSH);
-						intent2.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-						startActivity(intent2);
-					}
-					if (adsBannerView != null && TunnelUtils.isNetworkOnline(SocksHttpMainActivity.this)) {
-						adsBannerView.setAdListener(new AdListener() {
-								@Override
-								public void onAdLoaded() {
-									if (adsBannerView != null && !isFinishing()) {
-										adsBannerView.setVisibility(View.VISIBLE);
-									}
-								}
-							});
-						adsBannerView.postDelayed(new Runnable() {
-								@Override
-								public void run() {
-									// carrega ads interestitial
+                    if (tunnelType == Settings.bTUNNEL_TYPE_SLOWDNS) {
+                        Intent intent2 = new Intent(SocksHttpMainActivity.this, ConfigGeralActivity.class);
+                        intent2.setAction(ConfigGeralActivity.OPEN_SETTINGS_DNS);
+                        intent2.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent2);
+                    } else {
+                        Intent intent2 = new Intent(SocksHttpMainActivity.this, ConfigGeralActivity.class);
+                        intent2.setAction(ConfigGeralActivity.OPEN_SETTINGS_SSH);
+                        intent2.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent2);
+                    }
+                    if (adsBannerView != null && TunnelUtils.isNetworkOnline(SocksHttpMainActivity.this)) {
+                        adsBannerView.setAdListener(new AdListener() {
+                            @Override
+                            public void onAdLoaded() {
+                                if (adsBannerView != null && !isFinishing()) {
+                                    adsBannerView.setVisibility(View.VISIBLE);
+                                }
+                            }
+                        });
+                        adsBannerView.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                // carrega ads interestitial
 //									AdsManager.newInstance(getApplicationContext())
 //										.loadAdsInterstitial();
-									// ads banner
-									if (adsBannerView != null && !isFinishing()) {
+                                // ads banner
+                                if (adsBannerView != null && !isFinishing()) {
 //										adsBannerView.loadAd(new AdRequest.Builder()
 //															 .build());
-									}
-								}
-							}, 5000);
-					}
-					break;
+                                }
+                            }
+                        }, 5000);
+                    }
+                    break;
 
 
-				case R.id.miAvaliarPlaystore:
-					Intent email1 = new Intent(Intent.ACTION_SEND);  
-					String url = "https://play.google.com/store/apps/details?id=com.afaya.dayax";
-					Intent intent3 = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-					intent3.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-					mActivity.startActivity(Intent.createChooser(intent3, mActivity.getText(R.string.open_with)));
-					Snackbar snackbar;
-					snackbar = Snackbar.make(main_ly, "Please make sure you join", Snackbar.LENGTH_SHORT);
-					View snackBarView = snackbar.getView();
-					TextView textView = (TextView) snackBarView.findViewById(com.google.android.material.R.id.snackbar_text);
-					textView.setTextColor(Color.GREEN);
-					snackbar.show();
+                case R.id.miAvaliarPlaystore:
+                    Intent intent3 = new Intent(Intent.ACTION_VIEW, Uri.parse(Daxlib.getAA("zxl"))).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    mActivity.startActivity(Intent.createChooser(intent3, mActivity.getText(R.string.open_with)));
+                    Snackbar snackbar = Snackbar.make(main_ly, "Please make sure you join", Snackbar.LENGTH_SHORT);
+                    View snackBarView = snackbar.getView();
+                    TextView textView = (TextView) snackBarView.findViewById(com.google.android.material.R.id.snackbar_text);
+                    textView.setTextColor(Color.GREEN);
+                    snackbar.show();
 
-					break;
+                    break;
 
 
-				case R.id.more:
-					Intent aboutIntent = new Intent(mActivity, AboutActivity.class);
-					startActivity(aboutIntent);
-					break;
+                case R.id.more:
+                    Intent aboutIntent = new Intent(mActivity, AboutActivity.class);
+                    startActivity(aboutIntent);
+                    break;
 
-			   case R.id.mloadAds:
-					mLoadAdsa();
-					break;
+                case R.id.mloadAds:
+                    loadAds();
+                    break;
 
-				case R.id.miAdmin:
-					String url1 = "https://t.me/andresayac";
-					Intent intent4 = new Intent(Intent.ACTION_VIEW, Uri.parse(url1));
-					intent4.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-					mActivity.startActivity(Intent.createChooser(intent4, mActivity.getText(R.string.open_with)));
-					break;
+                case R.id.miAdmin:
+                    Intent intent4 = new Intent(Intent.ACTION_VIEW, Uri.parse(Daxlib.getAA("tXl"))).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    mActivity.startActivity(Intent.createChooser(intent4, mActivity.getText(R.string.open_with)));
+                    break;
 
 				/*case R.id.miSendFeedback:
 					if (false && Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
@@ -867,282 +800,271 @@ View.OnClickListener, RadioGroup.OnCheckedChangeListener,
 
 					}
 					break;*/
-			}
+            }
 
-			return true;
-		}
-
-
+            return true;
+        }
 
 
-
-	}
-
-
-	private void mLoadAdsa() {
-
-		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
-		LayoutInflater inflater = getLayoutInflater();
-		View dialogView = inflater.inflate(R.layout.load_ads,null);
-
-		builder.setView(dialogView);
-		Button one = dialogView.findViewById(R.id.loadadsButton);
-		final AlertDialog dialog = builder.create();
+    }
 
 
-		one.setOnClickListener(new View.OnClickListener() {
+    private void loadAds() {
 
-				@Override
-				public void onClick(View v) {
-					// TODO Auto-generated method stub
-					loadingAdsa();
-					loadRewardedVideoAd();
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-				}
+        LayoutInflater inflater = getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.load_ads, null);
 
-			});
-
-		dialog.show();
-
-	}
+        builder.setView(dialogView);
+        Button one = dialogView.findViewById(R.id.loadadsButton);
+        final AlertDialog dialog = builder.create();
 
 
-	private void loadingAdsa() {
+        one.setOnClickListener(new View.OnClickListener() {
 
-		pDialog = new ProgressDialog(this);
-		pDialog.setTitle("Loading Video Ad");
-		pDialog.setMessage("Please wait...");
-		pDialog.setCancelable(false);
-		pDialog.show();
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                loadingAdsa();
+                loadRewardedVideoAd();
 
-	}
+            }
 
-	private void cLoadAdsa()
-	{
-		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        });
 
-		LayoutInflater inflater = getLayoutInflater();
-		View dialogView1 = inflater.inflate(R.layout.loadfailed,null);
+        dialog.show();
 
-		builder.setView(dialogView1);
-		Button one = dialogView1.findViewById(R.id.loadfailedButton);
-		final AlertDialog dialog = builder.create();
+    }
 
 
-		one.setOnClickListener(new View.OnClickListener() {
+    private void loadingAdsa() {
 
-				@Override
-				public void onClick(View v) {
-					// TODO Auto-generated method stub
-					loadingAdsa();
-					loadRewardedVideoAd();
+        pDialog = new ProgressDialog(this);
+        pDialog.setTitle("Loading Video Ad");
+        pDialog.setMessage("Please wait...");
+        pDialog.setCancelable(false);
+        pDialog.show();
 
-				}
+    }
 
-			});
+    private void cLoadAdsa() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-		dialog.show();
+        LayoutInflater inflater = getLayoutInflater();
+        View dialogView1 = inflater.inflate(R.layout.loadfailed, null);
 
-	}
-
-
-	/**
-	 * Layout
-	 */
-	private void showGenerator() {
-
-		RenzGenerator gen = new RenzGenerator(this);
-		gen.setDismissListener(this);
-		dialog = new AlertDialog.Builder(this).create();
-		dialog.setView(gen);
-		dialog.show();
-
-	}
-
-	@Override
-	public void onDismiss(String payload)
-	{
-		payloadEdit.setText(payload);
-		Light.success(main_ly, "Payload successfully generated.", Snackbar.LENGTH_LONG).show();
-		dialog.dismiss();
-		// TODO: Implement this method
-	}
-
-	//for example ito code ng connect
+        builder.setView(dialogView1);
+        Button one = dialogView1.findViewById(R.id.loadfailedButton);
+        final AlertDialog dialog = builder.create();
 
 
+        one.setOnClickListener(new View.OnClickListener() {
 
-	private void doLayout() {
-		setContentView(R.layout.activity_main_drawer);
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                loadingAdsa();
+                loadRewardedVideoAd();
+
+            }
+
+        });
+
+        dialog.show();
+
+    }
 
 
-		toolbar_main = (Toolbar) findViewById(R.id.toolbar_main);
-		mDrawerPanel.setDrawer(toolbar_main);
-		setSupportActionBar(toolbar_main);
-		mEditTextInput=(EditText)findViewById(R.id.time);
+    /**
+     * Layout
+     */
+    private void showGenerator() {
 
-		mTextViewCountDown = (TextView) findViewById(R.id.duration);
+        RenzGenerator gen = new RenzGenerator(this);
+        gen.setDismissListener(this);
+        dialog = new AlertDialog.Builder(this).create();
+        dialog.setView(gen);
+        dialog.show();
 
-		mButtonSet = (Button) findViewById(R.id.set);
-		mButtonSet.setOnClickListener(new View.OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					String input = mEditTextInput.getText().toString();
-					if (input.length() == 0) {
-						Light.error(main_ly, "Field can't be empty", Snackbar.LENGTH_LONG).show();
-						return;
-					}
-					long millisInput = Long.parseLong(input) * 1000;
-					if (millisInput == 0) {
-						Light.error(main_ly, "Please a positive number", Snackbar.LENGTH_LONG).show();
-						return;
-					}
-					setTime(millisInput);
-					mEditTextInput.setText("55");
-				}
-			});
+    }
 
-		MobileAds.initialize(this, SocksHttpApp.UNIT_ID_AD);
-		mRewardedVideoAd = MobileAds.getRewardedVideoAdInstance(this);
-		mRewardedVideoAd.setRewardedVideoAdListener(this);
+    @Override
+    public void onDismiss(String payload) {
+        payloadEdit.setText(payload);
+        Light.success(main_ly, "Payload successfully generated.", Snackbar.LENGTH_LONG).show();
+        dialog.dismiss();
+        // TODO: Implement this method
+    }
 
-		initComponent();
-		setupInterstitial();
+    //for example ito code ng connect
 
-	}
 
-	private void loadRewardedVideoAd() {
+    private void doLayout() {
+        setContentView(R.layout.activity_main_drawer);
+
+
+        toolbar_main = (Toolbar) findViewById(R.id.toolbar_main);
+        mDrawerPanel.setDrawer(toolbar_main);
+        setSupportActionBar(toolbar_main);
+        mEditTextInput = (EditText) findViewById(R.id.time);
+
+        mTextViewCountDown = (TextView) findViewById(R.id.duration);
+
+        mButtonSet = (Button) findViewById(R.id.set);
+        mButtonSet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String input = mEditTextInput.getText().toString();
+                if (input.length() == 0) {
+                    Light.error(main_ly, "Field can't be empty", Snackbar.LENGTH_LONG).show();
+                    return;
+                }
+                long millisInput = Long.parseLong(input) * 1000;
+                if (millisInput == 0) {
+                    Light.error(main_ly, "Please a positive number", Snackbar.LENGTH_LONG).show();
+                    return;
+                }
+                setTime(millisInput);
+                mEditTextInput.setText("55");
+            }
+        });
+
+        MobileAds.initialize(this, SocksHttpApp.UNIT_ID_AD);
+        mRewardedVideoAd = MobileAds.getRewardedVideoAdInstance(this);
+        mRewardedVideoAd.setRewardedVideoAdListener(this);
+
+        initComponent();
+        setupInterstitial();
+
+    }
+
+    private void loadRewardedVideoAd() {
 //		mRewardedVideoAd.loadAd(SocksHttpApp.REWARDED_AD,
 //						  new AdRequest.Builder().build());
-	}
+    }
 
-	private void setupInterstitial(){
+    private void setupInterstitial() {
 
         mInterstitialAd = new InterstitialAd(this);
 
-		if (!BuildConfig.DEBUG)
-			mInterstitialAd.setAdUnitId(SocksHttpApp.ADS_UNITID_INTERSTITIAL_MAIN);
-		else
-			mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");; // inter ads
+        if (!BuildConfig.DEBUG) mInterstitialAd.setAdUnitId(SocksHttpApp.ADS_UNITID_INTERSTITIAL_MAIN);
+        else mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
+        ; // inter ads
 
-		mInterstitialAd.setAdListener(new AdListener() {
+        mInterstitialAd.setAdListener(new AdListener() {
 
-				@Override
-				public void onAdClosed() {
-					// Code to be executed when the interstitial ad is closed.
-					Light.success(main_ly, getString(R.string.ad_done), Snackbar.LENGTH_LONG).show();
+            @Override
+            public void onAdClosed() {
+                // Code to be executed when the interstitial ad is closed.
+                Light.success(main_ly, getString(R.string.ad_done), Snackbar.LENGTH_LONG).show();
 
-					loadInterstitial();
+                loadInterstitial();
 
-				}
-			});
-
+            }
+        });
 
 
-		mButtonStartPause = (CheckBox) findViewById(R.id.start);
-		mButtonStartPause.setOnClickListener(new View.OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					if (mTimerRunning) {
-						//pauseTimer();
-						mEditTextInput.setText("55");
-					    pauseTimer();
-						onoff.setText("OFF");
-						SkStatus.logInfo("<font color='red'>Auto Reconnect is Stopping....</font>");
-					} else {
-						String input = mEditTextInput.getText().toString();
+        mButtonStartPause = (CheckBox) findViewById(R.id.start);
+        mButtonStartPause.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mTimerRunning) {
+                    //pauseTimer();
+                    mEditTextInput.setText("55");
+                    pauseTimer();
+                    onoff.setText("OFF");
+                    SkStatus.logInfo("<font color='red'>Auto Reconnect is Stopping....</font>");
+                } else {
+                    String input = mEditTextInput.getText().toString();
 
-						if (input.length() == 0) {
-							Light.error(main_ly, "Field can't be empty", Snackbar.LENGTH_LONG).show();
-							return;
-						}
-						long millisInput = Long.parseLong(input) * 1000;
-						if (millisInput == 0) {
-							Light.error(main_ly, "Please a positive number", Snackbar.LENGTH_LONG).show();
-							return;
-						}
-						setTime(millisInput);
-						mEditTextInput.setText("");
-						startTimer();
-						onoff.setText("ON");
-						SkStatus.logInfo("<font color='green'>Auto Reconnect is Starting....</font>");
-					}
-				}
-			});
+                    if (input.length() == 0) {
+                        Light.error(main_ly, "Field can't be empty", Snackbar.LENGTH_LONG).show();
+                        return;
+                    }
+                    long millisInput = Long.parseLong(input) * 1000;
+                    if (millisInput == 0) {
+                        Light.error(main_ly, "Please a positive number", Snackbar.LENGTH_LONG).show();
+                        return;
+                    }
+                    setTime(millisInput);
+                    mEditTextInput.setText("");
+                    startTimer();
+                    onoff.setText("ON");
+                    SkStatus.logInfo("<font color='green'>Auto Reconnect is Starting....</font>");
+                }
+            }
+        });
 
-		mButtonReset = (Button) findViewById(R.id.reset);
-		mButtonReset.setOnClickListener(new View.OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					resetTimer();
-				}
-			});
+        mButtonReset = (Button) findViewById(R.id.reset);
+        mButtonReset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                resetTimer();
+            }
+        });
 
 
-
-		// set ADS
-		View adContainer = findViewById(R.id.load_main);
-		adsBannerView = new AdView(this);
-		adsBannerView.setAdSize(AdSize.BANNER);
-		adsBannerView.setAdUnitId(SocksHttpApp.BANNER_AD);
-		((LinearLayout)adContainer).addView(adsBannerView);
-		AdRequest adRequest = new AdRequest.Builder().build();
+        // set ADS
+        View adContainer = findViewById(R.id.load_main);
+        adsBannerView = new AdView(this);
+        adsBannerView.setAdSize(AdSize.BANNER);
+        adsBannerView.setAdUnitId(SocksHttpApp.BANNER_AD);
+        ((LinearLayout) adContainer).addView(adsBannerView);
+        AdRequest adRequest = new AdRequest.Builder().build();
 //		adsBannerView.loadAd(adRequest);
 
-		LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-		mLogAdapter = new LogsAdapter(layoutManager,this);
-		logList = (RecyclerView) findViewById(R.id.recyclerLog);
-		logList.setAdapter(mLogAdapter);
-		logList.setLayoutManager(layoutManager);
-		mLogAdapter.scrollToLastPosition();
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        mLogAdapter = new LogsAdapter(layoutManager, this);
+        logList = (RecyclerView) findViewById(R.id.recyclerLog);
+        logList.setAdapter(mLogAdapter);
+        logList.setLayoutManager(layoutManager);
+        mLogAdapter.scrollToLastPosition();
 
-		deleteLogs = (FloatingActionButton) findViewById(R.id.clearLog);
-		deleteLogs.setOnClickListener(new OnClickListener() {
+        deleteLogs = (FloatingActionButton) findViewById(R.id.clearLog);
+        deleteLogs.setOnClickListener(new OnClickListener() {
 
-				@Override
-				public void onClick(View p1)
-				{
-					mLogAdapter.clearLog();
-					//SkStatus.logInfo("<font color='red'>Log Cleared!</font>");
-					// TODO: Implement this method
-				}
+            @Override
+            public void onClick(View p1) {
+                mLogAdapter.clearLog();
+                //SkStatus.logInfo("<font color='red'>Log Cleared!</font>");
+                // TODO: Implement this method
+            }
 
 
-			});
+        });
 
-		view1 = findViewById(R.id.tunnelCardView);
+        view1 = findViewById(R.id.tunnelCardView);
         view2 = findViewById(R.id.configMSGText);
         view3 = findViewById(R.id.configmsgheader);
-		view4 = findViewById(R.id.configMSGCardView);
-		view20 = findViewById(R.id.clearLog);
-		view21 = findViewById(R.id.activity_starterButtonMain);
+        view4 = findViewById(R.id.configMSGCardView);
+        view20 = findViewById(R.id.clearLog);
+        view21 = findViewById(R.id.activity_starterButtonMain);
 
-		status = (TextView)findViewById(R.id.status);
-		tunneltypeselected = (TextView)findViewById(R.id.tunneltypeselected);
-		onoff = (TextView)findViewById(R.id.onoff);
+        status = (TextView) findViewById(R.id.status);
+        tunneltypeselected = (TextView) findViewById(R.id.tunneltypeselected);
+        onoff = (TextView) findViewById(R.id.onoff);
 
-		main_ly = (ScrollView)findViewById(R.id.mainlayoutScrollView);
-		tunnel_dialog_layout = (LinearLayout)findViewById(R.id.tunnel_dialog_layout);
-		tunnelInfo = (TextView)findViewById(R.id.activitymainTextView1);
-		//payloadlock = (LinearLayout)findViewById(R.id.payloadlock);
-		ViewGone = (CardView) findViewById(R.id.ViewGone);
-		Viewgone = (CardView) findViewById(R.id.Viewgone);
-		mainLayout = (LinearLayout) findViewById(R.id.activity_mainLinearLayout);
-		loginLayout = (LinearLayout) findViewById(R.id.activity_mainInputPasswordLayout);
-		starterButton = (Button) findViewById(R.id.activity_starterButtonMain);
-		tunnelLayout = (CardView) findViewById(R.id.tunnelCardView);
-		tunnelLayout.setOnClickListener(this);
-		inputPwUser = (TextInputEditText) findViewById(R.id.activity_mainInputPasswordUserEdit);
-		inputPwPass = (TextInputEditText) findViewById(R.id.activity_mainInputPasswordPassEdit);
+        main_ly = (ScrollView) findViewById(R.id.mainlayoutScrollView);
+        tunnel_dialog_layout = (LinearLayout) findViewById(R.id.tunnel_dialog_layout);
+        tunnelInfo = (TextView) findViewById(R.id.activitymainTextView1);
+        //payloadlock = (LinearLayout)findViewById(R.id.payloadlock);
+        ViewGone = (CardView) findViewById(R.id.ViewGone);
+        Viewgone = (CardView) findViewById(R.id.Viewgone);
+        mainLayout = (LinearLayout) findViewById(R.id.activity_mainLinearLayout);
+        loginLayout = (LinearLayout) findViewById(R.id.activity_mainInputPasswordLayout);
+        starterButton = (Button) findViewById(R.id.activity_starterButtonMain);
+        tunnelLayout = (CardView) findViewById(R.id.tunnelCardView);
+        tunnelLayout.setOnClickListener(this);
+        inputPwUser = (TextInputEditText) findViewById(R.id.activity_mainInputPasswordUserEdit);
+        inputPwPass = (TextInputEditText) findViewById(R.id.activity_mainInputPasswordPassEdit);
 
-		inputPwShowPass = (ImageButton) findViewById(R.id.activity_mainInputShowPassImageButton);
+        inputPwShowPass = (ImageButton) findViewById(R.id.activity_mainInputShowPassImageButton);
 
-		((TextView) findViewById(R.id.activity_mainAutorText))
-			.setOnClickListener(this);
+        ((TextView) findViewById(R.id.activity_mainAutorText)).setOnClickListener(this);
 
-		proxyLayout = (LinearLayout) findViewById(R.id.activity_mainInputProxyLayout);
-		proxyText = (TextView) findViewById(R.id.activity_mainProxyText);
+        proxyLayout = (LinearLayout) findViewById(R.id.activity_mainInputProxyLayout);
+        proxyText = (TextView) findViewById(R.id.activity_mainProxyText);
 
 		/*Spinner spinnerTunnelType = (Spinner) findViewById(R.id.activity_mainTunnelTypeSpinner);
 		 String[] items = new String[]{"SSH DIRECT", "SSH + PROXY", "SSH + SSL (beta)"};
@@ -1151,133 +1073,130 @@ View.OnClickListener, RadioGroup.OnCheckedChangeListener,
 		 ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
 		 //set the spinners adapter to the previously created one.
 		 spinnerTunnelType.setAdapter(adapter);*/
-		sslLayout = (LinearLayout) findViewById(R.id.cmods_snilayout);
-		sslText = (TextView) findViewById(R.id.cmods_snitext);
-		sslText.setText(mConfig.getPrivString(Settings.CUSTOM_SNI));
-		//tunnelmode_layout = (RadioGroup)findViewById(R.id.tunnelmode_layout);
-		metodoConexaoRadio = (RadioGroup) findViewById(R.id.activity_mainMetodoConexaoRadio);
-		customPayloadSwitch = findViewById(R.id.activity_mainCustomPayloadSwitch);
+        sslLayout = (LinearLayout) findViewById(R.id.cmods_snilayout);
+        sslText = (TextView) findViewById(R.id.cmods_snitext);
+        sslText.setText(mConfig.getPrivString(Settings.CUSTOM_SNI));
+        //tunnelmode_layout = (RadioGroup)findViewById(R.id.tunnelmode_layout);
+        metodoConexaoRadio = (RadioGroup) findViewById(R.id.activity_mainMetodoConexaoRadio);
+        customPayloadSwitch = findViewById(R.id.activity_mainCustomPayloadSwitch);
 
-		starterButton.setOnClickListener(this);
-		proxyLayout.setOnClickListener(this);
+        starterButton.setOnClickListener(this);
+        proxyLayout.setOnClickListener(this);
 
-		payloadLayout = (LinearLayout) findViewById(R.id.activity_mainInputPayloadLinearLayout);
-		payloadEdit = (TextInputEditText) findViewById(R.id.activity_mainInputPayloadEditText);
-		connectionCardview = (CardView) findViewById(R.id.connection_cardView);
-		configMsgLayout = (CardView) findViewById(R.id.configMSGCardView);
-		configMsgText = (TextView) findViewById(R.id.configMSGText);
-
-
-		sslLayout.setOnClickListener(new OnClickListener(){
-				SharedPreferences prefs = mConfig.getPrefsPrivate();
-				@Override
-				public void onClick(View p1) {
-					if (!prefs.getBoolean(Settings.CONFIG_PROTEGER_KEY, false)) {
-						doSaveData();
-
-						DialogFragment fragSni = new CustomSniFragment();
-						fragSni.show(getSupportFragmentManager(), "customSni");
-					}
-				}
-			});
-		// fix bugs
-		if (mConfig.getPrefsPrivate().getBoolean(Settings.CONFIG_PROTEGER_KEY, false)) {
-			if (mConfig.getPrefsPrivate().getBoolean(Settings.CONFIG_INPUT_PASSWORD_KEY, false)) {
-				inputPwUser.setText(mConfig.getPrivString(Settings.USUARIO_KEY));
-				inputPwPass.setText(mConfig.getPrivString(Settings.SENHA_KEY));
-			}
-		}
-		else {
-			payloadEdit.setText(mConfig.getPrivString(Settings.CUSTOM_PAYLOAD_KEY));
-		}
-
-		//tunnelmode_layout.setOnCheckedChangeListener(this);
-		metodoConexaoRadio.setOnCheckedChangeListener(this);
-		customPayloadSwitch.setOnCheckedChangeListener(this::onCheckedChanged);
-		inputPwShowPass.setOnClickListener(this);
-	}
+        payloadLayout = (LinearLayout) findViewById(R.id.activity_mainInputPayloadLinearLayout);
+        payloadEdit = (TextInputEditText) findViewById(R.id.activity_mainInputPayloadEditText);
+        connectionCardview = (CardView) findViewById(R.id.connection_cardView);
+        configMsgLayout = (CardView) findViewById(R.id.configMSGCardView);
+        configMsgText = (TextView) findViewById(R.id.configMSGText);
 
 
+        sslLayout.setOnClickListener(new OnClickListener() {
+            SharedPreferences prefs = mConfig.getPrefsPrivate();
+
+            @Override
+            public void onClick(View p1) {
+                if (!prefs.getBoolean(Settings.CONFIG_PROTEGER_KEY, false)) {
+                    doSaveData();
+
+                    DialogFragment fragSni = new CustomSniFragment();
+                    fragSni.show(getSupportFragmentManager(), "customSni");
+                }
+            }
+        });
+        // fix bugs
+        if (mConfig.getPrefsPrivate().getBoolean(Settings.CONFIG_PROTEGER_KEY, false)) {
+            if (mConfig.getPrefsPrivate().getBoolean(Settings.CONFIG_INPUT_PASSWORD_KEY, false)) {
+                inputPwUser.setText(mConfig.getPrivString(Settings.USUARIO_KEY));
+                inputPwPass.setText(mConfig.getPrivString(Settings.PASS_KEY));
+            }
+        } else {
+            payloadEdit.setText(mConfig.getPrivString(Settings.CUSTOM_PAYLOAD_KEY));
+        }
+
+        //tunnel-mode_layout.setOnCheckedChangeListener(this);
+        metodoConexaoRadio.setOnCheckedChangeListener(this);
+        customPayloadSwitch.setOnCheckedChangeListener(this::onCheckedChanged);
+        inputPwShowPass.setOnClickListener(this);
+    }
 
 
-	@Override
-	public void onRewardedVideoAdLoaded() {
-		if (mRewardedVideoAd.isLoaded()){
-			mRewardedVideoAd.show();
-		}
-		pDialog.dismiss();
-	}
+    @Override
+    public void onRewardedVideoAdLoaded() {
+        if (mRewardedVideoAd.isLoaded()) {
+            mRewardedVideoAd.show();
+        }
+        pDialog.dismiss();
+    }
 
-	@Override
-	public void onRewardedVideoAdOpened() {
+    @Override
+    public void onRewardedVideoAdOpened() {
 
-	}
+    }
 
-	@Override
-	public void onRewardedVideoStarted() {
+    @Override
+    public void onRewardedVideoStarted() {
 
-	}
+    }
 
-	@Override
-	public void onRewardedVideoAdClosed() {
-		Light.success(main_ly, getString(R.string.ad_done), Snackbar.LENGTH_LONG).show();
+    @Override
+    public void onRewardedVideoAdClosed() {
+        Light.success(main_ly, getString(R.string.ad_done), Snackbar.LENGTH_LONG).show();
 
-	}
+    }
 
-	@Override
-	public void onRewarded(RewardItem rewardItem) {
-		
-	}
+    @Override
+    public void onRewarded(RewardItem rewardItem) {
 
-	@Override
-	public void onRewardedVideoAdLeftApplication() {
-		Toast.makeText(SocksHttpMainActivity.this, "Thanks for clicking💙💙💙", Toast.LENGTH_LONG).show();
-	}
+    }
 
-	@Override
-	public void onRewardedVideoAdFailedToLoad(int i) {
+    @Override
+    public void onRewardedVideoAdLeftApplication() {
+        Toast.makeText(SocksHttpMainActivity.this, "Thanks for clicking💙💙💙", Toast.LENGTH_LONG).show();
+    }
 
-		cLoadAdsa();
-		pDialog.dismiss();
+    @Override
+    public void onRewardedVideoAdFailedToLoad(int i) {
 
-	}
+        cLoadAdsa();
+        pDialog.dismiss();
 
-	private void initComponent() {
+    }
+
+    private void initComponent() {
 
         // input section
-		nested_scroll_view = (NestedScrollView) findViewById(R.id.nested_scroll_view);
+        nested_scroll_view = (NestedScrollView) findViewById(R.id.nested_scroll_view);
         bt_toggle_input = (ImageButton) findViewById(R.id.bt_toggle_input);
         ly_hide_input = (LinearLayout) findViewById(R.id.configmsgheader);
         lyt_expand_input = (View) findViewById(R.id.lyt_expand_input);
         lyt_expand_input.setVisibility(View.GONE);
 
         bt_toggle_input.setOnClickListener(new View.OnClickListener() {
-				@Override
-				public void onClick(View view) {
-					toggleSectionInput(bt_toggle_input);
-				}
-			});
+            @Override
+            public void onClick(View view) {
+                toggleSectionInput(bt_toggle_input);
+            }
+        });
 
         ly_hide_input.setOnClickListener(new View.OnClickListener() {
-				@Override
-				public void onClick(View view) {
-					toggleSectionInput(bt_toggle_input);
-				}
-			});
+            @Override
+            public void onClick(View view) {
+                toggleSectionInput(bt_toggle_input);
+            }
+        });
 
     }
-
 
 
     private void toggleSectionInput(View view) {
         boolean show = toggleArrow(view);
         if (show) {
             ViewAnimation.expand(lyt_expand_input, new ViewAnimation.AnimListener() {
-					@Override
-					public void onFinish() {
-						ViewAnimation.nestedScrollTo(nested_scroll_view, lyt_expand_input);
-					}
-				});
+                @Override
+                public void onFinish() {
+                    ViewAnimation.nestedScrollTo(nested_scroll_view, lyt_expand_input);
+                }
+            });
         } else {
             ViewAnimation.collapse(lyt_expand_input);
         }
@@ -1293,751 +1212,706 @@ View.OnClickListener, RadioGroup.OnCheckedChangeListener,
         }
     }
 
-	private void doUpdateLayout() {
-		SharedPreferences prefs = mConfig.getPrefsPrivate();
-		SharedPreferences.Editor edit = mConfig.getPrefsPrivate().edit();
-		boolean isRunning = SkStatus.isTunnelActive();
-		int tunnelType = prefs.getInt(Settings.TUNNELTYPE_KEY, Settings.bTUNNEL_TYPE_SSH_DIRECT);
+    private void doUpdateLayout() {
+        SharedPreferences prefs = mConfig.getPrefsPrivate();
+        SharedPreferences.Editor edit = mConfig.getPrefsPrivate().edit();
+        boolean isRunning = SkStatus.isTunnelActive();
+        int tunnelType = prefs.getInt(Settings.TUNNELTYPE_KEY, Settings.bTUNNEL_TYPE_SSH_DIRECT);
 
-		setStarterButton(starterButton, this);
-		setPayloadSwitch(tunnelType, !prefs.getBoolean(Settings.PROXY_USAR_DEFAULT_PAYLOAD, true));
+        setStarterButton(starterButton, this);
+        setPayloadSwitch(tunnelType, !prefs.getBoolean(Settings.PROXY_USAR_DEFAULT_PAYLOAD, true));
 
-		String proxyStr = getText(R.string.no_value).toString();
+        String proxyStr = getText(R.string.no_value).toString();
 
-		if (prefs.getBoolean(Settings.CONFIG_PROTEGER_KEY, false)) {
-			proxyStr = "*******";
-			proxyLayout.setEnabled(false);
-			customPayloadSwitch.setEnabled(false);
-			payloadLayout.setVisibility(View.VISIBLE);
-			payloadLayout.setEnabled(false);
-			tunnel_dialog_layout.setEnabled(false);
-		}
-		else {
-			String proxy = mConfig.getPrivString(Settings.PROXY_IP_KEY);
+        if (prefs.getBoolean(Settings.CONFIG_PROTEGER_KEY, false)) {
+            proxyStr = "*******";
+            proxyLayout.setEnabled(false);
+            customPayloadSwitch.setEnabled(false);
+            payloadLayout.setVisibility(View.VISIBLE);
+            payloadLayout.setEnabled(false);
+            tunnel_dialog_layout.setEnabled(false);
+        } else {
+            String proxy = mConfig.getPrivString(Settings.PROXY_IP_KEY);
 
-			if (proxy != null && !proxy.isEmpty())
-				proxyStr = String.format("%s:%s", proxy, mConfig.getPrivString(Settings.PROXY_PORTA_KEY));
-			proxyLayout.setEnabled(!isRunning);
-		} 
+            if (proxy != null && !proxy.isEmpty())
+                proxyStr = String.format("%s:%s", proxy, mConfig.getPrivString(Settings.PROXY_PORTA_KEY));
+            proxyLayout.setEnabled(!isRunning);
+        }
 
-		proxyText.setText(proxyStr);
-		String sniStr = getText(R.string.no_value).toString();
+        proxyText.setText(proxyStr);
+        String sniStr = getText(R.string.no_value).toString();
 
 
-		if (prefs.getBoolean(Settings.CONFIG_PROTEGER_KEY, false)) {
-			sniStr = "*******";
-			sslLayout.setEnabled(false);
-			payloadLayout.setVisibility(View.VISIBLE);
-			payloadLayout.setEnabled(false);
-			customPayloadSwitch.setEnabled(false);
-			tunnel_dialog_layout.setEnabled(false);
-		}
-		else {
-			String sni = mConfig.getPrivString(Settings.CUSTOM_SNI);
+        if (prefs.getBoolean(Settings.CONFIG_PROTEGER_KEY, false)) {
+            sniStr = "*******";
+            sslLayout.setEnabled(false);
+            payloadLayout.setVisibility(View.VISIBLE);
+            payloadLayout.setEnabled(false);
+            customPayloadSwitch.setEnabled(false);
+            tunnel_dialog_layout.setEnabled(false);
+        } else {
+            String sni = mConfig.getPrivString(Settings.CUSTOM_SNI);
 
-			if (sni != null && !sni.isEmpty())
-				sniStr = String.format(mConfig.getPrivString(Settings.CUSTOM_SNI));
-			sslLayout.setEnabled(!isRunning);
-		} 
+            if (sni != null && !sni.isEmpty()) sniStr = String.format(mConfig.getPrivString(Settings.CUSTOM_SNI));
+            sslLayout.setEnabled(!isRunning);
+        }
 
-		sslText.setText(sniStr);
-		if (prefs.getBoolean(Settings.CONFIG_PROTEGER_KEY, false)) {
-			sniStr = "*******";
-			proxyStr = "*******";
-			sslLayout.setEnabled(false);
-			payloadLayout.setVisibility(View.VISIBLE);
-			payloadLayout.setEnabled(false);
-			customPayloadSwitch.setEnabled(false);
-			tunnel_dialog_layout.setEnabled(false);
-		}
-		else {
-			String sni = mConfig.getPrivString(Settings.CUSTOM_SNI);
+        sslText.setText(sniStr);
+        if (prefs.getBoolean(Settings.CONFIG_PROTEGER_KEY, false)) {
+            sniStr = "*******";
+            proxyStr = "*******";
+            sslLayout.setEnabled(false);
+            payloadLayout.setVisibility(View.VISIBLE);
+            payloadLayout.setEnabled(false);
+            customPayloadSwitch.setEnabled(false);
+            tunnel_dialog_layout.setEnabled(false);
+        } else {
+            String sni = mConfig.getPrivString(Settings.CUSTOM_SNI);
 
-			if (sni != null && !sni.isEmpty())
-				sniStr = String.format(mConfig.getPrivString(Settings.CUSTOM_SNI));
-			sslLayout.setEnabled(!isRunning);
-			String proxy = mConfig.getPrivString(Settings.PROXY_IP_KEY);
+            if (sni != null && !sni.isEmpty()) sniStr = String.format(mConfig.getPrivString(Settings.CUSTOM_SNI));
+            sslLayout.setEnabled(!isRunning);
+            String proxy = mConfig.getPrivString(Settings.PROXY_IP_KEY);
 
-			if (proxy != null && !proxy.isEmpty())
-				proxyStr = String.format("%s:%s", proxy, mConfig.getPrivString(Settings.PROXY_PORTA_KEY));
-			proxyLayout.setEnabled(!isRunning);
-		}
+            if (proxy != null && !proxy.isEmpty())
+                proxyStr = String.format("%s:%s", proxy, mConfig.getPrivString(Settings.PROXY_PORTA_KEY));
+            proxyLayout.setEnabled(!isRunning);
+        }
 
-		if (tunnelType == Settings.bTUNNEL_TYPE_SLOWDNS) {
-			Menu menuNav = drawerNavigationView.getMenu();
-			settingsSSH = menuNav.findItem(R.id.miSettingsSSH);
-			settingsSSH.setTitle(R.string.slowdns_configuration);
-		} else {
-			Menu menuNav = drawerNavigationView.getMenu();
-			settingsSSH = menuNav.findItem(R.id.miSettingsSSH);
-			settingsSSH.setTitle(R.string.settings_ssh);
-		}
+        if (tunnelType == Settings.bTUNNEL_TYPE_SLOWDNS) {
+            Menu menuNav = drawerNavigationView.getMenu();
+            settingsSSH = menuNav.findItem(R.id.miSettingsSSH);
+            settingsSSH.setTitle(R.string.slowdns_configuration);
+        } else {
+            Menu menuNav = drawerNavigationView.getMenu();
+            settingsSSH = menuNav.findItem(R.id.miSettingsSSH);
+            settingsSSH.setTitle(R.string.settings_ssh);
+        }
 
-		switch (tunnelType) {
-			case Settings.bTUNNEL_TYPE_SSH_DIRECT:
-				if (!prefs.getBoolean(Settings.PROXY_USAR_DEFAULT_PAYLOAD, true)) {
-					connectionCardview.setVisibility(View.VISIBLE);
-					tunnelInfo.setText(getString(R.string.direct) + getString(R.string.custom_payload1));
+        switch (tunnelType) {
+            case Settings.bTUNNEL_TYPE_SSH_DIRECT:
+                if (!prefs.getBoolean(Settings.PROXY_USAR_DEFAULT_PAYLOAD, true)) {
+                    connectionCardview.setVisibility(View.VISIBLE);
+                    tunnelInfo.setText(getString(R.string.direct) + getString(R.string.custom_payload1));
 
-				} else {
-					connectionCardview.setVisibility(View.GONE);
-					tunnelInfo.setText(getString(R.string.direct));
-				} 	
-				break;
+                } else {
+                    connectionCardview.setVisibility(View.GONE);
+                    tunnelInfo.setText(getString(R.string.direct));
+                }
+                break;
 
-			case Settings.bTUNNEL_TYPE_SSH_PROXY:
-				if (!prefs.getBoolean(Settings.PROXY_USAR_DEFAULT_PAYLOAD, true)) {
-					connectionCardview.setVisibility(View.VISIBLE);
-					tunnelInfo.setText(getString(R.string.http) + getString(R.string.custom_payload1));
-					proxyLayout.setVisibility(View.VISIBLE);
+            case Settings.bTUNNEL_TYPE_SSH_PROXY:
+                if (!prefs.getBoolean(Settings.PROXY_USAR_DEFAULT_PAYLOAD, true)) {
+                    connectionCardview.setVisibility(View.VISIBLE);
+                    tunnelInfo.setText(getString(R.string.http) + getString(R.string.custom_payload1));
+                    proxyLayout.setVisibility(View.VISIBLE);
 
-				} else {
-					connectionCardview.setVisibility(View.VISIBLE);
-					proxyLayout.setVisibility(View.VISIBLE);
-					payloadLayout.setVisibility(View.GONE);
-					tunnelInfo.setText(getString(R.string.http));
-				} 	
-				break;
+                } else {
+                    connectionCardview.setVisibility(View.VISIBLE);
+                    proxyLayout.setVisibility(View.VISIBLE);
+                    payloadLayout.setVisibility(View.GONE);
+                    tunnelInfo.setText(getString(R.string.http));
+                }
+                break;
 
-			case Settings.bTUNNEL_TYPE_SSL_TLS:
-				connectionCardview.setVisibility(View.VISIBLE);
-				payloadLayout.setVisibility(View.GONE);
-				proxyLayout.setVisibility(View.GONE);
-				sslLayout.setVisibility(View.VISIBLE);
-			    tunnelInfo.setText(getString(R.string.ssl));
-				break;
+            case Settings.bTUNNEL_TYPE_SSL_TLS:
+                connectionCardview.setVisibility(View.VISIBLE);
+                payloadLayout.setVisibility(View.GONE);
+                proxyLayout.setVisibility(View.GONE);
+                sslLayout.setVisibility(View.VISIBLE);
+                tunnelInfo.setText(getString(R.string.ssl));
+                break;
 
-			case Settings.bTUNNEL_TYPE_PAY_SSL:
-				if (!prefs.getBoolean(Settings.PROXY_USAR_DEFAULT_PAYLOAD, true)) {
-					connectionCardview.setVisibility(View.VISIBLE);
-					tunnelInfo.setText(getString(R.string.tls) + getString(R.string.custom_payload1));
-					sslLayout.setVisibility(View.VISIBLE);
+            case Settings.bTUNNEL_TYPE_PAY_SSL:
+                if (!prefs.getBoolean(Settings.PROXY_USAR_DEFAULT_PAYLOAD, true)) {
+                    connectionCardview.setVisibility(View.VISIBLE);
+                    tunnelInfo.setText(getString(R.string.tls) + getString(R.string.custom_payload1));
+                    sslLayout.setVisibility(View.VISIBLE);
 
-				} else {
+                } else {
 
-					connectionCardview.setVisibility(View.VISIBLE);
-					payloadLayout.setVisibility(View.GONE);
-					proxyLayout.setVisibility(View.GONE);
-					tunnelInfo.setText(getString(R.string.ssl));
-				}
-				break;
+                    connectionCardview.setVisibility(View.VISIBLE);
+                    payloadLayout.setVisibility(View.GONE);
+                    proxyLayout.setVisibility(View.GONE);
+                    tunnelInfo.setText(getString(R.string.ssl));
+                }
+                break;
 
-			case Settings.bTUNNEL_TYPE_SLOWDNS:
-				connectionCardview.setVisibility(View.GONE);		
-				tunnelInfo.setText(getString(R.string.slowdns));
+            case Settings.bTUNNEL_TYPE_SLOWDNS:
+                connectionCardview.setVisibility(View.GONE);
+                tunnelInfo.setText(getString(R.string.slowdns));
 
-				break;
+                break;
 
-		}
+        }
 
-		int msgVisibility = View.GONE;
-		int loginVisibility = View.GONE;
-		String msgText = "";
-		boolean enabled_radio = !isRunning;
+        int msgVisibility = View.GONE;
+        int loginVisibility = View.GONE;
+        String msgText = "";
+        boolean enabled_radio = !isRunning;
 
-		if (prefs.getBoolean(Settings.CONFIG_PROTEGER_KEY, false)) {
+        if (prefs.getBoolean(Settings.CONFIG_PROTEGER_KEY, false)) {
 
-			if (prefs.getBoolean(Settings.CONFIG_INPUT_PASSWORD_KEY, false)) {
-				loginVisibility = View.VISIBLE;
+            if (prefs.getBoolean(Settings.CONFIG_INPUT_PASSWORD_KEY, false)) {
+                loginVisibility = View.VISIBLE;
 
-				inputPwUser.setText(mConfig.getPrivString(Settings.USUARIO_KEY));
-				inputPwPass.setText(mConfig.getPrivString(Settings.SENHA_KEY));
+                inputPwUser.setText(mConfig.getPrivString(Settings.USUARIO_KEY));
+                inputPwPass.setText(mConfig.getPrivString(Settings.PASS_KEY));
 
-				inputPwUser.setEnabled(!isRunning);
-				inputPwPass.setEnabled(!isRunning);
-				inputPwShowPass.setEnabled(!isRunning);
+                inputPwUser.setEnabled(!isRunning);
+                inputPwPass.setEnabled(!isRunning);
+                inputPwShowPass.setEnabled(!isRunning);
 
-				//inputPwPass.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-			}
+                //inputPwPass.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+            }
 
-			String msg = mConfig.getPrivString(Settings.CONFIG_MENSAGEM_KEY);
-			if (!msg.isEmpty()) {
-				msgText = msg.replace("\n", "<br/>");
-				msgVisibility = View.VISIBLE;
-			}
+            String msg = mConfig.getPrivString(Settings.CONFIG_MENSAGEM_KEY);
+            if (!msg.isEmpty()) {
+                msgText = msg.replace("\n", "<br/>");
+                msgVisibility = View.VISIBLE;
+            }
 
-			if (mConfig.getPrivString(Settings.PROXY_IP_KEY).isEmpty() ||
-				mConfig.getPrivString(Settings.PROXY_PORTA_KEY).isEmpty()) {
-				enabled_radio = false;
-			}
-		}
+            if (mConfig.getPrivString(Settings.PROXY_IP_KEY).isEmpty() || mConfig.getPrivString(Settings.PROXY_PORTA_KEY).isEmpty()) {
+                enabled_radio = false;
+            }
+        }
 
-		loginLayout.setVisibility(loginVisibility);
-		configMsgText.setText(msgText.isEmpty() ? "" : Html.fromHtml(msgText));
-		configMsgLayout.setVisibility(msgVisibility);
+        loginLayout.setVisibility(loginVisibility);
+        configMsgText.setText(msgText.isEmpty() ? "" : Html.fromHtml(msgText));
+        configMsgLayout.setVisibility(msgVisibility);
 
-		// desativa/ativa radio group
-		for (int i = 0; i < metodoConexaoRadio.getChildCount(); i++) {
-			metodoConexaoRadio.getChildAt(i).setEnabled(enabled_radio);
-		}
+        // Desativa / Activa radio group
+        for (int i = 0; i < metodoConexaoRadio.getChildCount(); i++) {
+            metodoConexaoRadio.getChildAt(i).setEnabled(enabled_radio);
+        }
 		/*for (int i = 0; i < tunnelmode_layout.getChildCount(); i++) {
 		 tunnelmode_layout.getChildAt(i).setEnabled(enabled_radio);
 		 }*/
 
-	}
+    }
 
 
-	private synchronized void doSaveData() {
-		SharedPreferences prefs = mConfig.getPrefsPrivate();
-		SharedPreferences.Editor edit = prefs.edit();
+    private synchronized void doSaveData() {
+        SharedPreferences prefs = mConfig.getPrefsPrivate();
+        SharedPreferences.Editor edit = prefs.edit();
 
-		if (mainLayout != null && !isFinishing())
-			mainLayout.requestFocus();
+        if (mainLayout != null && !isFinishing()) mainLayout.requestFocus();
 
-		if (!prefs.getBoolean(Settings.CONFIG_PROTEGER_KEY, false)) {
-			if (payloadEdit != null && !prefs.getBoolean(Settings.PROXY_USAR_DEFAULT_PAYLOAD, true)) {
-				edit.putString(Settings.CUSTOM_PAYLOAD_KEY, payloadEdit.getText().toString());
-			}
-		}
-		else {
-			if (prefs.getBoolean(Settings.CONFIG_INPUT_PASSWORD_KEY, false)) {
-				edit.putString(Settings.USUARIO_KEY, inputPwUser.getEditableText().toString());
-				edit.putString(Settings.SENHA_KEY, inputPwPass.getEditableText().toString());
-			}
-		}
+        if (!prefs.getBoolean(Settings.CONFIG_PROTEGER_KEY, false)) {
+            if (payloadEdit != null && !prefs.getBoolean(Settings.PROXY_USAR_DEFAULT_PAYLOAD, true)) {
+                edit.putString(Settings.CUSTOM_PAYLOAD_KEY, payloadEdit.getText().toString());
+            }
+        } else {
+            if (prefs.getBoolean(Settings.CONFIG_INPUT_PASSWORD_KEY, false)) {
+                edit.putString(Settings.USUARIO_KEY, inputPwUser.getEditableText().toString());
+                edit.putString(Settings.PASS_KEY, inputPwPass.getEditableText().toString());
+            }
+        }
 
-		int tunnelType = prefs.getInt(Settings.TUNNELTYPE_KEY, Settings.bTUNNEL_TYPE_SSH_DIRECT);
-		if (tunnelType == Settings.bTUNNEL_TYPE_SLOWDNS) {
-			edit.putString(Settings.SERVIDOR_KEY, "127.0.0.1");
-			edit.putString(Settings.SERVIDOR_PORTA_KEY, "8989");
+        int tunnelType = prefs.getInt(Settings.TUNNELTYPE_KEY, Settings.bTUNNEL_TYPE_SSH_DIRECT);
+        if (tunnelType == Settings.bTUNNEL_TYPE_SLOWDNS) {
+            edit.putString(Settings.SERVER_KEY, "127.0.0.1");
+            edit.putString(Settings.SERVERS_PORT_KEY, "8989");
 
-		}
+        }
 
-		edit.apply();
-	}
+        edit.apply();
+    }
 
-	private void pauseTimer() {
-		mCountDownTimer.cancel();
-		mTimerRunning = false;
-		updateWatchInterface();
-	}
-	private void resetTimer() {
-		mTimeLeftInMillis = mStartTimeInMillis;
-		updateCountDownText();
-		updateWatchInterface();
-	}
+    private void pauseTimer() {
+        mCountDownTimer.cancel();
+        mTimerRunning = false;
+        updateWatchInterface();
+    }
 
-	private void updateWatchInterface() {
-		if (mTimerRunning) {
-			mEditTextInput.setVisibility(View.GONE);
-			mButtonSet.setVisibility(View.GONE);
-			mButtonReset.setVisibility(View.GONE);
-			mButtonStartPause.setText("Auto Reconnect");
-		} else {
-			mEditTextInput.setVisibility(View.GONE);
-			mButtonSet.setVisibility(View.GONE);
-			mButtonStartPause.setText("Auto Reconnect");
-			if (mTimeLeftInMillis < 1000) {
-				mButtonStartPause.setVisibility(View.INVISIBLE);
-			} else {
-				mButtonStartPause.setVisibility(View.VISIBLE);
-			}
-			if (mTimeLeftInMillis < mStartTimeInMillis) {
-				mButtonReset.setVisibility(View.GONE);
-			} else {
-				mButtonReset.setVisibility(View.GONE);
-			}
-		}
-	}
+    private void resetTimer() {
+        mTimeLeftInMillis = mStartTimeInMillis;
+        updateCountDownText();
+        updateWatchInterface();
+    }
 
-
-	private void updateCountDownText() {
-		int hours = (int) (mTimeLeftInMillis / 1000) / 3600;
-		int minutes = (int) ((mTimeLeftInMillis / 1000) % 3600) / 60;
-		int seconds = (int) (mTimeLeftInMillis / 1000) % 60;
-		String timeLeftFormatted;
-		if (hours > 0) {
-			timeLeftFormatted = String.format(Locale.getDefault(),
-											  "%d:%02d:%02d", hours, minutes, seconds);
-		} else {
-			timeLeftFormatted = String.format(Locale.getDefault(),
-											  "%02d:%02d", minutes, seconds);
-		}
-		mTextViewCountDown.setText(timeLeftFormatted);
-	}
-
-	private void setTime(long milliseconds) {
-		mStartTimeInMillis = milliseconds;
-		resetTimer();
-
-	}
-
-	private void startTimer() {
-		mEndTime = System.currentTimeMillis() + mTimeLeftInMillis;
-		mCountDownTimer = new CountDownTimer(mTimeLeftInMillis, 1000) {
+    private void updateWatchInterface() {
+        if (mTimerRunning) {
+            mEditTextInput.setVisibility(View.GONE);
+            mButtonSet.setVisibility(View.GONE);
+            mButtonReset.setVisibility(View.GONE);
+            mButtonStartPause.setText("Auto Reconnect");
+        } else {
+            mEditTextInput.setVisibility(View.GONE);
+            mButtonSet.setVisibility(View.GONE);
+            mButtonStartPause.setText("Auto Reconnect");
+            if (mTimeLeftInMillis < 1000) {
+                mButtonStartPause.setVisibility(View.INVISIBLE);
+            } else {
+                mButtonStartPause.setVisibility(View.VISIBLE);
+            }
+            if (mTimeLeftInMillis < mStartTimeInMillis) {
+                mButtonReset.setVisibility(View.GONE);
+            } else {
+                mButtonReset.setVisibility(View.GONE);
+            }
+        }
+    }
 
 
-			@Override
-			public void onTick(long millisUntilFinished) {
-				mTimeLeftInMillis = millisUntilFinished;
-				updateCountDownText();
-			}
-			@Override
-			public void onFinish() {
-				mTimerRunning = false;
-				updateWatchInterface();
-				resetTimer();
-				startTimer();
-				Toast.makeText(SocksHttpMainActivity.this, "Reconnecting please wait...", Toast.LENGTH_SHORT).show();
-				mLogAdapter.clearLog();
-				Intent reconTunnel = new Intent(SocksHttpService.TUNNEL_SSH_RESTART_SERVICE);
-				LocalBroadcastManager.getInstance(SocksHttpMainActivity.this)
-					.sendBroadcast(reconTunnel);
+    private void updateCountDownText() {
+        int hours = (int) (mTimeLeftInMillis / 1000) / 3600;
+        int minutes = (int) ((mTimeLeftInMillis / 1000) % 3600) / 60;
+        int seconds = (int) (mTimeLeftInMillis / 1000) % 60;
+        String timeLeftFormatted;
+        if (hours > 0) {
+            timeLeftFormatted = String.format(Locale.getDefault(), "%d:%02d:%02d", hours, minutes, seconds);
+        } else {
+            timeLeftFormatted = String.format(Locale.getDefault(), "%02d:%02d", minutes, seconds);
+        }
+        mTextViewCountDown.setText(timeLeftFormatted);
+    }
 
-				//just a test👇👇
-				//starterButton.performClick();
-				// i dont know what to do so i test that 0ne
-				// build by renz mortel your bf
-				//try this 2 👇👇👇
+    private void setTime(long milliseconds) {
+        mStartTimeInMillis = milliseconds;
+        resetTimer();
 
-				///startOrStopTunnel(this);
+    }
 
-				//context.startService(startVPN);
-			}
-		}.start();
-		mTimerRunning = true;
-		updateWatchInterface();
-	}
+    private void startTimer() {
+        mEndTime = System.currentTimeMillis() + mTimeLeftInMillis;
+        mCountDownTimer = new CountDownTimer(mTimeLeftInMillis, 1000) {
 
 
-	/**
-	 * Tunnel SSH
-	 */
+            @Override
+            public void onTick(long millisUntilFinished) {
+                mTimeLeftInMillis = millisUntilFinished;
+                updateCountDownText();
+            }
 
-	public void startOrStopTunnel(Activity activity) {
-		if (SkStatus.isTunnelActive()) {
-			TunnelManagerHelper.stopSocksHttp(activity);
-			//mLogAdapter.clearLog();
-		}
-		else {
-			// oculta teclado se vísivel, tá com bug, tela verde
-			//Utils.hideKeyboard(activity);
+            @Override
+            public void onFinish() {
+                mTimerRunning = false;
+                updateWatchInterface();
+                resetTimer();
+                startTimer();
+                Toast.makeText(SocksHttpMainActivity.this, "Reconnecting please wait...", Toast.LENGTH_SHORT).show();
+                mLogAdapter.clearLog();
+                Intent reconTunnel = new Intent(SocksHttpService.TUNNEL_SSH_RESTART_SERVICE);
+                LocalBroadcastManager.getInstance(SocksHttpMainActivity.this).sendBroadcast(reconTunnel);
 
-			Settings config = new Settings(activity);
+                //just a test👇👇
+                //starterButton.performClick();
+                // i dont know what to do so i test that 0ne
+                // build by renz mortel your bf
+                //try this 2 👇👇👇
 
-			if (config.getPrefsPrivate()
-				.getBoolean(Settings.CONFIG_INPUT_PASSWORD_KEY, false)) {
-				if (inputPwUser.getText().toString().isEmpty() || 
-					inputPwPass.getText().toString().isEmpty()) {
+                ///startOrStopTunnel(this);
 
-					Light.error(main_ly, getString(R.string.error_userpass_empty), Snackbar.LENGTH_LONG).show();
-					return;
-				}
-			}
-
-			Intent intent = new Intent(activity, LaunchVpn.class);
-			intent.setAction(Intent.ACTION_MAIN);
-			vp.setCurrentItem(1);
-			if (config.getHideLog()) {
-				intent.putExtra(LaunchVpn.EXTRA_HIDELOG, true);
-			}
-
-			activity.startActivity(intent);
-		}
-	}
-
-	private void setPayloadSwitch(int tunnelType, boolean isCustomPayload) {
-		SharedPreferences prefs = mConfig.getPrefsPrivate();
-
-		boolean isRunning = SkStatus.isTunnelActive();
-
-		customPayloadSwitch.setChecked(isCustomPayload);
-
-		if (prefs.getBoolean(Settings.CONFIG_PROTEGER_KEY, false)) {
-			payloadEdit.setEnabled(false);
-
-			if (mConfig.getPrivString(Settings.CUSTOM_PAYLOAD_KEY).isEmpty()) {
-				customPayloadSwitch.setEnabled(false);
-			}
-			else {
-				customPayloadSwitch.setEnabled(!isRunning);
-				tunnel_dialog_layout.setEnabled(!isRunning);
-			}
-
-			if (!isCustomPayload && tunnelType == Settings.bTUNNEL_TYPE_SSH_PROXY)
-				payloadEdit.setText(Settings.PAYLOAD_DEFAULT);
-			else
-				payloadEdit.setText("*******");
-			//payloadlock.setVisibility(8);
-			Viewgone.setVisibility(View.GONE);
-		}
-		else {
-			Viewgone.setVisibility(View.VISIBLE);
-			//payloadlock.setVisibility(0);
-			customPayloadSwitch.setEnabled(!isRunning);
-			tunnel_dialog_layout.setEnabled(!isRunning);
-			if (isCustomPayload) {
-				payloadEdit.setText(mConfig.getPrivString(Settings.CUSTOM_PAYLOAD_KEY));
-				payloadEdit.setEnabled(!isRunning);
-			}
-			else if (tunnelType == Settings.bTUNNEL_TYPE_SSH_PROXY) {
-				payloadEdit.setText(Settings.PAYLOAD_DEFAULT);
-				payloadEdit.setEnabled(false);
-			}
-		}
-
-		if (isCustomPayload || tunnelType == Settings.bTUNNEL_TYPE_SSH_PROXY) {
-			payloadLayout.setVisibility(View.VISIBLE);
-			Viewgone.setVisibility(View.VISIBLE);
-		}
-		else {
-			payloadLayout.setVisibility(View.GONE);
-			Viewgone.setVisibility(View.GONE);
-		}
-	}
-
-	public void setStarterButton(Button starterButton, Activity activity) {
-		String state = SkStatus.getLastState();
-		boolean isRunning = SkStatus.isTunnelActive();
-
-		if (starterButton != null) {
-			int resId;
-
-			SharedPreferences prefsPrivate = new Settings(activity).getPrefsPrivate();
-
-			if (ConfigParser.isValidadeExpirou(prefsPrivate
-											   .getLong(Settings.CONFIG_VALIDADE_KEY, 0))) {
-				resId = R.string.expired;
-				starterButton.setEnabled(false);
-
-				if (isRunning) {
-					startOrStopTunnel(activity);
-				}
-			}
-			else if (prefsPrivate.getBoolean(Settings.BLOQUEAR_ROOT_KEY, false) &&
-					 ConfigParser.isDeviceRooted(activity)) {
-				resId = R.string.blocked;
-				starterButton.setEnabled(false);
+                //context.startService(startVPN);
+            }
+        }.start();
+        mTimerRunning = true;
+        updateWatchInterface();
+    }
 
 
-				Light.error(main_ly, getString(R.string.error_root_detected), Snackbar.LENGTH_LONG).show();
+    /**
+     * Tunnel SSH
+     */
 
-				if (isRunning) {
-					startOrStopTunnel(activity);
-				}
-			}
-			else if (SkStatus.SSH_INICIANDO.equals(state)) {
-				resId = R.string.stop;
-				starterButton.setEnabled(false);
-			}
-			else if (SkStatus.SSH_PARANDO.equals(state)) {
-				resId = R.string.state_stopping;
-				starterButton.setEnabled(false);
-			}
-			else {
-				resId = isRunning ? R.string.stop : R.string.start;
-				starterButton.setEnabled(true);
-			}
+    public void startOrStopTunnel(Activity activity) {
+        if (SkStatus.isTunnelActive()) {
+            TunnelManagerHelper.stopSocksHttp(activity);
+            //mLogAdapter.clearLog();
+        } else {
+            // oculta teclado se vísivel, tá com bug, tela verde
+            //Utils.hideKeyboard(activity);
 
-			starterButton.setText(resId);
-		}
-	}
+            Settings config = new Settings(activity);
+
+            if (config.getPrefsPrivate().getBoolean(Settings.CONFIG_INPUT_PASSWORD_KEY, false)) {
+                if (inputPwUser.getText().toString().isEmpty() || inputPwPass.getText().toString().isEmpty()) {
+
+                    Light.error(main_ly, getString(R.string.error_userpass_empty), Snackbar.LENGTH_LONG).show();
+                    return;
+                }
+            }
+
+            Intent intent = new Intent(activity, LaunchVpn.class);
+            intent.setAction(Intent.ACTION_MAIN);
+            vp.setCurrentItem(1);
+            if (config.getHideLog()) {
+                intent.putExtra(LaunchVpn.EXTRA_HIDELOG, true);
+            }
+
+            activity.startActivity(intent);
+        }
+    }
+
+    private void setPayloadSwitch(int tunnelType, boolean isCustomPayload) {
+        SharedPreferences prefs = mConfig.getPrefsPrivate();
+
+        boolean isRunning = SkStatus.isTunnelActive();
+
+        customPayloadSwitch.setChecked(isCustomPayload);
+
+        if (prefs.getBoolean(Settings.CONFIG_PROTEGER_KEY, false)) {
+            payloadEdit.setEnabled(false);
+
+            if (mConfig.getPrivString(Settings.CUSTOM_PAYLOAD_KEY).isEmpty()) {
+                customPayloadSwitch.setEnabled(false);
+            } else {
+                customPayloadSwitch.setEnabled(!isRunning);
+                tunnel_dialog_layout.setEnabled(!isRunning);
+            }
+
+            if (!isCustomPayload && tunnelType == Settings.bTUNNEL_TYPE_SSH_PROXY)
+                payloadEdit.setText(Settings.PAYLOAD_DEFAULT);
+            else payloadEdit.setText("*******");
+            //payloadlock.setVisibility(8);
+            Viewgone.setVisibility(View.GONE);
+        } else {
+            Viewgone.setVisibility(View.VISIBLE);
+            //payloadlock.setVisibility(0);
+            customPayloadSwitch.setEnabled(!isRunning);
+            tunnel_dialog_layout.setEnabled(!isRunning);
+            if (isCustomPayload) {
+                payloadEdit.setText(mConfig.getPrivString(Settings.CUSTOM_PAYLOAD_KEY));
+                payloadEdit.setEnabled(!isRunning);
+            } else if (tunnelType == Settings.bTUNNEL_TYPE_SSH_PROXY) {
+                payloadEdit.setText(Settings.PAYLOAD_DEFAULT);
+                payloadEdit.setEnabled(false);
+            }
+        }
+
+        if (isCustomPayload || tunnelType == Settings.bTUNNEL_TYPE_SSH_PROXY) {
+            payloadLayout.setVisibility(View.VISIBLE);
+            Viewgone.setVisibility(View.VISIBLE);
+        } else {
+            payloadLayout.setVisibility(View.GONE);
+            Viewgone.setVisibility(View.GONE);
+        }
+    }
+
+    public void setStarterButton(Button starterButton, Activity activity) {
+        String state = SkStatus.getLastState();
+        boolean isRunning = SkStatus.isTunnelActive();
+
+        if (starterButton != null) {
+            int resId;
+
+            SharedPreferences prefsPrivate = new Settings(activity).getPrefsPrivate();
+
+            if (ConfigParser.isValidityExpired(prefsPrivate.getLong(Settings.CONFIG_VALIDADE_KEY, 0))) {
+                resId = R.string.expired;
+                starterButton.setEnabled(false);
+
+                if (isRunning) {
+                    startOrStopTunnel(activity);
+                }
+            } else if (prefsPrivate.getBoolean(Settings.BLOQUEAR_ROOT_KEY, false) && ConfigParser.isDeviceRooted(activity)) {
+                resId = R.string.blocked;
+                starterButton.setEnabled(false);
 
 
+                Light.error(main_ly, getString(R.string.error_root_detected), Snackbar.LENGTH_LONG).show();
 
-	@Override
+                if (isRunning) {
+                    startOrStopTunnel(activity);
+                }
+            } else if (SkStatus.SSH_INICIANDO.equals(state)) {
+                resId = R.string.stop;
+                starterButton.setEnabled(false);
+            } else if (SkStatus.SSH_PARANDO.equals(state)) {
+                resId = R.string.state_stopping;
+                starterButton.setEnabled(false);
+            } else {
+                resId = isRunning ? R.string.stop : R.string.start;
+                starterButton.setEnabled(true);
+            }
+
+            starterButton.setText(resId);
+        }
+    }
+
+
+    @Override
     public void onPostCreate(Bundle savedInstanceState, PersistableBundle persistentState) {
         super.onPostCreate(savedInstanceState, persistentState);
-        if (mDrawerPanel.getToogle() != null)
-			mDrawerPanel.getToogle().syncState();
+        if (mDrawerPanel.getToogle() != null) mDrawerPanel.getToogle().syncState();
     }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        if (mDrawerPanel.getToogle() != null)
-			mDrawerPanel.getToogle().onConfigurationChanged(newConfig);
+        if (mDrawerPanel.getToogle() != null) mDrawerPanel.getToogle().onConfigurationChanged(newConfig);
     }
 
-	private boolean isMostrarSenha = false;
+    private boolean isMostrarSenha = false;
 
-	@Override
-	public void onClick(View p1)
-	{
-		SharedPreferences prefs = mConfig.getPrefsPrivate();
+    @Override
+    public void onClick(View p1) {
+        SharedPreferences prefs = mConfig.getPrefsPrivate();
         boolean isRunning = SkStatus.isTunnelActive();
-		switch (p1.getId()) {
-			case R.id.activity_starterButtonMain:
-				doSaveData();
-				startOrStopTunnel(this);
-				showInterstitial();
-				break;
+        switch (p1.getId()) {
+            case R.id.activity_starterButtonMain:
+                doSaveData();
+                startOrStopTunnel(this);
+                showInterstitial();
+                break;
 
 
-			case R.id.tunnelCardView:
-				if (!isRunning) {
-					if (!prefs.getBoolean(Settings.CONFIG_PROTEGER_KEY, false)) {
-						startActivity(new Intent(this, TunnelActivity.class));
-						if (adsBannerView != null && TunnelUtils.isNetworkOnline(SocksHttpMainActivity.this)) {
-							adsBannerView.setAdListener(new AdListener() {
-									@Override
-									public void onAdLoaded() {
-										if (adsBannerView != null && !isFinishing()) {
-											adsBannerView.setVisibility(View.VISIBLE);
-										}
-									}
-								});
-							adsBannerView.postDelayed(new Runnable() {
-									@Override
-									public void run() {
-										// carrega ads interestitial
+            case R.id.tunnelCardView:
+                if (!isRunning) {
+                    if (!prefs.getBoolean(Settings.CONFIG_PROTEGER_KEY, false)) {
+                        startActivity(new Intent(this, TunnelActivity.class));
+                        if (adsBannerView != null && TunnelUtils.isNetworkOnline(SocksHttpMainActivity.this)) {
+                            adsBannerView.setAdListener(new AdListener() {
+                                @Override
+                                public void onAdLoaded() {
+                                    if (adsBannerView != null && !isFinishing()) {
+                                        adsBannerView.setVisibility(View.VISIBLE);
+                                    }
+                                }
+                            });
+                            adsBannerView.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    // carrega ads interestitial
 //										AdsManager.newInstance(getApplicationContext())
 //											.loadAdsInterstitial();
-										// ads banner
-										if (adsBannerView != null && !isFinishing()) {
+                                    // ads banner
+                                    if (adsBannerView != null && !isFinishing()) {
 //											adsBannerView.loadAd(new AdRequest.Builder()
 //																 .build());
-										}
-									}
-								}, 5000);
-						}
-					}
-				}
-				break;
+                                    }
+                                }
+                            }, 5000);
+                        }
+                    }
+                }
+                break;
 
-			case R.id.activity_mainInputProxyLayout:
-				if (!prefs.getBoolean(Settings.CONFIG_PROTEGER_KEY, false)) {
-					doSaveData();
+            case R.id.activity_mainInputProxyLayout:
+                if (!prefs.getBoolean(Settings.CONFIG_PROTEGER_KEY, false)) {
+                    doSaveData();
 
-					DialogFragment fragProxy = new ProxyRemoteDialogFragment();
-					fragProxy.show(getSupportFragmentManager(), "proxyDialog");
-				}
-				break;
+                    DialogFragment fragProxy = new ProxyRemoteDialogFragment();
+                    fragProxy.show(getSupportFragmentManager(), "proxyDialog");
+                }
+                break;
 
-			case R.id.activity_mainAutorText:
-				String url = "http://t.me/SlipkProjects";
-				Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-				intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-				startActivity(Intent.createChooser(intent, getText(R.string.open_with)));
-				break;
+            case R.id.activity_mainAutorText:
+                String url = "http://t.me/SlipkProjects";
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(Intent.createChooser(intent, getText(R.string.open_with)));
+                break;
 
-			case R.id.activity_mainInputShowPassImageButton:
-				isMostrarSenha = !isMostrarSenha;
-				if (isMostrarSenha) {
-					inputPwPass.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
-					inputPwShowPass.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_visibility_black_24dp));
-				}
-				else {
-					inputPwPass.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-					inputPwShowPass.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_visibility_off_black_24dp));
-				}
-				break;
-		}
-	}
-
+            case R.id.activity_mainInputShowPassImageButton:
+                isMostrarSenha = !isMostrarSenha;
+                if (isMostrarSenha) {
+                    inputPwPass.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+                    inputPwShowPass.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_visibility_black_24dp));
+                } else {
+                    inputPwPass.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                    inputPwShowPass.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_visibility_off_black_24dp));
+                }
+                break;
+        }
+    }
 
 
-	public void onCheckedChanged(CompoundButton p1, boolean p2)
-	{
-		SharedPreferences prefs = mConfig.getPrefsPrivate();
-		SharedPreferences.Editor edit = prefs.edit();
+    public void onCheckedChanged(CompoundButton p1, boolean p2) {
+        SharedPreferences prefs = mConfig.getPrefsPrivate();
+        SharedPreferences.Editor edit = prefs.edit();
 
-		switch (p1.getId()) {
-			case R.id.activity_mainCustomPayloadSwitch:
-				edit.putBoolean(Settings.PROXY_USAR_DEFAULT_PAYLOAD, !p2);
-				setPayloadSwitch(prefs.getInt(Settings.TUNNELTYPE_KEY, Settings.bTUNNEL_TYPE_SSH_DIRECT), p2);
-				break;
-		}
+        switch (p1.getId()) {
+            case R.id.activity_mainCustomPayloadSwitch:
+                edit.putBoolean(Settings.PROXY_USAR_DEFAULT_PAYLOAD, !p2);
+                setPayloadSwitch(prefs.getInt(Settings.TUNNELTYPE_KEY, Settings.bTUNNEL_TYPE_SSH_DIRECT), p2);
+                break;
+        }
 
-		edit.apply();
+        edit.apply();
 
-		doSaveData();
-	}
-	
-	protected void showBoasVindas() {
-		AlertDialog dialog = new AlertDialog.Builder(this).
-			create();
-		dialog.setIcon(R.drawable.app_launch);
-		dialog.setTitle("Join Us On Telegram?");
-		dialog.setMessage("We have a telegram support channel where we post and discuss about settings, new features and also assist our users. \n\nWould you like to join us there?");
-		dialog.setButton(DialogInterface.BUTTON_POSITIVE, "Join",
-			new DialogInterface.OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int which)
-				{
+        doSaveData();
+    }
 
-					String url = "https://t.me/andresayac";
-					Intent intent3 = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-					intent3.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-					startActivity(Intent.createChooser(intent3, getText(R.string.open_with)));
-					Light.normal(main_ly, "Please make you join", Snackbar.LENGTH_LONG).show();
+    protected void showBoasVindas() {
+        AlertDialog dialog = new AlertDialog.Builder(this).create();
+        dialog.setIcon(R.drawable.app_launch);
+        dialog.setTitle("Join Us On Telegram?");
+        dialog.setMessage("We have a telegram support channel where we post and discuss about settings, new features and also assist our users. \n\nWould you like to join us there?");
+        dialog.setButton(DialogInterface.BUTTON_POSITIVE, "Join", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Intent intent3 = new Intent(Intent.ACTION_VIEW, Uri.parse(Daxlib.getAA("tXl"))).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(Intent.createChooser(intent3, getText(R.string.open_with)));
+                Light.normal(main_ly, "Please make you join", Snackbar.LENGTH_LONG).show();
 
-					// ok
-				}
-			});
+                // ok
+            }
+        });
 
-		dialog.setButton(DialogInterface.BUTTON_NEGATIVE, "Later",
-			new DialogInterface.OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					// minimiza app
+        dialog.setButton(DialogInterface.BUTTON_NEGATIVE, "Later", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // minimiza app
 
-					dialog.dismiss();
+                dialog.dismiss();
 
-				}
-			}
-		);
+            }
+        });
 
 
-		dialog.show();
-	}
-	
-	
-	
-	
-	private void showVersion() {
-		PackageInfo pinfo = Utils.getAppInfo(this);
-		if (pinfo != null) {
-			String version_nomes = pinfo.versionName;
-			int version_codes = pinfo.versionCode;
-		AlertDialog dialog = new AlertDialog.Builder(this).
-			create();
-			dialog.setIcon(R.drawable.app_launch);
-			dialog.setTitle("What's new inㅤ"+"(v." + version_nomes + ") " + "Build " + "(" + version_codes + ")");
-			dialog.setMessage("- BETA Version \n\nThank you for downloading our app.❤");
-			dialog.setCancelable(false);
-		    dialog.setButton(DialogInterface.BUTTON_POSITIVE, getString(R.
-																	string.ok),
-			new DialogInterface.OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int which)
-				{
-					dialog.dismiss();
-				}
-			});
+        dialog.show();
+    }
 
-		dialog.show();
-	}}
 
-	@Override
-	public void updateState(final String state, String msg, int localizedResId, final ConnectionStatus level, Intent intent)
-	{
-		mHandler.post(new Runnable() {
-				@Override
-				public void run() {
-					doUpdateLayout();
-					if (SkStatus.isTunnelActive()){
+    private void showVersion() {
+        PackageInfo pinfo = Utils.getAppInfo(this);
+        if (pinfo != null) {
+            String version_nomes = pinfo.versionName;
+            int version_codes = pinfo.versionCode;
+            AlertDialog dialog = new AlertDialog.Builder(this).create();
+            dialog.setIcon(R.drawable.app_launch);
+            dialog.setTitle("What's new inㅤ" + "(v." + version_nomes + ") " + "Build " + "(" + version_codes + ")");
+            dialog.setMessage("- BETA Version \n\nThank you for downloading our app.❤");
+            dialog.setCancelable(false);
+            dialog.setButton(DialogInterface.BUTTON_POSITIVE, getString(R.string.ok), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
 
-						if (level.equals(ConnectionStatus.LEVEL_CONNECTED)){
-							status.setText(R.string.connected);
-							toastutil.showSuccessToast(getString(R.string.state_connected));
+            dialog.show();
+        }
+    }
 
-							showInterstitial();
-						}
+    @Override
+    public void updateState(final String state, String msg, int localizedResId, final ConnectionStatus level, Intent intent) {
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                doUpdateLayout();
+                if (SkStatus.isTunnelActive()) {
 
-						if (level.equals(ConnectionStatus.LEVEL_NOTCONNECTED)){
-							status.setText(R.string.servicestop);
+                    if (level.equals(ConnectionStatus.LEVEL_CONNECTED)) {
+                        status.setText(R.string.connected);
+                        toastutil.showSuccessToast(getString(R.string.state_connected));
 
-							showInterstitial();
-						}	
+                        showInterstitial();
+                    }
 
-						if (level.equals(ConnectionStatus.LEVEL_CONNECTING_SERVER_REPLIED)){
-							status.setText(R.string.authenticating);
-						}		
+                    if (level.equals(ConnectionStatus.LEVEL_NOT_CONNECTED)) {
+                        status.setText(R.string.servicestop);
 
-						if (level.equals(ConnectionStatus.LEVEL_CONNECTING_NO_SERVER_REPLY_YET)){
-							status.setText(R.string.connecting);
-						}			
-						if (level.equals(ConnectionStatus.LEVEL_AUTH_FAILED)){
-							status.setText(R.string.authfailed);
-						}					
-						if (level.equals(ConnectionStatus.UNKNOWN_LEVEL)){
-							status.setText(R.string.disconnected);
-							toastutil.showConfusingToast(getString(R.string.state_disconnected));
-						}				
-						//if (level.equals(ConnectionStatus.LEVEL_RECONNECTING)){
-						//		status.setText(R.string.reconnecting);
-					}				
-					if (level.equals(ConnectionStatus.LEVEL_NONETWORK)){
-						status.setText(R.string.nonetwork);
-						toastutil.showDefaultToast(getString(R.string.nonetwork));
-					}			
-				}});
+                        showInterstitial();
+                    }
 
-		switch (state) {
-			case SkStatus.SSH_CONECTADO:
-				// carrega ads banner
-				if (adsBannerView != null && TunnelUtils.isNetworkOnline(SocksHttpMainActivity.this)) {
-					adsBannerView.setAdListener(new AdListener() {
-							@Override
-							public void onAdLoaded() {
-								if (adsBannerView != null && !isFinishing()) {
-									adsBannerView.setVisibility(View.VISIBLE);
-								}
-							}
-						});
-					adsBannerView.postDelayed(new Runnable() {
-							@Override
-							public void run() {
-								// carrega ads interestitial
+                    if (level.equals(ConnectionStatus.LEVEL_CONNECTING_SERVER_REPLIED)) {
+                        status.setText(R.string.authenticating);
+                    }
+
+                    if (level.equals(ConnectionStatus.LEVEL_CONNECTING_NO_SERVER_REPLY_YET)) {
+                        status.setText(R.string.connecting);
+                    }
+                    if (level.equals(ConnectionStatus.LEVEL_AUTH_FAILED)) {
+                        status.setText(R.string.authfailed);
+                    }
+                    if (level.equals(ConnectionStatus.UNKNOWN_LEVEL)) {
+                        status.setText(R.string.disconnected);
+                        toastutil.showConfusingToast(getString(R.string.state_disconnected));
+                    }
+                    //if (level.equals(ConnectionStatus.LEVEL_RECONNECTING)){
+                    //		status.setText(R.string.reconnecting);
+                }
+                if (level.equals(ConnectionStatus.LEVEL_NO_NETWORK)) {
+                    status.setText(R.string.nonetwork);
+                    toastutil.showDefaultToast(getString(R.string.nonetwork));
+                }
+            }
+        });
+
+        switch (state) {
+            case SkStatus.SSH_CONECTADO:
+                // carrega ads banner
+                if (adsBannerView != null && TunnelUtils.isNetworkOnline(SocksHttpMainActivity.this)) {
+                    adsBannerView.setAdListener(new AdListener() {
+                        @Override
+                        public void onAdLoaded() {
+                            if (adsBannerView != null && !isFinishing()) {
+                                adsBannerView.setVisibility(View.VISIBLE);
+                            }
+                        }
+                    });
+                    adsBannerView.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            // carrega ads interestitial
 //								AdsManager.newInstance(getApplicationContext())
 //									.loadAdsInterstitial();
-								// ads banner
-								if (adsBannerView != null && !isFinishing()) {
+                            // ads banner
+                            if (adsBannerView != null && !isFinishing()) {
 //									adsBannerView.loadAd(new AdRequest.Builder()
 //														 .build());
-								}
-							}
-						}, 5000);
-				}
-				break;
-		}
-	}
+                            }
+                        }
+                    }, 5000);
+                }
+                break;
+        }
+    }
 
 
-	/**
-	 * Recebe locais Broadcast
-	 */
+    /**
+     * Recebe locais Broadcast
+     */
 
-	private BroadcastReceiver mActivityReceiver = new BroadcastReceiver() {
+    private BroadcastReceiver mActivityReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
-            if (action == null)
-                return;
+            if (action == null) return;
 
             if (action.equals(UPDATE_VIEWS) && !isFinishing()) {
-				doUpdateLayout();
-			}
-			else if (action.equals(OPEN_LOGS)) {
+                doUpdateLayout();
+            } else if (action.equals(OPEN_LOGS)) {
 
-			}
+            }
         }
     };
 
 
-	@Override
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main_menu, menu);
         return true;
     }
 
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		if (mDrawerPanel.getToogle() != null && mDrawerPanel.getToogle().onOptionsItemSelected(item)) {
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (mDrawerPanel.getToogle() != null && mDrawerPanel.getToogle().onOptionsItemSelected(item)) {
             return true;
         }
 
-		// Menu Itens
-		switch (item.getItemId()) {
+        // Menu Itens
+        switch (item.getItemId()) {
 
-			case R.id.settingsmain:
-				Intent intentSettings = new Intent(this, ConfigGeralActivity.class);
-				//intentSettings.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-				startActivity(intentSettings);
-				break;
-			
-			case R.id.miLimparConfig:
-				if (!SkStatus.isTunnelActive()) {
-					DialogFragment dialog = new ClearConfigDialogFragment();
-					dialog.show(getSupportFragmentManager(), "alertClearConf");
-					Light.info(main_ly, getString(R.string.error_tunnel_service_execution), Snackbar.LENGTH_LONG).show();
-				} else {
+            case R.id.settingsmain:
+                Intent intentSettings = new Intent(this, ConfigGeralActivity.class);
+                //intentSettings.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intentSettings);
+                break;
 
-					Light.info(main_ly, getString(R.string.error_tunnel_service_execution), Snackbar.LENGTH_LONG).show();
-				}
-				break;
+            case R.id.miLimparConfig:
+                if (!SkStatus.isTunnelActive()) {
+                    DialogFragment dialog = new ClearConfigDialogFragment();
+                    dialog.show(getSupportFragmentManager(), "alertClearConf");
+                    Light.info(main_ly, getString(R.string.error_tunnel_service_execution), Snackbar.LENGTH_LONG).show();
+                } else {
+
+                    Light.info(main_ly, getString(R.string.error_tunnel_service_execution), Snackbar.LENGTH_LONG).show();
+                }
+                break;
 
 			/*case R.id.guide:
 				if (mInterstitialAd.isLoaded()) {
@@ -2051,340 +1925,324 @@ View.OnClickListener, RadioGroup.OnCheckedChangeListener,
 				 tunnel_options();
 				 break;*/
 
-			case R.id.login_menu:
-				askForPW(R.string.password);
-				break;
+            case R.id.login_menu:
+                askForPW(R.string.password);
+                break;
 
-			case R.id.miSettingImportar:
-				if (mRewardedVideoAd.isLoaded()) {
-					mRewardedVideoAd.show();
-				}
-				Intent intentImport = new Intent(this, ConfigImportFileActivity.class);
-				startActivity(intentImport);
-				break;
+            case R.id.miSettingImportar:
+                if (mRewardedVideoAd.isLoaded()) {
+                    mRewardedVideoAd.show();
+                }
+                Intent intentImport = new Intent(this, ConfigImportFileActivity.class);
+                startActivity(intentImport);
+                break;
 
-			case R.id.miSettingImportarRemote:
-				if (mRewardedVideoAd.isLoaded()) {
-					mRewardedVideoAd.show();
-				}
-				Intent intentImportRemote = new Intent(this, ConfigImportRemoteFileActivity.class);
-				startActivity(intentImportRemote);
-				break;
+            case R.id.miSettingImportarRemote:
+                if (mRewardedVideoAd.isLoaded()) {
+                    mRewardedVideoAd.show();
+                }
+                Intent intentImportRemote = new Intent(this, ConfigImportRemoteFileActivity.class);
+                startActivity(intentImportRemote);
+                break;
 
-			case R.id.miSettingExportar:
-				if (mInterstitialAd.isLoaded()) {
-					mInterstitialAd.show();
-				}
-				SharedPreferences prefs = mConfig.getPrefsPrivate();
-				if (prefs.getBoolean(Settings.CONFIG_PROTEGER_KEY, false)) {
-					Light.error(main_ly, getString(R.string.error_settings_blocked), Snackbar.LENGTH_LONG).show();
-				}
-				else {
-					Intent intentExport = new Intent(this, ConfigExportFileActivity.class);
-					startActivity(intentExport);
-				}
-				break;
+            case R.id.miSettingExportar:
+                if (mInterstitialAd.isLoaded()) {
+                    mInterstitialAd.show();
+                }
+                SharedPreferences prefs = mConfig.getPrefsPrivate();
+                if (prefs.getBoolean(Settings.CONFIG_PROTEGER_KEY, false)) {
+                    Light.error(main_ly, getString(R.string.error_settings_blocked), Snackbar.LENGTH_LONG).show();
+                } else {
+                    Intent intentExport = new Intent(this, ConfigExportFileActivity.class);
+                    startActivity(intentExport);
+                }
+                break;
 
-				// logs opções
-			case R.id.Share_Logs:
-				Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+            // logs opções
+            case R.id.Share_Logs:
+                Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
                 sharingIntent.setType("text/plain");
-                sharingIntent.putExtra(Intent.EXTRA_TEXT,SkStatus.CopyLogs());
+                sharingIntent.putExtra(Intent.EXTRA_TEXT, SkStatus.CopyLogs());
                 sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, SkStatus.CopyLogs());
                 startActivity(Intent.createChooser(sharingIntent, "Share via"));
-				break;
+                break;
 
-			case R.id.CopyLogs:
-				ClipboardManager clipboard = (ClipboardManager)getSystemService(Context.CLIPBOARD_SERVICE);
-				ClipData clip = ClipData.newPlainText("Log Entry", SkStatus.CopyLogs());
-				clipboard.setPrimaryClip(clip);
-				Toast.makeText(this, "Logs Copied", Toast.LENGTH_SHORT).show();
+            case R.id.CopyLogs:
+                ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                ClipData clip = ClipData.newPlainText("Log Entry", SkStatus.CopyLogs());
+                clipboard.setPrimaryClip(clip);
+                Toast.makeText(this, "Logs Copied", Toast.LENGTH_SHORT).show();
 
-				break;
+                break;
 
-				// logs opções
-			case R.id.miLimparLogs:
-				mLogAdapter.clearLog();
-				break;
+            // logs opções
+            case R.id.miLimparLogs:
+                mLogAdapter.clearLog();
+                break;
 
-			case R.id.miExit:
-				if (Build.VERSION.SDK_INT >= 16) {
-					finishAffinity();
-				}
+            case R.id.miExit:
+                if (Build.VERSION.SDK_INT >= 16) {
+                    finishAffinity();
+                }
 
-				System.exit(0);
-				break;
-		}
+                System.exit(0);
+                break;
+        }
 
-		return super.onOptionsItemSelected(item);
-	}
+        return super.onOptionsItemSelected(item);
+    }
 
-	private void passlog() {
-		Settings config = new Settings(this);
+    private void passlog() {
+        Settings config = new Settings(this);
 
-		if (config.getPrefsPrivate()
-			.getBoolean(Settings.CONFIG_INPUT_PASSWORD_KEY, false)) {
-			if (inputPwUser.getText().toString().isEmpty() || 
-				inputPwPass.getText().toString().isEmpty()) {
+        if (config.getPrefsPrivate().getBoolean(Settings.CONFIG_INPUT_PASSWORD_KEY, false)) {
+            if (inputPwUser.getText().toString().isEmpty() || inputPwPass.getText().toString().isEmpty()) {
 
-				toastutil.showErrorToast(getString(R.string.error_userpass_empty));
-				return;
-			}
-		}
+                toastutil.showErrorToast(getString(R.string.error_userpass_empty));
+                return;
+            }
+        }
 
-		Intent intent = new Intent(this, LaunchVpn.class);
-		intent.setAction(Intent.ACTION_MAIN);
-		vp.setCurrentItem(1);
-		if (config.getHideLog()) {
-			intent.putExtra(LaunchVpn.EXTRA_HIDELOG, false);
-		}
+        Intent intent = new Intent(this, LaunchVpn.class);
+        intent.setAction(Intent.ACTION_MAIN);
+        vp.setCurrentItem(1);
+        if (config.getHideLog()) {
+            intent.putExtra(LaunchVpn.EXTRA_HIDELOG, false);
+        }
 
-		startActivity(intent);
+        startActivity(intent);
 
-	}
+    }
 
-	private static final int START_VPN_PROFILE = 70;
-	private void askForPW(final int type) {
-		AlertDialog.Builder passdialog = new AlertDialog.Builder(this);
-		//   passdialog.setTitle(R.string.title_auth);
-		//     passdialog.setMessage(R.string.auth_message);
-		//passdialog.setOnCancelListener(this);
+    private static final int START_VPN_PROFILE = 70;
 
-        @SuppressLint("InflateParams")
-			final View userpwlayout = getLayoutInflater()
-			.inflate(R.layout.userpass, null, false);
+    private void askForPW(final int type) {
+        AlertDialog.Builder passdialog = new AlertDialog.Builder(this);
+        //   passdialog.setTitle(R.string.title_auth);
+        //     passdialog.setMessage(R.string.auth_message);
+        //passdialog.setOnCancelListener(this);
+
+        @SuppressLint("InflateParams") final View userpwlayout = getLayoutInflater().inflate(R.layout.userpass, null, false);
 
         ((EditText) userpwlayout.findViewById(R.id.username)).setText(mConfig.getPrivString(Settings.USUARIO_KEY));
-        ((EditText) userpwlayout.findViewById(R.id.password)).setText(mConfig.getPrivString(Settings.SENHA_KEY));
+        ((EditText) userpwlayout.findViewById(R.id.password)).setText(mConfig.getPrivString(Settings.PASS_KEY));
         ((CheckBox) userpwlayout.findViewById(R.id.save_password)).setChecked(true);
         ((ImageButton) userpwlayout.findViewById(R.id.show_password)).setOnClickListener(new View.OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					isMostrarSenha = !isMostrarSenha;
-					if (isMostrarSenha) {
-						((EditText) userpwlayout.findViewById(R.id.password)).setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
-						((ImageButton) userpwlayout.findViewById(R.id.show_password)).setImageDrawable(ContextCompat.getDrawable(SocksHttpMainActivity.this, R.drawable.ic_visibility_off_black_24dp));
-					}
-					else {
-						((EditText) userpwlayout.findViewById(R.id.password)).setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-						((ImageButton) userpwlayout.findViewById(R.id.show_password)).setImageDrawable(ContextCompat.getDrawable(SocksHttpMainActivity.this, R.drawable.ic_visibility_black_24dp));
-					}
-				}
-			});
+            @Override
+            public void onClick(View v) {
+                isMostrarSenha = !isMostrarSenha;
+                if (isMostrarSenha) {
+                    ((EditText) userpwlayout.findViewById(R.id.password)).setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+                    ((ImageButton) userpwlayout.findViewById(R.id.show_password)).setImageDrawable(ContextCompat.getDrawable(SocksHttpMainActivity.this, R.drawable.ic_visibility_off_black_24dp));
+                } else {
+                    ((EditText) userpwlayout.findViewById(R.id.password)).setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                    ((ImageButton) userpwlayout.findViewById(R.id.show_password)).setImageDrawable(ContextCompat.getDrawable(SocksHttpMainActivity.this, R.drawable.ic_visibility_black_24dp));
+                }
+            }
+        });
 
         passdialog.setView(userpwlayout);
 
-        passdialog.setPositiveButton(android.R.string.ok,
-			new DialogInterface.OnClickListener() {
+        passdialog.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
 
-				private String mTransientAuthPW;
-				@Override
-				public void onClick(DialogInterface passdialog, int which) {
+            private String mTransientAuthPW;
 
-					if (type == R.string.password) {
-						SharedPreferences.Editor edit = mConfig.getPrefsPrivate().edit();
+            @Override
+            public void onClick(DialogInterface passdialog, int which) {
 
-						String mUsername = ((EditText) userpwlayout.findViewById(R.id.username)).getText().toString();
+                if (type == R.string.password) {
+                    SharedPreferences.Editor edit = mConfig.getPrefsPrivate().edit();
 
-						edit.putString(Settings.USUARIO_KEY, mUsername);
+                    String mUsername = ((EditText) userpwlayout.findViewById(R.id.username)).getText().toString();
 
-						String pw = ((EditText) userpwlayout.findViewById(R.id.password)).getText().toString();
-						if (((CheckBox) userpwlayout.findViewById(R.id.save_password)).isChecked()) {
-							edit.putString(Settings.SENHA_KEY, pw);
-						} else {
-							edit.remove(Settings.SENHA_KEY);
-							mTransientAuthPW = pw;
-						}
+                    edit.putString(Settings.USUARIO_KEY, mUsername);
 
-						edit.apply();
-					}
+                    String pw = ((EditText) userpwlayout.findViewById(R.id.password)).getText().toString();
+                    if (((CheckBox) userpwlayout.findViewById(R.id.save_password)).isChecked()) {
+                        edit.putString(Settings.PASS_KEY, pw);
+                    } else {
+                        edit.remove(Settings.PASS_KEY);
+                        mTransientAuthPW = pw;
+                    }
 
-					if (mTransientAuthPW != null)
-						PasswordCache.setCachedPassword(null, PasswordCache.AUTHPASSWORD, mTransientAuthPW);
-					onActivityResult(START_VPN_PROFILE, Activity.RESULT_OK, null);
-				}
+                    edit.apply();
+                }
 
-			});
-        passdialog.setNegativeButton(android.R.string.cancel,
-			new DialogInterface.OnClickListener() {
-				@Override
-				public void onClick(DialogInterface passdialog, int which) {
-					SkStatus.updateStateString("USER_VPN_PASSWORD_CANCELLED", "", R.string.state_user_vpn_password_cancelled,
-											   ConnectionStatus.LEVEL_NOTCONNECTED);
-					passdialog.dismiss();
-				}
-			});
+                if (mTransientAuthPW != null)
+                    PasswordCache.setCachedPassword(null, PasswordCache.AUTH_PASSWORD, mTransientAuthPW);
+                onActivityResult(START_VPN_PROFILE, Activity.RESULT_OK, null);
+            }
+
+        });
+        passdialog.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface passdialog, int which) {
+                SkStatus.updateStateString("USER_VPN_PASSWORD_CANCELLED", "", R.string.state_user_vpn_password_cancelled, ConnectionStatus.LEVEL_NOT_CONNECTED);
+                passdialog.dismiss();
+            }
+        });
 
         passdialog.create().show();
-	}
+    }
 
-	@Override
-	public void onBackPressed() {
+    @Override
+    public void onBackPressed() {
 
-		showExitDialog();
-	}
+        showExitDialog();
+    }
 
-	@Override
+    @Override
     public void onResume() {
         super.onResume();
 
-		showInterstitial();
+        showInterstitial();
 
-		//doSaveData();
-		//doUpdateLayout();
+        //doSaveData();
+        //doUpdateLayout();
 
-		SkStatus.addStateListener(this);
+        SkStatus.addStateListener(this);
 
-		if (adsBannerView != null) {
-			adsBannerView.resume();
-		}
+        if (adsBannerView != null) {
+            adsBannerView.resume();
+        }
     }
 
-	private void showInterstitial(){
-		if (mInterstitialAd.isLoaded()){
-			if(showAd) {
-				mInterstitialAd.show();
-				createTimer(60000);
-				showAd = false;
-			}
-		} else {
-			loadInterstitial();
-		}
-	}
+    private void showInterstitial() {
+        if (mInterstitialAd.isLoaded()) {
+            if (showAd) {
+                mInterstitialAd.show();
+                createTimer(60000);
+                showAd = false;
+            }
+        } else {
+            loadInterstitial();
+        }
+    }
 
 
-	boolean showAd=true;
-	private void loadInterstitial(){
+    boolean showAd = true;
+
+    private void loadInterstitial() {
 //		mInterstitialAd.loadAd(new AdRequest.Builder().build());
-		Log.d(TAG, "///Loading interstitial ad..");
-	}
+        Log.d(TAG, "///Loading interstitial ad..");
+    }
 
-	private CountDownTimer countDownTimer;
-	private long timerMilliseconds;
+    private CountDownTimer countDownTimer;
+    private long timerMilliseconds;
 
-	private void createTimer(final long milliseconds) {
-		// Create the game timer, which counts down to the end of the level
-		// and shows the "retry" button.
-		if (countDownTimer != null) {
-			countDownTimer.cancel();
-		}
+    private void createTimer(final long milliseconds) {
+        // Create the game timer, which counts down to the end of the level
+        // and shows the "retry" button.
+        if (countDownTimer != null) {
+            countDownTimer.cancel();
+        }
 
-		countDownTimer = new CountDownTimer(milliseconds, 1000) {
-			@Override
-			public void onTick(long millisUnitFinished) {
-				Log.e(TAG,"running timer "+millisUnitFinished);
-				timerMilliseconds = millisUnitFinished;
-			}
+        countDownTimer = new CountDownTimer(milliseconds, 1000) {
+            @Override
+            public void onTick(long millisUnitFinished) {
+                Log.e(TAG, "running timer " + millisUnitFinished);
+                timerMilliseconds = millisUnitFinished;
+            }
 
-			@Override
-			public void onFinish() {
+            @Override
+            public void onFinish() {
 //				long time = 60*1;
-				showAd = true;
-				Log.e(TAG,"running timer stopped "+showAd);
+                showAd = true;
+                Log.e(TAG, "running timer stopped " + showAd);
 
-			}
-		};
+            }
+        };
 
-		countDownTimer.start();
-	}
+        countDownTimer.start();
+    }
 
-	public void mInterstitialAdLeftApplication() {
-		Toast.makeText(SocksHttpMainActivity.this, "Thanks for clicking💙💙💙", Toast.LENGTH_LONG).show();
+    public void mInterstitialAdLeftApplication() {
+        Toast.makeText(SocksHttpMainActivity.this, "Thanks for clicking💙💙💙", Toast.LENGTH_LONG).show();
 
     }
 
-	@Override
-	protected void onPause()
-	{
-		super.onPause();
+    @Override
+    protected void onPause() {
+        super.onPause();
 
-		doSaveData();
+        doSaveData();
 
-		SkStatus.removeStateListener(this);
+        SkStatus.removeStateListener(this);
 
-		if (adsBannerView != null) {
-			adsBannerView.pause();
-		}
-	}
+        if (adsBannerView != null) {
+            adsBannerView.pause();
+        }
+    }
 
-	@Override
-	protected void onDestroy()
-	{
-		super.onDestroy();
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
 
 
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mActivityReceiver);
 
-		LocalBroadcastManager.getInstance(this)
-			.unregisterReceiver(mActivityReceiver);
-
-		if (adsBannerView != null) {
-			adsBannerView.destroy();
-		}
-	}
+        if (adsBannerView != null) {
+            adsBannerView.destroy();
+        }
+    }
 
 
-	/**
-	 * DrawerLayout Listener
-	 */
+    /**
+     * DrawerLayout Listener
+     */
 
-	@Override
-	public void onDrawerOpened(View view) {
+    @Override
+    public void onDrawerOpened(View view) {
 
-	}
+    }
 
-	@Override
-	public void onDrawerClosed(View view) {
+    @Override
+    public void onDrawerClosed(View view) {
 
-	}
+    }
 
-	@Override
-	public void onDrawerStateChanged(int stateId) {}
-	@Override
-	public void onDrawerSlide(View view, float p2) {}
+    @Override
+    public void onDrawerStateChanged(int stateId) {
+    }
+
+    @Override
+    public void onDrawerSlide(View view, float p2) {
+    }
 
 
-	/**
-	 * Utils
-	 */
+    /**
+     * Utils
+     */
 
-	public static void updateMainViews(Context context) {
-		Intent updateView = new Intent(UPDATE_VIEWS);
-		LocalBroadcastManager.getInstance(context)
-			.sendBroadcast(updateView);
-	}
+    public static void updateMainViews(Context context) {
+        Intent updateView = new Intent(UPDATE_VIEWS);
+        LocalBroadcastManager.getInstance(context).sendBroadcast(updateView);
+    }
 
-	public void showExitDialog() {
-		AlertDialog dialog = new AlertDialog.Builder(this).
-			create();
-		dialog.setTitle(getString(R.string.attention));
-		dialog.setMessage(getString(R.string.alert_exit));
+    public void showExitDialog() {
+        AlertDialog dialog = new AlertDialog.Builder(this).create();
+        dialog.setTitle(getString(R.string.attention));
+        dialog.setMessage(getString(R.string.alert_exit));
 
-		dialog.setButton(DialogInterface.BUTTON_POSITIVE, getString(R.
-																	string.exit),
-			new DialogInterface.OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int which)
-				{
-					Utils.exitAll(SocksHttpMainActivity.this);
-				}
-			}
-		);
+        dialog.setButton(DialogInterface.BUTTON_POSITIVE, getString(R.string.exit), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Utils.exitAll(SocksHttpMainActivity.this);
+            }
+        });
 
-		dialog.setButton(DialogInterface.BUTTON_NEGATIVE, getString(R.
-																	string.minimize),
-			new DialogInterface.OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					// minimiza app
-					Intent startMain = new Intent(Intent.ACTION_MAIN);
-					startMain.addCategory(Intent.CATEGORY_HOME);
-					startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-					startActivity(startMain);
-				}
-			}
-		);
+        dialog.setButton(DialogInterface.BUTTON_NEGATIVE, getString(R.string.minimize), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // minimiza app
+                Intent startMain = new Intent(Intent.ACTION_MAIN);
+                startMain.addCategory(Intent.CATEGORY_HOME);
+                startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(startMain);
+            }
+        });
 
-		dialog.show();
-	}
+        dialog.show();
+    }
 }
 

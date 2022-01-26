@@ -1,18 +1,17 @@
 package com.slipkprojects.sockshttp.adapter;
 
 import android.content.Context;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import androidx.recyclerview.widget.RecyclerView;
+import com.slipkprojects.sockshttp.R;
+
 import java.io.File;
 import java.util.List;
-import android.widget.LinearLayout;
-import androidx.appcompat.app.AlertDialog;
-
-import com.slipkprojects.sockshttp.R;
 
 public class ManagerFilesAdapter
 	extends RecyclerView.Adapter<ManagerFilesAdapter.ItemHolder>

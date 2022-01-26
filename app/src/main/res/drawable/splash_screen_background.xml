@@ -7,6 +7,6 @@
     <item android:gravity="center" android:width="200dp" android:height="200dp">
         <bitmap
             android:gravity="fill_horizontal|fill_vertical"
-            android:src="@drawable/app_launch"/>
+            android:src="@drawable/ic_launcher"/>
     </item>
 </layer-list>

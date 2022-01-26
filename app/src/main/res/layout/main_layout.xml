@@ -48,8 +48,8 @@
 					<ImageButton
 						android:layout_width="25dp"
 						android:layout_height="25dp"
-						android:background="#00000000"
-						android:tint="?colorPrimary"
+						android:background="@color/white"
+						android:tint="@color/colorPrimary"
 						android:src="@drawable/es"/>
 
 					<TextView

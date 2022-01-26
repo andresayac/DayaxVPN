@@ -87,6 +87,14 @@
 	<string name="input_note_msg">Mensaje/Nota para usuarios (opcional)</string>
 	<string name="alert_block_settings">El bloqueo de configuración no garantiza 100% de seguridad</string>
 	<string name="error_empty_name_file">Nombre de archivo no debe quedar vacío</string>
+	<string name="title_ssh">Secure Shell (SSH)</string>
+	<string name="check_block_mobile_data">Solo datos móviles</string>
+	<string name="check_block_with_pass">Establecer contraseña</string>
+	<string name="check_block_app_torrent">Bloqueo de app torrent</string>
+	<string name="check_block_app_terminal">Bloqueo de app terminal</string>
+	<string name="check_block_with_hwid">bloqueo de HWID</string>
+	<string name="check_block_host_port">Bloqueo de SSH host y puerto</string>
+	<string name="check_block_user_pass">Bloqueo de SSH usuario y contraseña</string>
 	
 	<!--- action messages -->
 	<string name="minimize">Minimizar</string>
@@ -167,5 +175,7 @@
 	<string name="tun_type">Tipo de Tunel</string>
     <string name="settings_import_remote">Importación remota</string>
     <string name="success_hwid_export">" HWID Copiado"</string>
+
+
 
 </resources>

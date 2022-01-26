@@ -95,12 +95,21 @@
 	<string name="title_security">Security / Lock</string>
 	<string name="check_protect">Lock configuration and prevent editing</string>
 	<string name="title_extra">Extra</string>
+	<string name="title_ssh">Secure Shell (SSH)</string>
+	<string name="check_block_mobile_data">Mobile data Only</string>
 	<string name="check_block_root">Block Root</string>
+	<string name="check_block_app_torrent">Block app torrent</string>
+	<string name="check_block_app_terminal">Block app terminal</string>
+	<string name="check_block_with_hwid">Block with HWID</string>
+	<string name="check_block_with_pass">Set Password</string>
+	<string name="check_block_host_port">Block SSH host and Port</string>
+	<string name="check_block_user_pass">Block SSH username and password</string>
 	<string name="check_show_login_start">Show Login to Start</string>
 	<string name="check_date_valid">Set Expiration Date</string>
 	<string name="input_note_msg">Message / Note for users (optional)</string>
 	<string name="alert_block_settings">Configuration lock does not guarantee 100% security</string>
 	<string name="error_empty_name_file">File name must not be empty</string>
+
 
 	<!--- action messages -->
 	<string name="minimize">Minimize</string>
